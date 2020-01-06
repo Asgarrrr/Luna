@@ -34,7 +34,7 @@ module.exports = {
         reply.react("🗑");                                                      // ... Adds a "trash" reaction
                                                                                 // Creation of a filter that only takes in consideration the trash emoji and ignores that added by the bot
         const filter = (reaction, user) => reaction.emoji.name === "🗑" && user.id !== client.user.id;
-        reply.createReactionCollector(filter, {                                  // Create a "reaction collector" using the filter, with a maximum of 1
+        reply.createReactionCollector(filter, {                                 // Create a "reaction collector" using the filter, with a maximum of 1
           maxMatches: 1
         })
           .on("collect", () => reply.delete());                                 // Removes the embed when a new reaction is received.
