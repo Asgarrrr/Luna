@@ -1,2 +1,10 @@
 
 .DS_Store
+.env
+.vscode
+.eslintrc.js
+log.log
+package-lock.json
+package.json
+node_modules
+database.sqlite
