@@ -55,38 +55,60 @@ dotenv.config();																 // Imports environment variables
             type: 'text',
             name: 'richpresence',
             message: 'And what I\'m doing ?'
+        }, {
+            type: 'select',
+            name: 'richtype',
+            message: 'Activity type',
+            choices: [{
+                title: 'Playing',
+                value: 'PLAYING'
+            }, {
+                title: 'Streaming',
+                value: 'STREAMING'
+            }, {
+                title: 'Listening',
+                value: 'LISTENING'
+            }, {
+                title: 'Watching',
+                value: 'WATCHING'
+            }]
+        }, {
+            type: prev => prev == 'STREAMING' ? 'text' : null,
+            name: 'richurl',
+            message: 'Streaming URL'
         }
     ];
 
-    const onCancel = prompt => {                                                // Invoked when the user cancels/exits the prompt
+    const onCancel = () => {                                                // Invoked when the user cancels/exits the prompt
         console.log('\nOh, you changed your mind ...');
         return false;
     };
 
     const response = await prompts(questions, { onCancel });
 
-    if (Object.keys(response).length === 4) {                                   // Check that response contains 4 elements
+    var richurl = response.richurl ? response.richurl : "https://undefined.com"
 
-       const env = [
-            "# ███████ Information about the Discord application ████████████████████████████",
-            "TOKEN = "  + response.token,
-            "MASTER = " + response.ownerID,
-            "PREFIX = " + response.prefix,
-            "RICHPR = " + response.richpresence
-        ].join('\n')
+    const env = [
+        "# ███████ Information about the Discord application ████████████████████████████",
+        "TOKEN = "  + response.token,
+        "MASTER = " + response.ownerID,
+        "PREFIX = " + response.prefix,
+        "RICHPR = " + response.richpresence,
+        "RICHTY = " + response.richtype,
+        "RICURL = " + richurl
+    ].join('\n')
 
-        fs.writeFile('.env', env, (err) => {                                    // If it doesn't exist, create an '.env' file, and include collected information.
+    fs.writeFile('.env', env, (err) => {                                    // If it doesn't exist, create an '.env' file, and include collected information.
 
-            if (err) throw err;
+        if (err) throw err;
 
-            console.log([
-                "\n\n🔥 ALL IS DONE ^^ !\n",
-                "The setup is complete, you can now, if not already done,",
-                "invite the bot on your server. Commands are already present,",
-                "but the goal is to make this bot yours.\n",
-                chalk.italic("Improve his code, add what you need !\n"),
-                chalk `Type {italic.grey node Luna.js} to start the bot`
-            ].join('\n'));
-        })
-    }
+        console.log([
+            "\n\n🔥 ALL IS DONE ^^ !\n",
+            "The setup is complete, you can now, if not already done,",
+            "invite the bot on your server. Commands are already present,",
+            "but the goal is to make this bot yours.\n",
+            chalk.italic("Improve his code, add what you need !\n"),
+            chalk `Type {italic.grey node Luna.js} to start the bot`
+        ].join('\n'));
+    })
 })();
