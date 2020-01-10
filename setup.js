@@ -14,7 +14,7 @@ const gradient  = require('gradient-string'),                                   
 
       pjson     = require('./package.json' );                                   // Imports information from the .json package
 
-dotenv.config();																 // Imports environment variables
+dotenv.config();																// Imports environment variables
 
 (async () => {
 
@@ -79,7 +79,7 @@ dotenv.config();																 // Imports environment variables
         }
     ];
 
-    const onCancel = () => {                                                // Invoked when the user cancels/exits the prompt
+    const onCancel = () => {                                                    // Invoked when the user cancels/exits the prompt
         console.log('\nOh, you changed your mind ...');
         return false;
     };
@@ -98,7 +98,7 @@ dotenv.config();																 // Imports environment variables
         "RICURL = " + richurl
     ].join('\n')
 
-    fs.writeFile('.env', env, (err) => {                                    // If it doesn't exist, create an '.env' file, and include collected information.
+    fs.writeFile('.env', env, (err) => {										// If it doesn't exist, create an '.env' file, and include collected information.
 
         if (err) throw err;
 
