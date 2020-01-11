@@ -14,7 +14,7 @@ const gradient  = require('gradient-string'),                                   
 
       pjson     = require('./package.json' );                                   // Imports information from the .json package
 
-dotenv.config();																 // Imports environment variables
+dotenv.config();																// Imports environment variables
 
 (async () => {
 
