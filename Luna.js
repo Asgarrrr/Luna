@@ -9,28 +9,22 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // A powerful library for interacting with the Discord API
-const Discord = require("discord.js"),
+const Discord = require("discord.js"    ),
 // Parse, validate, manipulate, and display dates
-      moment  = require("moment"    ),
+      moment  = require("moment"        ),
 // Loads environment variables from .env file
-      dotenv  = require("dotenv"    ),
+      dotenv  = require("dotenv"        ),
 // Terminal string styling done right
-      chalk   = require("chalk"     ),
-// SQLite client for Node.js applications with SQL-based migrations API
-      sql     = require("sqlite"    ),
-      fs      = require("fs"        );
+      chalk   = require("chalk"         ),
+// The fastest and simplest library for SQLite3 in Node.js.
+      sql     = require("better-sqlite3"),
+// File System
+      fs      = require("fs"            );
 
 // ██████ Initialization ███████████████████████████████████████████████████████
 
 // Loads environment variables from .env file
 dotenv.config()
-
-// Create a new Discord client
-const client = new Discord.Client({ autoReconnect: true }),
-    active   = new Map(),
-    db       = sql.open('database.sqlite', { Promise });
-
-client.commands = new Discord.Collection();
 
 // Logger timestamp
 function timestamp() {
@@ -41,6 +35,30 @@ function timestamp() {
 function error(err) {
     console.error(chalk.bold.red(timestamp() + " × 🐛", err));
 }
+
+// Create a new Discord client
+const client    = new Discord.Client({ autoReconnect: true }),
+      active    = new Map(),
+// Open sqlite database
+      db        = new sql('./database.sqlite');
+// Collection for all commands
+client.commands = new Discord.Collection();
+
+// Scoring system SQL query
+client.GScore   = db.prepare("SELECT * FROM Members WHERE userID = ?");
+client.SScore   = db.prepare("UPDATE Members SET Xp = ?, Lvl = ?");
+
+// Experience curve generation
+var levels = [];
+
+for (var lvl = 1; lvl <= 200; lvl++) {
+    var points = Math.floor((lvl + 300) * Math.pow(2, lvl / 7.0));
+    if (lvl >= 1) {
+        var output = Math.floor(points / 4);
+        levels.push(output);
+    }
+}
+
 
 /* ██████ Handler ██████████████████████████████████████████████████████████████
 
@@ -58,9 +76,9 @@ fs.readdir("./events/", (err, files) => {
     // For each file found in the events folder
     files.forEach(file => {
         // Include the file to be able to operate on it
-        const event = require(`./events/${file}`);
+        const event = require(`./events/${file}`),
         // Retrieve the filename without taking into consideration the '.js'.
-        const eventName = file.split(".")[0];
+              eventName = file.split(".")[0];
         // Executes the file corresponding to the transmitted event.
         client.on(eventName, event.bind(null, client));
     });
@@ -83,17 +101,34 @@ for (const file of commandFiles) {
 const cooldowns = new Discord.Collection();
 
 // Upon receipt of a new message
-client.on("message", async message => {
+client.on("message", message => {
 
-    // Exclude messages from the bot and those not starting with a prefix
-    if (!message.content.startsWith(process.env.PREFIX) || message.author.bot) return;
+    // Exclude messages from bot
+    if (message.author.bot) return;
+
+// –– Gain of experience per message –––––––––––––––––––––––––––––––––––––––––––
+
+    var score = client.GScore.get(message.author.id);
+    score.Xp  = score.Xp + Math.floor(Math.random() * 6) + 1
+
+    // Calculation of the level based on experience
+    var LIdx  = levels.indexOf(levels.find(x => x > score.Xp)),
+        Lvl   = score.Xp <= levels[LIdx] ? levels.indexOf(levels[LIdx - 1]) : levels.indexOf(levels[LIdx]);
+
+    // Updates the player's score
+    client.SScore.run(score.Xp, Lvl);
+
+// –– Command ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+    // Exclude messages those not starting with a prefix
+    if (!message.content.startsWith(process.env.PREFIX)) return;
 
     // Decomposition of arguments
-    const args    = message.content.slice(process.env.PREFIX.length).split(/ +/),
+    const args      = message.content.slice(process.env.PREFIX.length).split(/ +/),
     // Standardization of arguments
-        NCommande = args.shift().toLowerCase(),
+          NCommande = args.shift().toLowerCase(),
     // Look for aliases if they exist.
-        Commande  = client.commands.get(NCommande) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(NCommande));
+          Commande  = client.commands.get(NCommande) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(NCommande));
 
     // If no aliases or command files are found, stop.
     if (!Commande) return;
@@ -111,6 +146,7 @@ client.on("message", async message => {
         if (Commande.usage) {
             reply += `\nThe correct use would be: \`${process.env.PREFIX}${Commande.name} ${Commande.usage}\``;
         }
+
         // Sending the reply
         return message.channel.send(reply);
     }
@@ -156,9 +192,9 @@ client.on("message", async message => {
     try {
         const ops = { active };
         Commande.execute(client, message, args, ops);
-    } catch (error) {
+    } catch (err) {
         message.reply("There seems to have been an error with this command, try again later!");
-        console.error(error);
+        error(err);
     } finally {
         // Log informations
         console.log(`${timestamp()} │ ${chalk.bold(`"${message.author.tag}"`)} : ${message}`);
