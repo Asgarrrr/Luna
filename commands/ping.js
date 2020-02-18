@@ -2,7 +2,7 @@
 
 const { RichEmbed } = require("discord.js");
 
-var pingacc = []
+var pingacc = [];
 
 // –––––– Parameters –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -27,18 +27,18 @@ module.exports = {
         const embed = new RichEmbed()
             .setAuthor("`( •_•)O´¯`*.¸.·´¯`°Q(•_• )`")
             .setColor("#7354f6")
-            .setDescription(
-                ["```",
+            .setDescription([
+                    "```",
                     "  Latency │ " + Lat + "ms",
                     "Websocket │ " + Math.round(client.ping) + "ms",
                     "```"
-                ].join('\n'))
+                ].join("\n"))
             .setFooter(`Command executed by @${message.author.username}`);
 
-        pingacc.push(Lat)
+        pingacc.push(Lat);
 
         // Send the embed, and after that ...
-        message.channel.send(embed).then(reply => {
+        message.channel.send(embed).then((reply) => {
             // ... Adds a "trash" reaction
             reply.react("🗑");
             // Creation of a filter that only takes in consideration the trash emoji and ignores that added by the bot
