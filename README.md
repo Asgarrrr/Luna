@@ -8,4 +8,12 @@
 ![David](https://img.shields.io/codacy/grade/1770b308454b4ea5915d6b9fe1c631f3?color=%23462FE9)
 ![dependencies Status](https://img.shields.io/badge/build-success-7354F6)
 
+
+<i>Attention ! Luna is an <b>ongoing project</b>, and is still under development at the moment. Although on the master branch, everything (should) work! Thanks.</i>
 </div>
+
+<br/>
+
+### Current work
+- [ ] Make Luna at least bilingual English - French, and have all commands and events translated
+- [ ] Finish event management
