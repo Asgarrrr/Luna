@@ -27,7 +27,7 @@ module.exports = {
         await rp("https://srhpyqt94yxb.statuspage.io/api/v2/summary.json", { json: true })
             .then((DiscordappStatus) => {
 
-                embed
+                PResu
                 .setTitle(" Ｐ Ｏ Ｎ Ｇ !")
                 .setColor("#7354f6")
                 .addFields(
@@ -71,7 +71,7 @@ module.exports = {
             })
             .catch(() => {
 
-                embed
+                PResu
                 .setDescription([
                     "```",
                     `   ${Glossary.COM_Ping[0]} ${Lat}ms`,
