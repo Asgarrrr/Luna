@@ -1,6 +1,7 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
-const { RichEmbed } = require("discord.js");
+// A powerful library for interacting with the Discord API
+const { MessageEmbed } = require("discord.js");
 
 // –––––– Parameters –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -11,11 +12,11 @@ module.exports = {
     cooldown        : 3,
     aliases         : ["pp"],
     guildOnly       : true,
-    privileges      : "@everyone",
+    privileges      : ["SEND_MESSAGES"],
 
 // –––––– Execution ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-    async execute(client, message, args) {
+    async execute(Glossary, client, message, args) {
 
         // Remove the 'Request' message
         await message.delete();
@@ -23,14 +24,18 @@ module.exports = {
         // Shortens the link to the user if it is pinged
         const IsPing  = message.mentions.members.first(),
         // Retrieves the user's information if it is pinged, or search the username; otherwise use the applicant's information.
-              ReqUser = (IsPing ? IsPing.user : client.users.find((x) => x.username === args[0])) || message.member.user,
-        // Generation of an enriched embed to format the transmitted information
-              embed   = new RichEmbed()
+              ReqUser = (IsPing ? IsPing.user : client.users.cache.find((x) => x.username === args[0]));
+        // Generation of an embed to format and send the transmitted information
+        message.channel.send(
+            new MessageEmbed()
                 .setColor("#36393f")
-                .setAuthor(ReqUser === message.author ? `This is your avatar, ${ReqUser.username}` : `Here is the profile picture of ${ReqUser.username}, ${message.member.user.username}`, message.member.user.avatarURL)
-                .setImage(ReqUser.avatarURL);
-        // Send the embed, and after that ...
-        message.channel.send(embed).then((reply) => {
+                .setAuthor(ReqUser === message.author ? `${Glossary.COM_Avatar[1]} ${ReqUser.username}` : `${Glossary.COM_Avatar[2]} ${ReqUser.username}, ${message.member.user.username}`, message.member.user.avatarURL())
+                .setImage(ReqUser.avatarURL({
+                    format  : 'png',
+                    dynamic : true,
+                    size    : 1024
+                }))
+        ).then((reply) => {
             // ... Adds a "trash" reaction
             reply.react("🗑");
             // Creation of a filter that only takes in consideration the trash emoji and ignores that added by the bot
@@ -39,8 +44,8 @@ module.exports = {
             reply.createReactionCollector(filter, {
                 maxMatches: 1
             })
-        // Removes the embed when a new reaction is received.
-        .on("collect", () => reply.delete());
+            // Removes the embed when a new reaction is received.
+            .on("collect", () => reply.delete());
         });
     }
 };
