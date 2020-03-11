@@ -16,12 +16,12 @@ module.exports = {
     guildOnly       : false,
     privileges      : ["SEND_MESSAGES"],
 
-// –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// –––––– Execution ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
     async execute(Glossary, client, message) {
 
         const Lat = new Date().getTime() - message.createdTimestamp;
-        var embed = new MessageEmbed();
+        var PResu = new MessageEmbed();
 
         // Retrieve status information
         await rp("https://srhpyqt94yxb.statuspage.io/api/v2/summary.json", { json: true })
@@ -81,7 +81,7 @@ module.exports = {
             });
 
         // Send the embed, and after that ...
-        await message.channel.send(await embed).then((reply) => {
+        await message.channel.send(PResu).then((reply) => {
             // ... Adds a "trash" reaction
             reply.react("🗑");
             // Creation of a filter that only takes in consideration the trash emoji and ignores that added by the bot
