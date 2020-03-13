@@ -14,7 +14,7 @@ module.exports = {
     * @param {object} message : The MessageEmbed object
     */
 
-    DelAfterSend(client, message, embed) {
+    delAfterSend(client, message, embed) {
 
         message.channel.send(embed).then((reply) => {
             // ... Adds a "trash" reaction
