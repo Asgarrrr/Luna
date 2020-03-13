@@ -1,7 +1,12 @@
+
+// –– Returns the profile picture of a mentioned user
+
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // A powerful library for interacting with the Discord API
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed } = require("discord.js"),
+// Import custom function (avoid duplicated block)
+      { DelAfterSend } = require("../../resources/Functions.js");
 
 // –––––– Parameters –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -13,39 +18,31 @@ module.exports = {
     aliases     : ["pp"],
     guildOnly   : true,
     privileges  : ["SEND_MESSAGES"],
+    usage       : "avatar {@user}",
 
-    // –––––– Execution ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// –––––– Execution ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
     async execute(Glossary, client, message, args) {
 
+        // Load Glossary
+        Glossary = Glossary.get("commands")
         // Remove the 'Request' message
         await message.delete();
-
         // Shortens the link to the user if it is pinged
         const IsPing  = message.mentions.members.first(),
               // Retrieves the user's information if it is pinged, or search the username; otherwise use the applicant's information.
-              ReqUser = (IsPing ? IsPing.user : client.users.cache.find((x) => x.username === args[0]) || message.member.user);
+              ReqUser = (IsPing ? IsPing.user : client.users.cache.find((x) => x.username === args[0]) || message.member.user),
         // Generation of an embed to format and send the transmitted information
-        message.channel.send(
-            new MessageEmbed()
-            .setColor("#36393f")
-            .setAuthor(ReqUser === message.author ? `${Glossary.COM_Avatar[1]} ${ReqUser.username}` : `${Glossary.COM_Avatar[2]} ${ReqUser.username}, ${message.member.user.username}`, message.member.user.displayAvatarURL())
-            .setImage(ReqUser.displayAvatarURL({
-                format: 'png',
-                dynamic: true,
-                size: 1024
-            }))
-        ).then((reply) => {
-            // ... Adds a "trash" reaction
-            reply.react("🗑");
-            // Creation of a filter that only takes in consideration the trash emoji and ignores that added by the bot
-            const filter = (reaction, user) => reaction.emoji.name === "🗑" && user.id !== client.user.id;
-            // Create a "reaction collector" using the filter, with a maximum of 1
-            reply.createReactionCollector(filter, {
-                    maxMatches: 1
-                })
-                // Removes the embed when a new reaction is received.
-                .on("collect", () => reply.delete());
-        });
+              embed   = new MessageEmbed()
+                            .setColor("#36393f")
+                            .setAuthor(ReqUser === message.author ? Glossary.avatar(ReqUser)[0] : Glossary.avatar(ReqUser)[1], message.member.user.displayAvatarURL())
+                            .setImage(ReqUser.displayAvatarURL({
+                                format  : 'png',
+                                dynamic : true,
+                                size    : 1024
+                            }));
+
+        // Send the embed and add a reaction to be able to remove it.
+        DelAfterSend(client, message, embed)
     }
 };
