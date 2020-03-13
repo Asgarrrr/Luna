@@ -25,7 +25,7 @@ module.exports = {
     async execute(Glossary, client, message, args) {
 
         // Load Glossary
-        Glossary = Glossary.get("commands")
+        Glossary = Glossary.get("commands");
         // Remove the 'Request' message
         await message.delete();
         // Shortens the link to the user if it is pinged
@@ -43,6 +43,6 @@ module.exports = {
                             }));
 
         // Send the embed and add a reaction to be able to remove it.
-        DelAfterSend(client, message, embed)
+        DelAfterSend(client, message, embed);
     }
 };
