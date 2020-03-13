@@ -14,13 +14,13 @@ module.exports = {
     * @param {object} message : The MessageEmbed object
     */
 
-    delAfterSend(client, message, embed) {
+    delAfterSend(client, message, embed, emoji) {
 
         message.channel.send(embed).then((reply) => {
             // ... Adds a "trash" reaction
-            reply.react("🗑");
+            reply.react(emoji);
             // Creation of a filter that only takes in consideration the trash emoji and ignores that added by the bot
-            const filter = (reaction, user) => reaction.emoji.name === "🗑" && user.id !== client.user.id;
+            const filter = (reaction, user) => reaction.emoji.name === emoji && user.id !== client.user.id;
             // Create a "reaction collector" using the filter, with a maximum of 1
             reply.createReactionCollector(filter, {
                     maxMatches: 1

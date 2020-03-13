@@ -6,7 +6,7 @@
 // A powerful library for interacting with the Discord API
 const { MessageEmbed } = require("discord.js"),
 // Import custom function (avoid duplicated block)
-      { DelAfterSend } = require("../../resources/Functions.js");
+      { delAfterSend } = require("../../resources/Functions.js");
 
 // –––––– Parameters –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -43,6 +43,6 @@ module.exports = {
                             }));
 
         // Send the embed and add a reaction to be able to remove it.
-        delAfterSend(client, message, embed);
+        delAfterSend(client, message, embed, "🗑");
     }
 };

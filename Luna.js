@@ -30,6 +30,8 @@ if (fs.existsSync("./settings.json")) {
 
 // A powerful library for interacting with the Discord API
 const Discord       = require("discord.js"    ),
+// Import custom function (avoid duplicated block)
+      CFuncti       = require("./resources/Functions.js"),
 // Parse, validate, manipulate, and display dates
       moment        = require("moment"        ),
 // Terminal string styling done right
@@ -164,7 +166,7 @@ client.on("message", (message) => {
 
     // Calculation of the level based on experience
     var LIdx  = levels.indexOf(levels.find((x) => x > score.Xp)),
-        Lvl   = score.Xp <= levels[LIdx] ? levels.indexOf(levels[LIdx - 1]) : levels.indexOf(levels[LIdx]);
+        Lvl   = score.Xp <= levels[parseInt(LIdx)] ? levels.indexOf(levels[LIdx - 1]) : levels.indexOf(levels[parseInt(LIdx)]);
 
     if (score.Lvl < Lvl) {
         message.reply(`Level up ! you're now level ${Lvl} !`);
@@ -206,29 +208,19 @@ client.on("message", (message) => {
 
         // If a syntactical indication is provided, give it as a template.
         if (Commande.usage) {
-            message.channel.send({ embed: {
-                title: Commande.name[0].toUpperCase() + Commande.name.slice(1),
-                fields: [
-                    {
+
+            CFuncti.delAfterSend(client, message, ({
+                embed: {
+                    title: Commande.name[0].toUpperCase() + Commande.name.slice(1),
+                    fields: [{
                         name: "User's Guide",
                         value: `The correct use would be: \`${settings.Prefix}${Commande.name} ${Commande.usage}\``,
+                    }],
+                    footer: {
+                        text: "Parameters : [] = Needed – {} = Optional",
                     }
-                ],
-                footer: {
-                    text: "Parameters : [] = Needed – {} = Optional",
                 }
-            }}).then((reply) => {
-                // ... Adds a "trash" reaction
-                reply.react("👌");
-                // Creation of a filter that only takes in consideration the trash emoji and ignores that added by the bot
-                const filter = (reaction, user) => reaction.emoji.name === "👌" && user.id !== client.user.id;
-                // Create a "reaction collector" using the filter, with a maximum of 1
-                reply.createReactionCollector(filter, {
-                    maxMatches: 1
-                })
-                // Removes the embed when a new reaction is received.
-                .on("collect", () => reply.delete());
-            });
+            }), "👌")
         }
         return;
     }
