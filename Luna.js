@@ -276,7 +276,7 @@ client.login(settings.Token);
 
 // ██████ Dashboard ████████████████████████████████████████████████████████████
 
-var router = express.Router();
+var router = new express.Router();
 
 // Set the view engine to ejs
 app.set("view engine", "ejs")
