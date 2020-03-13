@@ -43,6 +43,6 @@ module.exports = {
                             }));
 
         // Send the embed and add a reaction to be able to remove it.
-        DelAfterSend(client, message, embed);
+        delAfterSend(client, message, embed);
     }
 };
