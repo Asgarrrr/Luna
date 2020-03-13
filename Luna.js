@@ -220,7 +220,7 @@ client.on("message", (message) => {
                         text: "Parameters : [] = Needed – {} = Optional",
                     }
                 }
-            }), "👌")
+            }), "👌");
         }
         return;
     }
