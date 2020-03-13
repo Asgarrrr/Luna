@@ -11,7 +11,7 @@
 const fs            = require("fs");
 var   settings;
 
-function Setup() {
+function setup() {
     require("child_process").execSync("node setup.js", {
         stdio: [0, 1, 2]
     });
@@ -22,9 +22,9 @@ if (fs.existsSync("./settings.json")) {
     try {
         settings = JSON.parse(fs.readFileSync("./settings.json", "utf-8"));
     } catch (error) {
-        Setup();
+        setup();
     }
-} else { Setup(); }
+} else { setup(); }
 
 // ██████ Integrations █████████████████████████████████████████████████████████
 
@@ -64,10 +64,9 @@ const client    = new Discord.Client({ autoReconnect: true }),
       // Creating a value "dictionary"
       cooldowns = new Discord.Collection(),
       cleverbot = new Cleverbot("CC2sd62RBTZRhXc5tuuzGCKiqyg"),
-
-      Glossary  = new(require(`./resources/Languages/${[settings.Language] || LangFile.English}.js`));
-
-// Open sqlite database
+      // Loads the language dictionary
+      Glossary  = new(require(`./resources/Languages/${[settings.Language] || "English"}.js`)),
+      // Open sqlite database
       db        = new SQL("./database.sqlite");
 // SQLITE Tables and Index Setup
 [
@@ -218,7 +217,7 @@ client.on("message", (message) => {
                 footer: {
                     text: "Parameters : [] = Needed – {} = Optional",
                 }
-            } }).then((reply) => {
+            }}).then((reply) => {
                 // ... Adds a "trash" reaction
                 reply.react("👌");
                 // Creation of a filter that only takes in consideration the trash emoji and ignores that added by the bot
