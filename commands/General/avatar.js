@@ -1,12 +1,7 @@
-
-// –– Returns the profile picture of a mentioned user
-
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // A powerful library for interacting with the Discord API
-const { MessageEmbed } = require("discord.js"),
-// Import custom function (avoid duplicated block)
-      { delAfterSend } = require("../../resources/Functions.js");
+const { MessageEmbed } = require("discord.js")
 
 // –––––– Parameters –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -30,7 +25,7 @@ module.exports = {
         await message.delete();
         // Shortens the link to the user if it is pinged
         const IsPing  = message.mentions.members.first(),
-              // Retrieves the user's information if it is pinged, or search the username; otherwise use the applicant's information.
+        // Retrieves the user's information if it is pinged, or search the username; otherwise use the applicant's information.
               ReqUser = (IsPing ? IsPing.user : client.users.cache.find((x) => x.username === args[0]) || message.member.user),
         // Generation of an embed to format and send the transmitted information
               embed   = new MessageEmbed()
@@ -43,6 +38,6 @@ module.exports = {
                             }));
 
         // Send the embed and add a reaction to be able to remove it.
-        delAfterSend(client, message, embed, "🗑");
+        client.func.delAfterSend(client, message, embed, "🗑");
     }
 };
