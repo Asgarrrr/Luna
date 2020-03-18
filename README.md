@@ -9,10 +9,27 @@
 [![Discord.js](https://img.shields.io/badge/Discord.js-V.12-7354F6?style=flat-square)](https://www.npmjs.com/package/discord.js)
 
 <i>Attention ! Luna is an <b>ongoing project</b>, and is still under development at the moment. Although on the master branch, everything (should) work! Thanks.</i>
+
+<p align="center">
+  <a href="#about">About</a> •
+  <a href="#installation">Installation</a>
+</p>
+
+---
+
 </div>
 
 <br/>
 
-### Current work
+## Current work
 -   [ ] Make Luna at least bilingual English - French, and have all commands and events translated
 -   [ ] Finish event management
+
+## Installation
+
+##### Downloading and installing steps:
+* **[Download](https://github.com/Asgarrrrr/Luna/archive/master.zip)** the latest version of Luna.
+
+* Unzip, open and "launch" your terminal in the file
+* Type `node setup.js` to initialize the configuration
+* Type `node Luna.js` to wake up Luna
