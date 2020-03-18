@@ -8,10 +8,11 @@ const Discord  = require("discord.js");
 module.exports = {
 
     /**
-    * –– DelAfterSend : Send embed and add a reaction to be able to remove it.
+    * –– DelAfterSend ––––––– : Send embed and add a reaction to be able to remove it.
     * @param {object} client  : The Discord client
     * @param {object} message : The Discord message
-    * @param {object} message : The MessageEmbed object
+    * @param {object} embed   : The MessageEmbed object
+    * @param {object} emoji   : The emoji that will be used
     */
 
     delAfterSend(client, message, embed, emoji) {
@@ -28,6 +29,5 @@ module.exports = {
                 // Removes the embed when a new reaction is received.
                 .on("collect", () => reply.delete());
         });
-
     }
-}
+};
