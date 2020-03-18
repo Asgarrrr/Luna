@@ -30,8 +30,6 @@ if (fs.existsSync("./settings.json")) {
 
 // A powerful library for interacting with the Discord API
 const Discord       = require("discord.js"    ),
-// Import custom function (avoid duplicated block)
-      CFuncti       = require("./resources/Functions.js"),
 // Parse, validate, manipulate, and display dates
       moment        = require("moment"        ),
 // Terminal string styling done right
@@ -61,15 +59,18 @@ const Discord       = require("discord.js"    ),
 // ██████ Initialization ███████████████████████████████████████████████████████
 
 // Create a new Discord client
-const client    = new Discord.Client({ autoReconnect: true }),
-      active    = new Map(),
-      // Creating a value "dictionary"
-      cooldowns = new Discord.Collection(),
-      cleverbot = new Cleverbot("CC2sd62RBTZRhXc5tuuzGCKiqyg"),
-      // Loads the language dictionary
-      Glossary  = new(require(`./resources/Languages/${[settings.Language] || "English"}.js`)),
-      // Open sqlite database
-      db        = new SQL("./database.sqlite");
+const client        = new Discord.Client({ autoReconnect: true }),
+      active        = new Map(),
+// Creating a value "dictionary"
+      cooldowns     = new Discord.Collection(),
+      cleverbot     = new Cleverbot("CC2sd62RBTZRhXc5tuuzGCKiqyg"),
+// Loads the language dictionary
+      Glossary      = new (require(`./resources/Languages/${[settings.Language] || "English"}.js`))(),
+// Open sqlite database
+      db            = new SQL("./database.sqlite");
+// Import custom function (avoid duplicated block)
+     client.func    = require("./resources/Functions.js");
+
 // SQLITE Tables and Index Setup
 [
     "CREATE TABLE IF NOT EXISTS Message( ID INTEGER PRIMARY KEY, Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, User TEXT, UserID TEXT, Message TEXT, MessageID TEXT );",
@@ -166,7 +167,7 @@ client.on("message", (message) => {
 
     // Calculation of the level based on experience
     var LIdx  = levels.indexOf(levels.find((x) => x > score.Xp)),
-        Lvl   = score.Xp <= levels[parseInt(LIdx)] ? levels.indexOf(levels[LIdx - 1]) : levels.indexOf(levels[parseInt(LIdx)]);
+        Lvl   = score.Xp <= levels[parseInt(LIdx, 10)] ? levels.indexOf(levels[LIdx - 1]) : levels.indexOf(levels[parseInt(LIdx, 10)]);
 
     if (score.Lvl < Lvl) {
         message.reply(`Level up ! you're now level ${Lvl} !`);
@@ -209,13 +210,15 @@ client.on("message", (message) => {
         // If a syntactical indication is provided, give it as a template.
         if (Commande.usage) {
 
-            CFuncti.delAfterSend(client, message, ({
+            client.func.delAfterSend(client, message, ({
                 embed: {
                     title: Commande.name[0].toUpperCase() + Commande.name.slice(1),
-                    fields: [{
-                        name: "User's Guide",
-                        value: `The correct use would be: \`${settings.Prefix}${Commande.name} ${Commande.usage}\``,
-                    }],
+                    fields: [
+                        {
+                            name: "User's Guide",
+                            value: `The correct use would be: \`${settings.Prefix}${Commande.name} ${Commande.usage}\``,
+                        }
+                    ],
                     footer: {
                         text: "Parameters : [] = Needed – {} = Optional",
                     }
@@ -266,7 +269,12 @@ client.on("message", (message) => {
         client.error(err);
     } finally {
         // Log informations
-        console.log(`${client.timestamp} │ ${chalk.bold(`"${message.author.tag}"`)} : ${message}`);
+        var AuthRole = message.member.roles.highest;
+        console.log([
+            `${client.timestamp} │ `,
+            chalk.hex(AuthRole.color.toString(16)).bold(`@${message.author.tag}`),
+            ` : ${message.content}`,
+        ].join(""));
     }
 });
 
@@ -357,5 +365,4 @@ NOTE: UPDATE JSON VAR :
 
     delete require.cache[require.resolve('./settings.json')];
     settings      = require('./settings.json' );
-
 */
