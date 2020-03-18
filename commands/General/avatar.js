@@ -1,7 +1,7 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // A powerful library for interacting with the Discord API
-const { MessageEmbed } = require("discord.js")
+const { MessageEmbed } = require("discord.js");
 
 // –––––– Parameters –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -32,7 +32,7 @@ module.exports = {
                             .setColor("#36393f")
                             .setAuthor(ReqUser === message.author ? Glossary.avatar(ReqUser)[0] : Glossary.avatar(ReqUser)[1], message.member.user.displayAvatarURL())
                             .setImage(ReqUser.displayAvatarURL({
-                                format  : 'png',
+                                format  : "png",
                                 dynamic : true,
                                 size    : 1024
                             }));
