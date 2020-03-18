@@ -28,8 +28,11 @@
 ## Installation
 
 ##### Downloading and installing steps:
-* **[Download](https://github.com/Asgarrrrr/Luna/archive/master.zip)** the latest version of Luna.
+**[Download](https://github.com/Asgarrrrr/Luna/archive/master.zip)** the latest version of Luna.
+```
+# –– To configure Luna –––
+$ node setup.js
 
-* Unzip, open and "launch" your terminal in the file
-* Type `node setup.js` to initialize the configuration
-* Type `node Luna.js` to wake up Luna
+# –– To wake up Luna –––––
+$ node Luna.js
+```
