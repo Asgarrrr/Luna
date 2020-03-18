@@ -40,9 +40,9 @@ module.exports = async (io, client, Glossary) => {
                 "/_____/\\__,_/_/ /_/\\__,_/_____/\\____/\\__/  ",
                 "\n",
             ].join("\n")))
-        );
+        )
 
-        for (let index = 0; index < Glossary .length; index++) {
+        for (let index = 0; index < Glossary.length; index++) {
             console.log(Glossary[index]);
         }
 
