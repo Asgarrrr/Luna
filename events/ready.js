@@ -42,7 +42,7 @@ module.exports = async (io, client, Glossary) => {
             ].join("\n")))
         );
 
-        Glossary.forEach(element => {
+        Glossary.forEach((element) => {
             console.log(element);
         });
 
