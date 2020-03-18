@@ -28,7 +28,7 @@ module.exports = async (io, client, Glossary) => {
     await cpuStat.usagePercent((err, percent) => {
 
         // Load Glossary
-        Glossary = Glossary.get("ready", client, (settings.DashPort || 3000), os, percent, version)
+        Glossary = Glossary.get("ready", client, (settings.DashPort || 3000), os, percent, version);
 
         // Print informations
         console.log(
