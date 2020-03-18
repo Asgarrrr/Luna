@@ -2,8 +2,6 @@
 
 // A powerful library for interacting with the Discord API
 const { MessageEmbed } = require("discord.js"),
-// Import custom function (avoid duplicated block)
-      { delAfterSend } = require("../../resources/Functions.js"),
 // The simplified HTTP request client 'request' with Promise support. Powered by Bluebird.
       rp               = require("request-promise");
 
@@ -87,6 +85,6 @@ module.exports = {
             });
 
         // Send the embed and add a reaction to be able to remove it.
-        delAfterSend(client, message, embed, "🗑");
+        client.func.delAfterSend(client, message, embed, "🗑");
     }
 };
