@@ -67,9 +67,10 @@ module.exports = {
                                 "```",
                                 "[Discordapp Status](https://status.discordapp.com/)"
                             ].join("\n")
-                        })
-                        .setFooter(Glossary[3])
-                        .setTimestamp();
+                        }
+                    )
+                    .setFooter(Glossary[3])
+                    .setTimestamp();
             })
             .catch(() => {
 
