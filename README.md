@@ -40,6 +40,4 @@
     * Just follow the configuration steps, **and that's it !**
 3. Getting Started
     * Run `node luna.js`
-        <p align="center">
-            <img src="https://cdn.discordapp.com/attachments/677116823359193107/690274875847344128/380283.png" width="400" /><b>Luna is now operational ! 🎉<br>
-        </p>
+    * <b>Luna is now operational ! 🎉<b>
