@@ -11,7 +11,7 @@
 <i>Attention ! Luna is an <b>ongoing project</b>, and is still under development at the moment. Although on the master branch, everything (should) work! Thanks.</i>
 
 <p align="center">
-  <a href="#about">About</a> •
+  <a href="#todo">Todo</a> •
   <a href="#installation">Installation</a>
 </p>
 
@@ -21,7 +21,7 @@
 
 <br/>
 
-## Current work
+## Todo
 -   [ ] Make Luna at least bilingual English - French, and have all commands and events translated
 -   [ ] Finish event management
 
@@ -33,7 +33,14 @@
 
 
 ##### Downloading and installing steps
-* **[Download](https://github.com/Asgarrrrr/Luna/archive/master.zip)** the latest version of Luna.
-* To configure Luna :
-    * Type `node setup.js`
-    * Just follow the configuration steps, **and that's it !** :
+1. **[Download](https://github.com/Asgarrrrr/Luna/archive/master.zip )** the latest version of Luna.
+2. Configure Luna :
+    * Run `node setup.js`
+    * You will need to create a bot application in the **[developer space](https://discordapp.com/developers/applications/me)**
+    * Just follow the configuration steps, **and that's it !**
+3. Getting Started
+    * Run `node luna.js`
+        <p align="center">
+            <img src="https://cdn.discordapp.com/attachments/677116823359193107/690274875847344128/380283.png" alt="Node.js" width="700" />
+            <b>Luna is now operational ! 🎉<br>
+        </p>
