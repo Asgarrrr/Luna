@@ -27,12 +27,15 @@
 
 ## Installation
 
-##### Downloading and installing steps:
-**[Download](https://github.com/Asgarrrrr/Luna/archive/master.zip)** the latest version of Luna.
-```
-# –– To configure Luna –––
-$ node setup.js
+##### Prerequisite
 
-# –– To wake up Luna –––––
-$ node Luna.js
-```
+* To wake up Luna, Node.js 12.0.0 or newer must be [installed](https://nodejs.org/en/download/).
+
+
+##### Downloading and installing steps:
+* **[Download](https://github.com/Asgarrrrr/Luna/archive/master.zip)** the latest version of Luna.
+* To configure Luna :
+    * Type `node setup.js`
+    * Just follow the configuration steps, **and that's it !** :
+
+    <img src="https://cdn.discordapp.com/attachments/677116823359193107/690243099121025028/12718671.png" width="500px">
