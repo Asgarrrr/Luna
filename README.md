@@ -31,7 +31,6 @@
 
 * To wake up Luna, Node.js 12.0.0 or newer must be [installed](https://nodejs.org/en/download/).
 
-
 ##### Downloading and installing steps
 1. **[Download](https://github.com/Asgarrrrr/Luna/archive/master.zip )** the latest version of Luna.
 2. Configure Luna :
