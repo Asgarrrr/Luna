@@ -1,4 +1,4 @@
-<center>
+<div align="center">
 
 <img src="https://cdn.glitch.com/cc3ac29e-f4ce-4208-9e45-eadb26258397%2FFinalTest.png?v=1582118840141" width="600px">
 
@@ -14,7 +14,7 @@
 
 ---
 
-</center>
+</div>
 
 
 ## Todo
@@ -30,9 +30,9 @@
 ##### Downloading and installing steps
 1. **[Download](https://github.com/Asgarrrrr/Luna/archive/master.zip )** the latest version of Luna.
 2. Configure Luna :
-    - Run `node setup.js`
-    - You will need to create a bot application in the **[developers space](https://discordapp.com/developers/applications/me)**
-    - Just follow the configuration steps, **and that's it !**
+    -   Run `node setup.js`
+    -   You will need to create a bot application in the **[developers space](https://discordapp.com/developers/applications/me)**
+    -   Just follow the configuration steps, **and that's it !**
 3. Getting Started
-    - Run `node luna.js`
-    - <b>Luna is now operational ! 🎉<b>
+    -   Run `node luna.js`
+    -   <b>Luna is now operational ! 🎉<b>
