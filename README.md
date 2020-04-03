@@ -35,7 +35,7 @@
 1. **[Download](https://github.com/Asgarrrrr/Luna/archive/master.zip )** the latest version of Luna.
 2. Configure Luna :
     * Run `node setup.js`
-    * You will need to create a bot application in the **[developer space](https://discordapp.com/developers/applications/me)**
+    * You will need to create a bot application in the **[developers space](https://discordapp.com/developers/applications/me)**
     * Just follow the configuration steps, **and that's it !**
 3. Getting Started
     * Run `node luna.js`
