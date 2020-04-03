@@ -8,7 +8,7 @@
 [![Dependencies](https://img.shields.io/david/Asgarrrrr/Luna?color=4F36EC&style=flat-square)](https://david-dm.org/Asgarrrrr/Luna)
 [![Discord.js](https://img.shields.io/badge/Discord.js-V.12-7354F6?style=flat-square)](https://www.npmjs.com/package/discord.js)
 
-##### _Attention ! Luna is an **ongoing project**, and is still under development at the moment. Although on the master branch, everything (should) work! Thanks._
+##### Attention ! Luna is an ongoing project, and is still under development at the moment. Although on the master branch, everything (should) work! Thanks
 
 [Todo](#Todo) • [Installation](#Todo)
 
