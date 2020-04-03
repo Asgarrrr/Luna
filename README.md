@@ -8,7 +8,7 @@
 [![Dependencies](https://img.shields.io/david/Asgarrrrr/Luna?color=4F36EC&style=flat-square)](https://david-dm.org/Asgarrrrr/Luna)
 [![Discord.js](https://img.shields.io/badge/Discord.js-V.12-7354F6?style=flat-square)](https://www.npmjs.com/package/discord.js)
 
-_Attention ! Luna is an **ongoing project**, and is still under development at the moment. Although on the master branch, everything (should) work! Thanks._
+##### _Attention ! Luna is an **ongoing project**, and is still under development at the moment. Although on the master branch, everything (should) work! Thanks._
 
 [Todo](#Todo) • [Installation](#Todo)
 
@@ -30,10 +30,12 @@ _Attention ! Luna is an **ongoing project**, and is still under development at t
 ##### Downloading and installing steps
 
 1.  **[Download](https://github.com/Asgarrrrr/Luna/archive/master.zip)** the latest version of Luna.
+
 2.  Configure Luna :
     -   Run `node setup.js`
     -   You will need to create a bot application in the **[developers space](https://discordapp.com/developers/applications/me)**
     -   Just follow the configuration steps, **and that's it !**
+
 3.  Getting Started
     -   Run `node luna.js`
     -   **Luna is now operational ! 🎉**
