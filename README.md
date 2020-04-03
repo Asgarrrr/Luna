@@ -18,21 +18,21 @@
 
 
 ## Todo
-- [ ] Make Luna at least bilingual English - French, and have all commands and events translated
-- [ ] Finish event management
+-   [ ] Make Luna at least bilingual English - French, and have all commands and events translated
+-   [ ] Finish event management
 
 ## Installation
 
 ##### Prerequisite
 
-- To wake up Luna, Node.js 12.0.0 or newer must be [installed](https://nodejs.org/en/download/).
+-   To wake up Luna, Node.js 12.0.0 or newer must be [installed](https://nodejs.org/en/download/).
 
 ##### Downloading and installing steps
 1. **[Download](https://github.com/Asgarrrrr/Luna/archive/master.zip )** the latest version of Luna.
 2. Configure Luna :
-    - Run `node setup.js`
-    - You will need to create a bot application in the **[developers space](https://discordapp.com/developers/applications/me)**
-    - Just follow the configuration steps, **and that's it !**
+    -   Run `node setup.js`
+    -   You will need to create a bot application in the **[developers space](https://discordapp.com/developers/applications/me)**
+    -   Just follow the configuration steps, **and that's it !**
 3. Getting Started
-    - Run `node luna.js`
-    - **Luna is now operational ! 🎉**
+    -   Run `node luna.js`
+    -   **Luna is now operational ! 🎉$$
