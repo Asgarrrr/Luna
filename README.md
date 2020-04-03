@@ -35,4 +35,4 @@
     -   Just follow the configuration steps, **and that's it !**
 3. Getting Started
     -   Run `node luna.js`
-    -   **Luna is now operational ! 🎉$$
+    -   **Luna is now operational ! 🎉**
