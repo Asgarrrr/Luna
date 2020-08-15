@@ -1,0 +1,35 @@
+{
+    "name": "luna",
+    "version": "1.0.0",
+    "description": "A template for anyone to create a discord bot.",
+    "main": "Luna.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Asgarrrr/Luna.git"
+    },
+    "keywords": [
+        "nodejs",
+        "discord",
+        "discord-js",
+        "discord-bot",
+        "discord-bot-template",
+        "command-handler",
+        "bot"
+    ],
+    "author": "Asgarrrr",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Asgarrrr/Luna/issues"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "@discordjs/opus": "^0.3.2",
+        "better-sqlite3": "^7.1.0",
+        "chalk": "^4.1.0",
+        "discord.js": "^12.2.0",
+        "enquirer": "^2.3.6",
+        "gradient-string": "^1.2.0"
+    }
+}

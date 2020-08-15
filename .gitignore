@@ -9,3 +9,5 @@ node_modules
 database.sqlite
 database.sqlite-shm
 database.sqlite-wal
+setup.js
+config.json
