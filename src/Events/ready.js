@@ -16,7 +16,7 @@ class Ready {
     async run() {
 
         const client = this.client,
-              lang   = client.language.get("ready")
+              lang   = client.language.get("ready");
 
         // —— Cleaning the console 💨
         console.clear();
@@ -43,7 +43,7 @@ class Ready {
                 //client.error(error);
             });
 
-        const { status, games, interval } = client.config.presence
+        const { status, games, interval } = client.config.presence;
 
         // —— Set default presence
         games instanceof Array && games.length > 0 &&
@@ -54,7 +54,7 @@ class Ready {
                     type: games[0].type ? games[0].type : null,
                     url : games[0].url  ? games[0].url  : null
                 }
-            })
+            });
 
         // —— If the user has chosen a multiple custom activity
         games instanceof Array && games.length > 1 &&
@@ -77,4 +77,4 @@ class Ready {
     }
 }
 
-module.exports = Ready
+module.exports = Ready;
