@@ -116,7 +116,7 @@ class Ping extends Command {
                 value : `\`\`\`${data.incidents ? "ok" : data.incidents}\`\`\``
             });
 
-        } catch (error) {error};
+        } catch (error) {error;}
 
         // —— Send the embed
         message.channel.send({embed: dataEmbed});
