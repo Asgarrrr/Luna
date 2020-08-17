@@ -40,7 +40,7 @@ class Luna extends Client {
         // —— Import custom function (avoid duplicated block)
         this.func      = new (require("./resources/Functions"))(this);
         // —— Used to store different music queues
-        this.ops       = new Map()
+        this.ops       = new Map();
 
         // —— Inform the user that the client has been initialised
         console.log(`Client initialised. —— Node ${process.version}.`);
@@ -85,7 +85,7 @@ class Luna extends Client {
         // —— Imports all events files
         readdir("./Events/", (err, events) => {
             // —— If there is error, throw an error in the console
-            if (err) { throw err }
+            if (err) { throw err; }
             // —— includes only .js files
             events.filter((event) => event.endsWith(".js")).forEach((file) => {
                 // —— Include the file to be able to operate on it
