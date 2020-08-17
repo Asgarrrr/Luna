@@ -30,12 +30,13 @@ const components = [
     [ "US Central"  ], [ "Japan"                   ],
     [ "US East"     ], [ "South Africa"            ],
     [ "US South"    ],
-]
+];
 
 // ██████ | ███████████████████████████████████████████████████████████ | ██████
 
 // —— Create & export a class for the command that extends the base command
 class Ping extends Command {
+
     constructor(client) {
         super(client, {
             name        : "ping",
@@ -53,10 +54,10 @@ class Ping extends Command {
 
     async run(message) {
 
-        const client = this.client
+        const client = this.client;
 
         // —— Retrieve the language information for this command
-        const lang = client.language.get("ping", Date.now(), message)
+        const lang = client.language.get("ping", Date.now(), message);
 
         // —— Generates the embed containing the basic results
         const dataEmbed = {
@@ -71,7 +72,7 @@ class Ping extends Command {
                     "```"
                 ].join("\n")
             }]
-        }
+        };
 
         // —— Try to add the information provided by the status discord api
         try {
@@ -80,11 +81,11 @@ class Ping extends Command {
 
             components.map((c, i) => {
 
-                const res = data.components.find((x) => x.name === c[0])
+                const res = data.components.find((x) => x.name === c[0]);
 
-                components[i][1] = res ? res.status === "operational" ? "✔" : "✗" : "?"
+                components[i][1] = res ? res.status === "operational" ? "✔" : "✗" : "?";
 
-            })
+            });
 
             // —— Adds component information to the embed if available
             dataEmbed.fields.push({
@@ -115,12 +116,12 @@ class Ping extends Command {
                 value : `\`\`\`${data.incidents ? "ok" : data.incidents}\`\`\``
             });
 
-        } catch (error) {error}
+        } catch (error) {error};
 
         // —— Send the embed
-        message.channel.send({embed: dataEmbed})
+        message.channel.send({embed: dataEmbed});
 
     }
 }
 
-module.exports = Ping
+module.exports = Ping;
