@@ -40,6 +40,6 @@ class Command {
     respond(message) {
         this.message.channel.send(message);
     }
-};
+}
 
 module.exports = Command;
