@@ -1,6 +1,4 @@
-
-
-module.exports = class Command {
+class Command {
 
     constructor(client, options) {
 
@@ -42,4 +40,6 @@ module.exports = class Command {
     respond(message) {
         this.message.channel.send(message);
     }
-}
+};
+
+module.exports = Command;
