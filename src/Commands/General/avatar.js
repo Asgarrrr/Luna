@@ -54,7 +54,7 @@ class Avatar extends Command {
             }).then((res) => res.json());
 
         // —— Retrieve the language information for this command
-        const lang = client.language.get("avatar", userData)
+        const lang = client.language.get("avatar", userData);
 
         try {
             super.respond({ embed: {
