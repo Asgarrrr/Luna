@@ -77,6 +77,6 @@ class Message {
         if (cmd.conf.cooldown > 0) cmd.startCooldown(message.author.id);
 
     }
-};
+}
 
-module.exports = Message
+module.exports = Message;
