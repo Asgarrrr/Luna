@@ -71,7 +71,7 @@ class Language {
 
     get(term, ...args) {
         const value = this.language[term];
-        return typeof value === "function" ? value(...args) : value
+        return typeof value === "function" ? value(...args) : value;
     }
 }
 
