@@ -64,7 +64,7 @@ class Luna extends Client {
                 // —— Browse categories
                 readdir(`./Commands/${catDir}/`, (err, cmds) => {
                     // —— If there is error, throw an error in the console
-                    if (err) { throw err }
+                    if (err) { throw err; }
                     // —— Includes only .js files.
                     cmds.filter((file) => file.endsWith(".js")).forEach((cmd) => {
                         // —— Include the file to be able to operate on it
