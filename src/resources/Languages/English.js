@@ -7,7 +7,7 @@ const chalk       = require("chalk"     ),
 
 // ██████ | ███████████████████████████████████████████████████████████ | ██████
 
-module.exports = class Language {
+class Language {
 
     constructor(client) {
 
@@ -30,7 +30,7 @@ module.exports = class Language {
                 "This command cannot be executed as a direct message.",
                 `You didn't provide any arguments, ${message.author} !`,
                 {
-                    title : `${cmd.help.name.replace(/\b\w/g, l => l.toUpperCase())}`,
+                    title : `${cmd.help.name.replace(/\b\w/g, (l) => l.toUpperCase())}`,
                     description: `> *${cmd.help.description}*`,
                     fields : [
                         {
@@ -39,7 +39,7 @@ module.exports = class Language {
                         },
                         {
                             name: "Examples use",
-                            value:`\`\`\`${cmd.help.exemple && cmd.help.exemple.map(x => `${client.config.prefix}${cmd.help.name} ${x}`).join("\n") || "No examples provided"}\`\`\``
+                            value:`\`\`\`${cmd.help.exemple && cmd.help.exemple.map((x) => `${client.config.prefix}${cmd.help.name} ${x}`).join("\n") || "No examples provided"}\`\`\``
                         },
                     ]
                  },
@@ -66,11 +66,13 @@ module.exports = class Language {
 
             lvlUp : (lvl) => `You've leveled up to level **${lvl}**! Yeaa ^^`
 
-        }
+        };
     }
 
     get(term, ...args) {
         const value = this.language[term];
-        return typeof value == "function" ? value(...args) : value
+        return typeof value === "function" ? value(...args) : value
     }
 }
+
+module.exports = Language;
