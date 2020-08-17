@@ -1,24 +1,24 @@
 
 // Emitted whenever a message is created
 
-module.exports = class Message {
+class Message {
 
     constructor(client) {
         this.client = client;
     }
 
-    async run(message) {
+    async run(message, ops) {
 
         const client = this.client;
 
         // —— Exclude messages from bot or system
-        if (message.author.bot || message.system) return
+        if (message.author.bot || message.system) return;
 
         // —— If message.member is uncached, fetch it
         if (!message.member && message.guild) message.member = await message.guild.members.fetch(message.author);
 
         // —— Experience module
-        if (client.config.module.xp === true) client.func.setXp(message)
+        if (client.config.module.xp === true) client.func.setXp(message);
 
         // —— Message log in the database
         client.db
@@ -37,7 +37,7 @@ module.exports = class Message {
             );
 
         // —— Exclude messages those not starting with prefix
-        if (!message.content.startsWith(client.config.prefix)) return
+        if (!message.content.startsWith(client.config.prefix)) return;
 
         // —— Message decomposition
         const args    = message.content.split(/\s+/g),
@@ -45,10 +45,10 @@ module.exports = class Message {
               cmd     = client.commands.get(command) || client.commands.get(client.aliases.get(command));
 
         // —— If no aliases or command files are found, stop.
-        if (!cmd) return
+        if (!cmd) return;
 
-        // —— Load translation data
-        const lang = client.language.get("message", message, cmd)
+        // —— Load translation data
+        const lang = client.language.get("message", message, cmd);
 
         // —— Checks if the command for this user is under cooldown
         if (cmd.cooldown.has(message.author.id))
@@ -60,21 +60,23 @@ module.exports = class Message {
          if (!cmd.conf.allowDMs && message.channel.type !== "text")
             return message.reply(lang[1]);
 
-        // —— Checks if arguments are required and if they are present
+        // —— Checks if arguments are required and if they are present
         if (cmd.help.args && !args.length)
-            return message.channel.send(!cmd.help.usage || "" ? lang[2] : {embed : lang[3]});
+            return message.channel.send(!cmd.help.usage || "" ? lang[2] : {embed : lang[3]});
 
         // —— Verifies that the user has the right to use the command
         if (!client.config.Master === message.author.id || !message.channel.type === "text" && message.member.permissions.has(cmd.conf.permission))
             return message.reply(lang[4]);
 
-        cmd.setMessage(message)
+        cmd.setMessage(message);
 
         // —— Run the command
-        cmd.run(message, args);
+        cmd.run(message, args, ops);
 
         // —— Starts the cooldown if it is set
         if (cmd.conf.cooldown > 0) cmd.startCooldown(message.author.id);
 
     }
 };
+
+module.exports = Message
