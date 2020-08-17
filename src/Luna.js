@@ -5,7 +5,7 @@
     / /___/ /_/ / / / / /_/ / /_/ / /_/ / /_
    /_____/\__,_/_/ /_/\__,_/_____/\____/\__/
 
-   — An adorable Discord bot.           <3
+   — An adorable Discord bot.           <3
    —— Free, Open Source and Cross Platform                                    */
 
 // ██████ Integrations █████████████████████████████████████████████████████████
@@ -27,26 +27,22 @@ class Luna extends Client {
 
         // —— Import of the parameters required for operation
         this.config     = require("./config");
-
         // —— Collection of all commands
         this.commands  = new Collection();
-
         // —— Collection of all command aliases
         this.aliases   = new Collection();
-
         // —— Used as a queue by the music system
         this.active    = new Collection();
-
         // —— SQLITE database management
-        this.db        = require("./resources/DBInit")
-
+        this.db        = require("./resources/DBInit");
         // —— Loads the language dictionary
         this.language  = new (require(`./resources/Languages/${[this.config.Language] || "English"}`))(this);
-
         // —— Import custom function (avoid duplicated block)
         this.func      = new (require("./resources/Functions"))(this);
+        // —— Used to store different music queues
+        this.ops       = new Map()
 
-        // —— Inform the user that the client has been initialised
+        // —— Inform the user that the client has been initialised
         console.log(`Client initialised. —— Node ${process.version}.`);
 
         super.login(this.config.token);
@@ -62,7 +58,7 @@ class Luna extends Client {
 
         readdir("./Commands/", (err, cmdDir) => {
             // —— If there is error, throw an error in the console
-            if (err) { throw err }
+            if (err) { throw err; }
             // —— Only include directory
             cmdDir.filter((subDir) => !subDir.includes(".")).forEach((catDir) => {
                 // —— Browse categories
@@ -95,7 +91,7 @@ class Luna extends Client {
                 // —— Include the file to be able to operate on it
                 const event = new (require(`./Events/${file}`))(this);
                 // —— Executes the file corresponding to the transmitted event.
-                super.on(file.split(".")[0], (...args) => event.run(...args));
+                super.on(file.split(".")[0], (...args) => event.run(...args, this.ops));
             });
         });
 
