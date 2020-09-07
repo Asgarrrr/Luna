@@ -1,30 +1,29 @@
 {
-    "token": "The token of your bot",
-    "Master": "Your user id",
-    "prefix": "!",
+
+    "token": "NjYyMzMxMzY5MzkyODMyNTEy.Xi8CbA.j2joTYkVqjfP6bdw9cv8HPCXxlk",
+	"Master": "253951718423789571",
+    "prefix": "£",
 
     "presence": {
         "status": "Online",
-        "games": [{
-                "type": "PLAYING STREAMING LISTENING WATCHING",
-                "name": "The bot activity message",
-                "url": "Url twitch if in stream"
-            },
-            {
-                "type": "PLAYING STREAMING LISTENING WATCHING",
-                "name": "The bot activity message",
-                "url": "Url twitch if in stream"
-            }
-        ],
+        "games" : [{
+            "type" : "WATCHING",
+            "name" : "You, juste you",
+            "url"  : ""
+        },
+        {
+            "type" : "LISTENING",
+            "name" : "Time past...",
+            "url"  : ""
+        }],
         "interval": 15
     },
 
-    "Language": "English",
+	"Language": "English",
 
-    "YoutubeAPI": "YouTube API key to access music controls",
+    "YoutubeAPI" : "AIzaSyAK0g_n1-0afNjkiBTWp6Hr3HeV3EgHKe8",
 
     "module": {
         "xp": true
     }
-
 }

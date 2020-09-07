@@ -4,6 +4,7 @@
 class Message {
 
     constructor(client) {
+
         this.client = client;
     }
 
@@ -71,7 +72,7 @@ class Message {
         cmd.setMessage(message);
 
         // —— Run the command
-        cmd.run(message, args, ops);
+        cmd.run(message, args);
 
         // —— Starts the cooldown if it is set
         if (cmd.conf.cooldown > 0) cmd.startCooldown(message.author.id);
