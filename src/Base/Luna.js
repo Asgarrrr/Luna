@@ -54,7 +54,7 @@ class Luna extends Client {
             // —— Only include directory
             cmdDir.filter((subDir) => !subDir.includes(".")).forEach((catDir) => {
                 // —— Browse categories
-                readdir(`../Commands/${catDir}/`, (err, cmds) => {
+                readdir(`./Commands/${catDir}/`, (err, cmds) => {
                     // —— If there is error, throw an error in the console
                     if (err) { throw err; }
                     // —— Includes only .js files.
@@ -74,19 +74,24 @@ class Luna extends Client {
     // –– Events Handler ––––––––––––––––––––––––––––––––––––––––——–––––––––––––
 
     loadEvents () {
-        readdir("Events", (err, events) => {
+        readdir("./Events", (err, events) => {
             // —— If there is error, throw an error in the console
             if (err) { throw err; }
             // —— includes only .js files
             events.filter((event) => event.endsWith(".js")).forEach((file) => {
+
                 // —— Include the file to be able to operate on it
-                const event = new (require(`Events/${file}`))(this);
+                const event = new (require(`../Events/${file}`))(this);
                 // —— Executes the file corresponding to the transmitted event.
                 super.on(file.split(".")[0], (...args) => event.run(...args));
 
             });
         });
     }
+
+    login () {
+        super.login(this.config.token);
+    } 
 
 }
 

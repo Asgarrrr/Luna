@@ -18,12 +18,10 @@ const client = new Luna();
 
 (async() => {
 
-    console.time("— loadCommands")
     client.loadCommands();
-    console.timeEnd("— loadCommands")
 
-    console.time("— loadEvents")
     client.loadEvents();
-    console.timeEnd("— loadEvents")
+
+    // client.login()
 
 })()
