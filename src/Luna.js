@@ -22,6 +22,6 @@ const client = new Luna();
 
     client.loadEvents();
 
-    // client.login()
+    client.login()
 
 })()
