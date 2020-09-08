@@ -7,7 +7,7 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Import base command
-const Command = require("../Command"),
+const Command = require("../../Base/Command"),
 // —— A light-weight module that brings window.fetch to node.js
       fetch   = require("node-fetch");
 

@@ -6,6 +6,8 @@ const { Client, Collection } = require("discord.js");
 // —— FileSystem
 const { readdir }            = require("fs");
 
+const Guild                  = require("../Base/Guild");
+
 // ██████ Initialization ███████████████████████████████████████████████████████
 
 // —— Create the Luna class, an extension of Client Discord
@@ -24,8 +26,6 @@ class Luna extends Client {
         this.commands  = new Collection();
         // —— Collection of all command aliases
         this.aliases   = new Collection();
-        // —— Used as a queue by the music system
-        this.player    = new Collection();
         // —— SQLITE database management
         this.db        = require("../resources/DBInit");
         // —— Loads the language dictionary
@@ -35,6 +35,10 @@ class Luna extends Client {
 
         // —— Inform the user that the client has been initialised
         console.log(`Client initialised. —— Node ${process.version}.`);
+
+        // —— Speed up my work on play command
+        new (require(`../Commands/Music/play`))(this)
+            .run("message", ["https://www.youtube.com/watch?v=o3Jj7K5BTbU"])
 
     }
 
@@ -69,6 +73,8 @@ class Luna extends Client {
                 });
             });
         });
+
+        return this;
     }
 
     // –– Events Handler ––––––––––––––––––––––––––––––––––––––––——–––––––––––––
@@ -79,7 +85,6 @@ class Luna extends Client {
             if (err) { throw err; }
             // —— includes only .js files
             events.filter((event) => event.endsWith(".js")).forEach((file) => {
-
                 // —— Include the file to be able to operate on it
                 const event = new (require(`../Events/${file}`))(this);
                 // —— Executes the file corresponding to the transmitted event.
@@ -87,13 +92,23 @@ class Luna extends Client {
 
             });
         });
+
+        return this;
     }
 
-    login () {
-        super.login(this.config.token);
-    } 
+    login() {
+        if(!this.config.token) throw new Error("No Token");
+            super.login(this.config.token)
+
+        return this;
+    }
+
+    init() {
+        this.loadCommands();
+        this.loadEvents();
+        this.login()
+    }
 
 }
-
 
 module.exports = Luna

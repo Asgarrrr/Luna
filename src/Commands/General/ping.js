@@ -10,7 +10,7 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Import base command
-const Command = require("../Command"),
+const Command = require("../../Base/Command"),
 // —— A light-weight module that brings window.fetch to node.js
       fetch   = require("node-fetch");
 
@@ -55,6 +55,8 @@ class Ping extends Command {
     async run(message) {
 
         const client = this.client;
+
+        console.log(message.guild.store("704042612650279093"));
 
         // —— Retrieve the language information for this command
         const lang = client.language.get("ping", Date.now(), message);

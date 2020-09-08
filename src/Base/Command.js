@@ -16,6 +16,7 @@ class Command {
         this.conf = {
             permLevel   : options.permLevel   || 0,
             permission  : options.permission  || "SEND_MESSAGES",
+            clientPerms : options.clientPerms || "SEND_MESSAGES",
             cooldown    : options.cooldown    || 1000,
             aliases     : options.aliases     || [],
             allowDMs    : options.allowDMs    || false

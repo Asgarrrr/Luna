@@ -16,12 +16,17 @@ const Luna = require("./Base/Luna")
 
 const client = new Luna();
 
-(async() => {
+client.init()
 
-    client.loadCommands();
 
-    client.loadEvents();
+process.on('rejectionHandled', (err) => {
+    console.error(err)
+});
 
-    client.login()
+process.on('unhandledRejection', (err) => {
+    console.error(err)
+});
 
-})()
+process.on('uncaughtException', (err) => {
+    console.error(err)
+});

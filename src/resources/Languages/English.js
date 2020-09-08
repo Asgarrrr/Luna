@@ -43,7 +43,8 @@ class Language {
                         },
                     ]
                  },
-                "You lack the required privileges to execute this command...",
+                "I do not have sufficient rights to execute this command.",
+                "You lack the required privileges to execute this command..."
             ],
 
             // ██████ COMMANDS █████████████████████████████████████████████████

@@ -1,7 +1,7 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Import base command
-const Command = require("../Command");
+const Command = require("../../Base/Command");
 
 const ytdl    = require("discord-ytdl-core"),
 // —— Simple js only module to resolve YouTube playlist ids Doesn't need any login or GoogleAPI key
@@ -32,6 +32,7 @@ class Play extends Command {
             aliases     : ["p"],
             permLevel   : 0,
             permission  : "READ_MESSAGES",
+            clientPerms : ["CONNECT", "SPEAK"],
             allowDMs    : true
         });
     }
@@ -41,64 +42,31 @@ class Play extends Command {
         const client  = this.client,
               url     = args[0];
 
+        let player = message.guild.player
+
         // —— Verifies if the user is connected to a voice channel
          if (!message.member.voice.channel)
              return message.channel.send("Glossary.NotInChan")
-
-        // —— Retrieve guild player
-        const guildPlayer =
-            client.player.get(message.guild.id)
-            || client.player.set(message.guild.id, {
-                queue      : [],
-                connection : null,
-                dispatcher : null
-            })
-            && client.player.get(message.guild.id);
-
 
         if (validUrl.test(url)) {
 
             // —— If the URL passed matches that of a playlist
             if (url.match(/^(?!.*\?.*\bv=)https:\/\/www\.youtube\.com\/.*\?.*\blist=.*$/)) {
 
+                const playlist = await ytpl(url).catch(err => err)
 
+                if (player instanceof Error)
+                    return super.respond("— Playlist error")
 
-            }
-
-
-        } else {
-
-        }
-
-
-
-
-
-        if (validUrl.test(url)) {
-
-            if (validYB.test(url)) {
-
-                if (url.includes("list=")) {
-
-                    const playlist = await ytpl(url).catch(err => err)
-
-                    if (playlist instanceof Error)
-                        return this.respond("Playlist Error")
-
-
-
-
-
+                for (let i = 0; i < playlist.length; i++) {
+                    const element = array[index]
                 }
 
-                console.log("1");
 
             }
 
-            console.log("2");
-
         } else {
-            console.log("not valid url");
+
         }
     }
 }
