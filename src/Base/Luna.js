@@ -36,10 +36,6 @@ class Luna extends Client {
         // —— Inform the user that the client has been initialised
         console.log(`Client initialised. —— Node ${process.version}.`);
 
-        // —— Speed up my work on play command
-        new (require(`../Commands/Music/play`))(this)
-            .run("message", ["https://www.youtube.com/watch?v=o3Jj7K5BTbU"])
-
     }
 
     /* ██████ Handler ██████████████████████████████████████████████████████████
