@@ -65,9 +65,8 @@ class Message {
         if (cmd.help.args && !args.length)
             return message.channel.send(!cmd.help.usage || "" ? lang[2] : {embed : lang[3]});
 
-        // —— Verifies if Luna has the right to use the command
-        if(!member.guild.me.hasPermission(cmd.conf.clientPerms))
-            return message.reply(lang[4]);
+        // if(!client.guild.me.hasPermission(cmd.conf.clientPerms))
+        //     return message.reply(lang[4]);
 
         // —— Verifies that the user has the right to use the command
         if (!client.config.Master === message.author.id || !message.channel.type === "text" && message.member.permissions.has(cmd.conf.permission))
