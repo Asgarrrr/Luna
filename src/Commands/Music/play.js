@@ -45,8 +45,11 @@ class Play extends Command {
         let player = message.guild.player
 
         // —— Verifies if the user is connected to a voice channel
-         if (!message.member.voice.channel)
-             return message.channel.send("Glossary.NotInChan")
+        if (!message.member.voice.channel)
+            return message.channel.send("Glossary.NotInChan")
+
+        player.connection = await message.member.voice.channel.join()
+            .catch(err => { return super.respond("Unable to join voice channel") })
 
         if (validUrl.test(url)) {
 
@@ -55,20 +58,62 @@ class Play extends Command {
 
                 const playlist = await ytpl(url).catch(err => err)
 
-                if (player instanceof Error)
+                if (playlist instanceof Error)
                     return super.respond("— Playlist error")
 
-                for (let i = 0; i < playlist.length; i++) {
-                    const element = array[index]
+                const { items } = playlist
+
+                for (let i = 0; i < items.length; i++) {
+                    player.queue.push(
+                        {
+                            "id" : items[i].id,
+                            "url": items[i].url_simple,
+                            "title": items[i].title,
+                            "thumbnail": items[i].thumbnail,
+                            "duration": items[i].duration,
+                            "author": {
+                              "name": items[i].author.name,
+                              "ref": items[i].author.ref
+                            }
+                        }
+                    )
                 }
-
-
             }
 
         } else {
 
         }
+
+        if (!player.dispatcher) {
+            this.play(player, message)
+        }
+
+
     }
+
+    play(player) {
+
+        let stream = ytdl(player.queue[0].url, {
+            filter: "audioonly",
+            opusEncoded: true,
+            highWaterMark: 1 << 25
+        });
+
+        player.dispatcher = player.connection.play(stream, {
+            type: 'opus',
+            bitrate: 'auto'
+        })
+
+        player.dispatcher.on('start', () => {
+
+        })
+
+    }
+
+    finish() {
+
+    }
+
 }
 
 module.exports = Play
