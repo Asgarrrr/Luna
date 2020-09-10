@@ -93,6 +93,8 @@ class Play extends Command {
 
     play(player) {
 
+        if (Object.entries(player.embed).length === 0) { }
+
         let stream = ytdl(player.queue[0].url, {
             filter: "audioonly",
             opusEncoded: true,
