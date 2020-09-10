@@ -17,6 +17,7 @@ Structures.extend("Guild", Guild => class extends Guild {
             dispatcher : null,
             isPlaying  : false,
             volume     : 1,
+            embed      : {},
         };
     }
 })
