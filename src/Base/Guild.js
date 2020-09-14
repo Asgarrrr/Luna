@@ -12,12 +12,13 @@ Structures.extend("Guild", Guild => class extends Guild {
         super(client, data);
 
         this.player = {
-            queue      : [],
-            connection : null,
-            dispatcher : null,
-            isPlaying  : false,
-            volume     : 1,
-            embed      : {},
+            _queue      : [],
+            _connection : null,
+            _dispatcher : null,
+            _isPlaying  : false,
+            _volume     : 1,
+            _embed      : {},
+            _loop       : false,
         };
     }
 })

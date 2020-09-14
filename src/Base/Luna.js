@@ -69,8 +69,6 @@ class Luna extends Client {
                 });
             });
         });
-
-        return this;
     }
 
     // –– Events Handler ––––––––––––––––––––––––––––––––––––––––——–––––––––––––
@@ -88,15 +86,13 @@ class Luna extends Client {
 
             });
         });
-
-        return this;
     }
 
     login() {
-        if(!this.config.token) throw new Error("No Token");
-            super.login(this.config.token)
 
-        return this;
+        if(!this.config.token)
+            throw new Error("No Token");
+        super.login(this.config.token)
     }
 
     init() {
