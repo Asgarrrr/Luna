@@ -8,6 +8,7 @@ const chalk = require("chalk");
 class Debug {
 
     constructor(client) {
+
         this.client = client;
     }
 
@@ -15,7 +16,7 @@ class Debug {
 
         const client = this.client;
 
-        // console.log(info)
+        //console.log(info)
 
     }
 

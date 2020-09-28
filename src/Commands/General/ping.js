@@ -56,10 +56,8 @@ class Ping extends Command {
 
         const client = this.client;
 
-        console.log(message.guild.store("704042612650279093"));
-
         // —— Retrieve the language information for this command
-        const lang = client.language.get("ping", Date.now(), message);
+        const lang = client.language.get(message.guild.local).ping(Date.now(), message);
 
         // —— Generates the embed containing the basic results
         const dataEmbed = {

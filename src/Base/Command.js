@@ -39,7 +39,7 @@ class Command {
     }
 
     respond(message) {
-        this.message.channel.send(message);
+        return this.message.channel.send(message);
     }
 }
 

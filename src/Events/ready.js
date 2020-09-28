@@ -16,7 +16,7 @@ class Ready {
     async run() {
 
         const client = this.client,
-              lang   = client.language.get("ready");
+                lang = client.language.get(client.config.Language).ready()
 
         // —— Cleaning the console 💨
         console.clear();
@@ -75,6 +75,7 @@ class Ready {
             .run(lang[0]);
 
     }
+
 }
 
 module.exports = Ready;

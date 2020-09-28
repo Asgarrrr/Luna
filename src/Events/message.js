@@ -48,8 +48,8 @@ class Message {
         // —— If no aliases or command files are found, stop.
         if (!cmd) return;
 
-        // —— Load translation data
-        const lang = client.language.get("message", message, cmd);
+         // —— Load translation data
+        const lang = client.language.get(message.guild.local).message(message, cmd);
 
         // —— Checks if the command for this user is under cooldown
         if (cmd.cooldown.has(message.author.id))

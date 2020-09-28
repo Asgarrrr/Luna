@@ -13,12 +13,10 @@ const Guild                  = require("../Base/Guild");
 // —— Create the Luna class, an extension of Client Discord
 class Luna extends Client {
 
-    constructor() {
+    constructor(options) {
 
         // —— Initialise discord.js client
-        super(
-            { autoReconnect: true }
-        );
+        super(options);
 
         // —— Import of the parameters required for operation
         this.config     = require("../config.json");
@@ -29,7 +27,7 @@ class Luna extends Client {
         // —— SQLITE database management
         this.db        = require("../resources/DBInit");
         // —— Loads the language dictionary
-        this.language  = new (require(`../resources/Languages/${[this.config.Language] || "English"}`))(this);
+        this.language  = new Collection();
         // —— Import custom function (avoid duplicated block)
         this.func      = new (require("../resources/Functions"))(this);
 
@@ -88,6 +86,21 @@ class Luna extends Client {
         });
     }
 
+    loadLocal () {
+        readdir("./resources/Languages", (err, languages) => {
+            // —— If there is error, throw an error in the console
+            if (err) { throw err; }
+            // —— includes only .js files
+            languages.filter((languages) => languages.endsWith(".js")).forEach((file) => {
+                // —— Include the file to be able to operate on it
+                const local = new (require(`../resources/Languages/${file}`))(this);
+
+                this.language.set(file.replace(/\.[^/.]+$/, ""), local.language);
+            })
+
+        })
+    }
+
     login() {
 
         if(!this.config.token)
@@ -99,6 +112,7 @@ class Luna extends Client {
         this.loadCommands();
         this.loadEvents();
         this.login()
+        this.loadLocal()
     }
 
 }

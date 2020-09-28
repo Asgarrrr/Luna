@@ -19,16 +19,16 @@ class Language {
 
             // —— Events > ready.js ————————————————————————————————————————————
             ready: () => [
-                `${chalk.bold("Connected")} — ${client.user.tag} is here !`,
-                `On ${client.guilds.cache.size} servers, for ${client.users.cache.size} users and ${client.channels.cache.size} channels`,
-                `${client.user.tag} is online, hosted by ${os.hostname()}`
+                `${chalk.bold("Connecté")} — ${client.user.tag} est là !`,
+                `Sur ${client.guilds.cache.size} serveurs, avec ${client.users.cache.size} utilisateurs et ${client.channels.cache.size} salons`,
+                `${client.user.tag} est en ligne, hebergé par ${os.hostname()}`
             ],
 
             // —— Events > message.js ——————————————————————————————————————————
             message : (message, cmd) =>  [
-                (tLeft) => `Please wait ${tLeft} second(s) to reuse the ${cmd.help.name} command.`,
-                "This command cannot be executed as a direct message.",
-                `You didn't provide any arguments, ${message.author} !`,
+                (tLeft) => `Veuillez patienter ${tLeft} seconde (s) pour réutiliser la commande ${cmd.help.name}.`,
+                "Cette commande ne peut être exécutée en message direct.",
+                `Vous n'avez fourni aucun argument ${message.author} !`,
                 {
                     title : `${cmd.help.name.replace(/\b\w/g, (l) => l.toUpperCase())}`,
                     description: `> *${cmd.help.description}*`,
@@ -38,38 +38,38 @@ class Language {
                             value:`\`\`\`${cmd.help.usage}\`\`\``
                         },
                         {
-                            name: "Examples use",
+                            name: "Exemples d'utilisation",
                             value:`\`\`\`${cmd.help.exemple && cmd.help.exemple.map((x) => `${client.config.prefix}${cmd.help.name} ${x}`).join("\n") || "No examples provided"}\`\`\``
                         },
                     ]
                  },
-                "I do not have sufficient rights to execute this command.",
-                "You lack the required privileges to execute this command..."
+                "Je n'ai pas les droits suffisants pour exécuter cette commande.",
+                "Vous ne disposez pas des privilèges requis pour exécuter cette commande..."
             ],
 
             // ██████ COMMANDS █████████████████████████████████████████████████
 
             ping: (time, message) => [
-                `   Latency │ ${time - message.createdTimestamp}ms`,
+                `   Latence │ ${time - message.createdTimestamp}ms`,
                 ` Websocket │ ${client.ws.ping}ms`,
                 "— Services",
-                "— Servers Status",
+                "— État des serveurs",
                 "— Maintenance & Incidents",
-                `Command executed by @${message.author.tag}`,
+                `Commande exécutée par @${message.author.tag}`,
             ],
 
             avatar: (target) => [
-                "in DM, you can only target a user with his ID",
-                `**This is your avatar, <@${target.id}>**`,
-                `**This is the profile picture of <@${target.id}>**`,
-                "Unable to retrieve user information"
+                "En MP, vous ne pouvez cibler qu'un utilisateur via son ID",
+                `**Ceci est votre avatar, <@${target.id}>**`,
+                `**Voici la photo de profil de <@${target.id}>**`,
+                "Impossible de récupérer les informations utilisateur"
             ],
 
             language: () => [
-                "What language do you want to use?",
+                "Quelle langue voulez vous utiliser ?",
             ],
 
-            lvlUp : (lvl) => `You've leveled up to level **${lvl}**! Yeaa ^^`
+            lvlUp : (lvl) => `Vous avez atteint le niveau **${lvl}**! Yeaa ^^`
 
         };
     }
