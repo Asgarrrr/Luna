@@ -67,6 +67,7 @@ class Language {
 
             language: () => [
                 "Quelle langue voulez vous utiliser ?",
+                "Je parle à present en Français !"
             ],
 
             lvlUp : (lvl) => `Vous avez atteint le niveau **${lvl}**! Yeaa ^^`

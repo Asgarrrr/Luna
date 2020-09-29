@@ -6,6 +6,8 @@ const Command = require("../../Base/Command");
 
 // ██████ | ███████████████████████████████████████████████████████████ | ██████
 
+const query = this.client.db.prepare('UPDATE Guilds SET(?) WHERE _ID = ?')
+
 // —— Create & export a class for the command that extends the base command
 class Language extends Command {
 
@@ -20,7 +22,7 @@ class Language extends Command {
             cooldown    : 10000,
             aliases     : ["sl"],
             permLevel   : 9,
-            permission  : "ADMINISTRATOR",
+            permission  : "",
             allowDMs    : false
         });
     }
@@ -29,35 +31,44 @@ class Language extends Command {
 
         const client = this.client;
 
+
         // —— Retrieve the language information for this command
         const lang = client.language.get(message.guild.local).language()
 
-
-        const test = await super.respond({embed : {
-            title : lang[0]
+        const selector = await super.respond({embed : {
+            description : lang[0]
         }});
 
-        ["🇬🇧", "🇫🇷"].forEach(e => test.react(e))
+        ["🇬🇧", "🇫🇷"].forEach(e => selector.react(e))
 
-
-        const english = (reaction, user) => {
-            return reaction.emoji.name === '🇬🇧' && user.id === message.author.id;
+        const filter = (reaction, user) => {
+            return ["🇬🇧", "🇫🇷"].includes(reaction.emoji.name) && user.id === message.author.id;
         };
 
-        const french = (reaction, user) => {
-            return reaction.emoji.name === '🇫🇷' && user.id === message.author.id;
-        };
+        selector.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+            .then(collected => {
 
-        const collector = message.createReactionCollector({ time: 15000 });
+                switch (collected.first().emoji.name) {
 
-        collector.on('collect', (reaction, user) => {
-            console.log(`Collected ${reaction.emoji.name} from ${user.tag}`);
-        });
+                    case "🇬🇧":
+                        message.guild.local = "English";
+                        query.run(0, message.guild)
+                        break;
 
+                    case "🇫🇷":
+                        message.guild.local = "French";
+                        query.run(1, message.guild)
+                        break;
 
+                    default:
+                        break;
+                }
 
+                super.respond(
+                    client.language.get(message.guild.local).language()[1]
+                )
 
-
+            })
 
 
     }
