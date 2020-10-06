@@ -1,5 +1,5 @@
 // —— The fastest and simplest library for SQLite3 in Node.js.
-const db = require('better-sqlite3')('database.db');
+const db = require('better-sqlite3')('database.sqlite');
 
 db.exec(
     `
