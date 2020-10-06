@@ -38,18 +38,20 @@ class Message {
             );
 
         // —— Exclude messages those not starting with prefix
-        if (!message.content.startsWith(client.config.prefix)) return;
+        if (!message.content.startsWith(client.config.prefix || "£")) return;
 
         // —— Message decomposition
         const args    = message.content.split(/\s+/g),
-              command = args.shift().slice(client.config.prefix.length),
+              command = args.shift().slice(client.config.prefix.length || 1),
               cmd     = client.commands.get(command) || client.commands.get(client.aliases.get(command));
 
         // —— If no aliases or command files are found, stop.
         if (!cmd) return;
 
+
+
          // —— Load translation data
-        const lang = client.language.get(message.guild.local).message(message, cmd);
+        const lang = client.language.get(message.guild && message.guild.local || "English" ).message(message, cmd);
 
         // —— Checks if the command for this user is under cooldown
         if (cmd.cooldown.has(message.author.id))
