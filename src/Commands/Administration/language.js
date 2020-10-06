@@ -6,8 +6,6 @@ const Command = require("../../Base/Command");
 
 // ██████ | ███████████████████████████████████████████████████████████ | ██████
 
-const query = this.client.db.prepare('UPDATE Guilds SET(?) WHERE _ID = ?')
-
 // —— Create & export a class for the command that extends the base command
 class Language extends Command {
 
@@ -22,15 +20,15 @@ class Language extends Command {
             cooldown    : 10000,
             aliases     : ["sl"],
             permLevel   : 9,
-            permission  : "",
+            permission  : "ADMINISTRATOR",
             allowDMs    : false
         });
+
     }
 
     async run(message, args) {
 
         const client = this.client;
-
 
         // —— Retrieve the language information for this command
         const lang = client.language.get(message.guild.local).language()
@@ -45,31 +43,26 @@ class Language extends Command {
             return ["🇬🇧", "🇫🇷"].includes(reaction.emoji.name) && user.id === message.author.id;
         };
 
-        selector.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-            .then(collected => {
+        const collected = await selector.awaitReactions(filter, { max: 1, time: 60000 })
 
-                switch (collected.first().emoji.name) {
+        switch (collected.first().emoji.name) {
 
-                    case "🇬🇧":
-                        message.guild.local = "English";
-                        query.run(0, message.guild)
-                        break;
+            case "🇬🇧":
+                message.guild.local = "English";
+                await this.client.db.prepare('UPDATE Guilds SET Local = ? WHERE _ID = ?').run(0, message.guild.id);
+                break;
 
-                    case "🇫🇷":
-                        message.guild.local = "French";
-                        query.run(1, message.guild)
-                        break;
+            case "🇫🇷":
+                message.guild.local = "French";
+                await this.client.db.prepare('UPDATE Guilds SET Local = ? WHERE _ID = ?').run(1, message.guild.id);
+                break;
 
-                    default:
-                        break;
-                }
+            default:
+                break;
+        }
 
-                super.respond(
-                    client.language.get(message.guild.local).language()[1]
-                )
-
-            })
-
+        selector.delete({ reason: 'Command completed.' })
+        super.respond(client.language.get(message.guild.local).language()[1])
 
     }
 }
