@@ -16,7 +16,7 @@ class Ready {
     async run() {
 
         const client = this.client,
-                lang = client.language.get(client.config.Language).ready()
+                lang = client.language.get(client.config.Language || "English").ready()
 
         // —— Cleaning the console 💨
         console.clear();
@@ -43,31 +43,34 @@ class Ready {
                 //client.error(error);
             });
 
-        const { status, games, interval } = client.config.presence;
+        if (client.config.presence) {
 
-        // —— Set default presence
-        games instanceof Array && games.length > 0 &&
-            client.user.setPresence({
-                status,
-                activity: {
-                    name: games[0].name ? games[0].name : null,
-                    type: games[0].type ? games[0].type : null,
-                    url : games[0].url  ? games[0].url  : null
-                }
-            });
+            const { status, games, interval } = client.config.presence;
 
-        // —— If the user has chosen a multiple custom activity
-        games instanceof Array && games.length > 1 &&
-            // —— Every x seconds, the activity (and its type) will change.
-            setInterval(() => {
-                // —— Generates a random number between 0 and the length of the game array
-                const index = Math.floor(Math.random() * (games.length));
-                // —— Redefined the bot's activity
-                client.user.setActivity(games[index].name, {
-                    type: games[index].type,
-                    url : games[index].url || "https://www.twitch.tv/"
+            // —— Set default presence
+            games instanceof Array && games.length > 0 &&
+                client.user.setPresence({
+                    status,
+                    activity: {
+                        name: games[0].name ? games[0].name : null,
+                        type: games[0].type ? games[0].type : null,
+                        url : games[0].url  ? games[0].url  : null
+                    }
                 });
-            }, ((typeof interval === "number" && interval) || 30) * 1000);
+
+            // —— If the user has chosen a multiple custom activity
+            games instanceof Array && games.length > 1 &&
+                // —— Every x seconds, the activity (and its type) will change.
+                setInterval(() => {
+                    // —— Generates a random number between 0 and the length of the game array
+                    const index = Math.floor(Math.random() * (games.length));
+                    // —— Redefined the bot's activity
+                    client.user.setActivity(games[index].name, {
+                        type: games[index].type,
+                        url : games[index].url || "https://www.twitch.tv/"
+                    });
+                }, ((typeof interval === "number" && interval) || 30) * 1000);
+        }
 
         // —— Connection report inserted in the Event table
         client.db
