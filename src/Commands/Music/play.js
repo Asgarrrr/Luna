@@ -13,7 +13,6 @@ const ytdl    = require("discord-ytdl-core"),
 // ██████ | ███████████████████████████████████████████████████████████ | ██████
 
 // —— Create a class for the command that extends the base command
-
 class Play extends Command {
 
     constructor(client) {
@@ -37,12 +36,12 @@ class Play extends Command {
 
         console.log("—— Command start");
 
-        const url    = args[0],
+        const URL    = args[0],
               lang   = this.client.language.get("play"),
               query  = args.join(" "),
               player = message.guild.player;
 
-        console.log(url);
+        console.log(URL);
 
         // —— Verifies if the user is connected to a voice channel
         if (!message.member.voice.channel)
@@ -71,12 +70,11 @@ class Play extends Command {
             await this.addScVideo(url, player);
 
         // —— Spotify
-        if(url.match(/(https?:\/\/open.spotify.com\/(track|user|artist|album)\/[a-zA-Z0-9]+(\/playlist\/[a-zA-Z0-9]+|)|spotify:(track|user|artist|album):[a-zA-Z0-9]+(:playlist:[a-zA-Z0-9]+|))/))
+        if(url.match(/.*?spotify\.com\/track\/(\w+\?\w+=\w+)\s/))
             await this.addSfVideo(url, player);
 
         // —— No url, or not supported
-        if(!url.match(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/))
-
+        if(!url.match(/^?:http(s)?:\/\/(-\.)?([^\s\/?\.#]+\.?)+(\/[^\s]*)?$/i))
             await this.search(query, player);
 
         if (!player._dispatcher)
@@ -87,15 +85,14 @@ class Play extends Command {
     // —— Play method ——————————————————————————————————————————————————————————
     play(player) {
 
-        console.time("test");
         if (Object.entries(player._embed).length === 0)
             this.createPlayer(player);
 
         let stream = ytdl(player._queue[0].url, {
-            filter: "audioonly",
-            quality: "highestaudio",
-            opusEncoded: true,
-            highWaterMark: 1 << 25
+            filter           : "audioonly",
+            quality         : "highestaudio",
+            opusEncoded     : true,
+            highWaterMark   : 1 << 25
         });
 
         player._dispatcher = player._connection.play(stream, {
@@ -104,7 +101,7 @@ class Play extends Command {
         });
 
         player._dispatcher.on('start', () => {
-            console.timeEnd("test");
+            log
         });
 
         player._dispatcher.on('finish', () => {
@@ -135,20 +132,19 @@ class Play extends Command {
             } else {
                 player._queue > 0
                     ? player._queue.shift(player) && this.play(player)
-                    : this.destroy(player)
-            };
+                    : this.destroy(player);
+            }
         }
     }
 
     // —— Resolve YouTube playlist —————————————————————————————————————————————
     async addYbPlaylist(player, url) {
 
-        const playlist = await ytpl(url, { limit: Infinity }).catch((err) => {
-            return super.respond("It seems that this playlist cannot be imported.")
-        });
+        let ttl = [0, 0];
 
-        let ttlTime = 0,
-            ttlLive = 0;
+        const playlist = await ytpl(url, { limit: Infinity }).catch((err) => {
+            return super.respond("It seems that this playlist cannot be imported.");
+        });
 
         playlist.items = playlist.items.filter((videos) => videos.title !== "[Private video]" && videos.title !== "[Deleted video]" );
 
@@ -171,7 +167,7 @@ class Play extends Command {
                     "name": video.author.name,
                     "ref": video.author.ref
                 }
-            })
+            });
         })
 
         super.respond({embed: {
