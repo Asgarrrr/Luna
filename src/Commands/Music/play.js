@@ -56,7 +56,7 @@ class Play extends Command {
 
         // —— Join the user in his voice channel
         player._connection = await message.member.voice.channel.join()
-            .catch((err) => { return super.respond("Unable to join voice channel") });
+            .catch((err) => { return super.respond("Unable to join voice channel"); });
 
         // —— Youtube Playlist
         if(url.match(/^.*(youtu.be\/|list=)([^#\&\?]*).*/))
@@ -119,8 +119,7 @@ class Play extends Command {
 
             if (player._queue.length === 0)
                 return this.destroy();
-        })
-
+        });
 
     }
 
@@ -137,7 +136,7 @@ class Play extends Command {
                 player._queue > 0
                     ? player._queue.shift(player) && this.play(player)
                     : this.destroy(player)
-            }
+            };
         }
     }
 
@@ -146,7 +145,7 @@ class Play extends Command {
 
         const playlist = await ytpl(url, { limit: Infinity }).catch((err) => {
             return super.respond("It seems that this playlist cannot be imported.")
-        })
+        });
 
         let ttlTime = 0,
             ttlLive = 0;

@@ -1,4 +1,3 @@
-
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Import base command
@@ -31,7 +30,7 @@ class Language extends Command {
         const client = this.client;
 
         // —— Retrieve the language information for this command
-        const lang = client.language.get(message.guild.local).language()
+        const lang = client.language.get(message.guild.local).language();
 
         const selector = await super.respond({embed : {
             description : lang[0]

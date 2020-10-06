@@ -97,7 +97,7 @@ class Luna extends Client {
 
                 this.language.set(file.replace(/\.[^/.]+$/, ""), local.language);
             });
-        })
+        });
     }
 
     login() {
