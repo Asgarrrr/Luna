@@ -5,7 +5,7 @@ const { Structures, Guild } = require('discord.js');
 
 // ██████ | ███████████████████████████████████████████████████████████ | ██████
 
-Structures.extend("Guild", Guild => class extends Guild {
+Structures.extend("Guild", (Guild) => class extends Guild {
 
     constructor(client, data) {
 
@@ -24,9 +24,9 @@ Structures.extend("Guild", Guild => class extends Guild {
 
         let local =
             this.client.db.prepare('SELECT Local FROM Guilds WHERE _ID = ?').get(data.id)
-            || this.client.db.prepare('INSERT INTO Guilds VALUES(?, 0)').run(data.id) && { Local : 0 }
+            || this.client.db.prepare('INSERT INTO Guilds VALUES(?, 0)').run(data.id) && { Local : 0 };
 
-        this.local = ["English", "French"][local.Local]
+        this.local = ["English", "French"][local.Local];
 
     }
-})
+});

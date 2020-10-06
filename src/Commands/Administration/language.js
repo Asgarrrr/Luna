@@ -37,13 +37,13 @@ class Language extends Command {
             description : lang[0]
         }});
 
-        ["🇬🇧", "🇫🇷"].forEach(e => selector.react(e))
+        ["🇬🇧", "🇫🇷"].forEach((e) => selector.react(e));
 
         const filter = (reaction, user) => {
             return ["🇬🇧", "🇫🇷"].includes(reaction.emoji.name) && user.id === message.author.id;
         };
 
-        const collected = await selector.awaitReactions(filter, { max: 1, time: 60000 })
+        const collected = await selector.awaitReactions(filter, { max: 1, time: 60000 });
 
         switch (collected.first().emoji.name) {
 
@@ -61,8 +61,8 @@ class Language extends Command {
                 break;
         }
 
-        selector.delete({ reason: 'Command completed.' })
-        super.respond(client.language.get(message.guild.local).language()[1])
+        selector.delete({ reason: 'Command completed.' });
+        super.respond(client.language.get(message.guild.local).language()[1]);
 
     }
 }

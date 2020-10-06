@@ -16,7 +16,7 @@ class Ready {
     async run() {
 
         const client = this.client,
-                lang = client.language.get(client.config.Language || "English").ready()
+                lang = client.language.get(client.config.Language || "English").ready();
 
         // —— Cleaning the console 💨
         console.clear();

@@ -44,19 +44,19 @@ class Play extends Command {
 
         console.log(url);
 
-        // —— Verifies if the user is connected to a voice channel
+        // —— Verifies if the user is connected to a voice channel
         if (!message.member.voice.channel)
-            return super.respond("You need to be a in voice channel")
+            return super.respond("You need to be a in voice channel");
 
-        // —— Verifies that Luna is not already occupied
+        // —— Verifies that Luna is not already occupied
         if (player._connection
             && !player._connection.voice.channel.members.has(message.author.id)
             && player._connection.voice.channel.members > 0 )
-            return super.respond("Luna is already busy with other listeners, join her!")
+            return super.respond("Luna is already busy with other listeners, join her!");
 
         // —— Join the user in his voice channel
         player._connection = await message.member.voice.channel.join()
-            .catch(err => { return super.respond("Unable to join voice channel") })
+            .catch((err) => { return super.respond("Unable to join voice channel") });
 
         // —— Youtube Playlist
         if(url.match(/^.*(youtu.be\/|list=)([^#\&\?]*).*/))
@@ -74,12 +74,13 @@ class Play extends Command {
         if(url.match(/(https?:\/\/open.spotify.com\/(track|user|artist|album)\/[a-zA-Z0-9]+(\/playlist\/[a-zA-Z0-9]+|)|spotify:(track|user|artist|album):[a-zA-Z0-9]+(:playlist:[a-zA-Z0-9]+|))/))
             await this.addSfVideo(url, player);
 
-        // —— No url, or not supported
+        // —— No url, or not supported
         if(!url.match(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/))
+        
             await this.search(query, player);
 
         if (!player._dispatcher)
-            this.play(player)
+            this.play(player);
     }
 
 
@@ -88,7 +89,7 @@ class Play extends Command {
 
         console.time("test");
         if (Object.entries(player._embed).length === 0)
-            this.createPlayer(player)
+            this.createPlayer(player);
 
         let stream = ytdl(player._queue[0].url, {
             filter: "audioonly",
@@ -100,24 +101,24 @@ class Play extends Command {
         player._dispatcher = player._connection.play(stream, {
             type: 'opus',
             bitrate: 'auto'
-        })
+        });
 
         player._dispatcher.on('start', () => {
             console.timeEnd("test");
-        })
+        });
 
         player._dispatcher.on('finish', () => {
 
             if (player._loop === true)
-                return this.play(player)
+                return this.play(player);
 
-            if (player._queue.length > 0 && player._loop == false) {
-                player._queue.shift()
-                return this.play(player)
+            if (player._queue.length > 0 && player._loop === false) {
+                player._queue.shift();
+                return this.play(player);
             }
 
             if (player._queue.length === 0)
-                return this.destroy()
+                return this.destroy();
         })
 
 
@@ -128,10 +129,10 @@ class Play extends Command {
         if( manual === true ) {
             player._queue > 0
                 ? player._queue.shift(player) && this.play(player)
-                : this.destroy(player)
+                : this.destroy(player);
         } else {
             if (player._loop === true) {
-                this.play(player)
+                this.play(player);
             } else {
                 player._queue > 0
                     ? player._queue.shift(player) && this.play(player)
@@ -143,22 +144,22 @@ class Play extends Command {
     // —— Resolve YouTube playlist —————————————————————————————————————————————
     async addYbPlaylist(player, url) {
 
-        const playlist = await ytpl(url, { limit: Infinity }).catch(err => {
+        const playlist = await ytpl(url, { limit: Infinity }).catch((err) => {
             return super.respond("It seems that this playlist cannot be imported.")
         })
 
         let ttlTime = 0,
             ttlLive = 0;
 
-        playlist.items = playlist.items.filter( (videos) => videos.title !== "[Private video]" && videos.title !== "[Deleted video]" )
+        playlist.items = playlist.items.filter((videos) => videos.title !== "[Private video]" && videos.title !== "[Deleted video]" );
 
-        playlist.items.map( video => {
+        playlist.items.map((video) => {
 
-            let duration = video.duration !== null ? video.duration.split(':').reverse().reduce((prev, curr, i) => prev + curr * Math.pow(60, i), 0) : "live"
+            let duration = video.duration !== null ? video.duration.split(':').reverse().reduce((prev, curr, i) => prev + curr * Math.pow(60, i), 0) : "live";
 
             ttlTime += typeof duration === 'number'
                 ? duration
-                : ttlLive ++
+                : ttlLive ++;
 
             player._queue.push({
                 "id" : video.id,
@@ -186,28 +187,28 @@ class Play extends Command {
                 name: "Total length :",
                 value: `${new Date(ttlTime * 1000).toISOString().substr(11, 8)} ${ttlLive > 0 && `& ${ttlLive} Lives` || ""}`
             }
-        }})
+        }});
 
     }
 
     async createPlayer(player) {
 
-        const now = player._queue[0]
+        const now = player._queue[0];
 
         player._embed = {
             title : now.title
-        }
+        };
 
-        super.respond({embed: player._embed})
+        super.respond({embed: player._embed});
     }
 
     destroy(player) {
-        player.queue      = []
-        player.connection = null
-        player.dispatcher = null
-        player.isPlaying  = false
-        player.embed      = {}
+        player.queue      = [];
+        player.connection = null;
+        player.dispatcher = null;
+        player.isPlaying  = false;
+        player.embed      = {};
     }
 }
 
-module.exports = Play
+module.exports = Play;

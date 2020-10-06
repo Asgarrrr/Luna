@@ -96,25 +96,23 @@ class Luna extends Client {
                 const local = new (require(`../resources/Languages/${file}`))(this);
 
                 this.language.set(file.replace(/\.[^/.]+$/, ""), local.language);
-            })
-
+            });
         })
     }
 
     login() {
-
         if(!this.config.token)
             throw new Error("No Token");
-        super.login(this.config.token)
+        super.login(this.config.token);
     }
 
     init() {
         this.loadCommands();
         this.loadEvents();
-        this.login()
-        this.loadLocal()
+        this.login();
+        this.loadLocal();
     }
 
 }
 
-module.exports = Luna
+module.exports = Luna;
