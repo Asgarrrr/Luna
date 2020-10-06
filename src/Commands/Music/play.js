@@ -36,12 +36,10 @@ class Play extends Command {
 
         console.log("—— Command start");
 
-        const URL    = args[0],
+        const url    = args[0],
               lang   = this.client.language.get("play"),
               query  = args.join(" "),
               player = message.guild.player;
-
-        console.log(URL);
 
         // —— Verifies if the user is connected to a voice channel
         if (!message.member.voice.channel)
