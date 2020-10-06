@@ -76,7 +76,7 @@ class Play extends Command {
 
         // —— No url, or not supported
         if(!url.match(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/))
-        
+
             await this.search(query, player);
 
         if (!player._dispatcher)
@@ -157,9 +157,10 @@ class Play extends Command {
 
             let duration = video.duration !== null ? video.duration.split(':').reverse().reduce((prev, curr, i) => prev + curr * Math.pow(60, i), 0) : "live";
 
-            ttlTime += typeof duration === 'number'
-                ? duration
-                : ttlLive ++;
+            if ( typeof duration === 'number' )
+                ttlTime += duration;
+            else
+                ttlLive++;
 
             player._queue.push({
                 "id" : video.id,
