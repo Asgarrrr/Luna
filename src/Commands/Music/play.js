@@ -53,27 +53,40 @@ class Play extends Command {
 
         // —— Join the user in his voice channel
         player._connection = await message.member.voice.channel.join()
-            .catch((err) => { return super.respond("Unable to join voice channel"); });
+        .catch((err) => { return super.respond("Unable to join voice channel"); });
 
-        // —— Youtube Playlist
-        if(url.match(/^.*(youtu.be\/|list=)([^#\&\?]*).*/))
-            await this.addYbPlaylist(player, url);
+        try {
 
-        // —— Youtube Video
-        if(url.match(/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})?$/))
-            await this.addYbVideo(url, player);
+            let clearUrl = new URL(url);
 
-        // —— Sondcloud
-        if(url.match(/^https?:\/\/(soundcloud\.com|snd\.sc)\/(.*)$/))
-            await this.addScVideo(url, player);
+            switch (clearUrl.hostname) {
 
-        // —— Spotify
-        if(url.match(/.*?spotify\.com\/track\/(\w+\?\w+=\w+)\s/))
-            await this.addSfVideo(url, player);
+                case "www.youtube.com":
 
-        // —— No url, or not supported
-        if(!url.match(/^?:http(s)?:\/\/(-\.)?([^\s\/?\.#]+\.?)+(\/[^\s]*)?$/i))
-            await this.search(query, player);
+                    clearUrl.searchParams.get("list")
+                    && await this.addYbPlaylist(player, url);
+
+                    clearUrl.searchParams.get("v")
+                    && await this.addYbVideo(player, url);
+
+                    break;
+
+                case "soundcloud.com":
+                    console.log("soundcloud is not yet supported");
+                    break;
+
+                case "open.spotify.com":
+                    console.log("spotify is not yet supported");
+                    break;
+
+                default:
+                    this.search(query, player);
+                    break;
+            }
+
+        } catch (err) {
+            this.search(query, player);
+        }
 
         if (!player._dispatcher)
             this.play(player);
@@ -99,7 +112,7 @@ class Play extends Command {
         });
 
         player._dispatcher.on('start', () => {
-            log
+            console.log("_Dispatcher : Start");
         });
 
         player._dispatcher.on('finish', () => {
@@ -138,22 +151,22 @@ class Play extends Command {
     // —— Resolve YouTube playlist —————————————————————————————————————————————
     async addYbPlaylist(player, url) {
 
-        let ttl = [0, 0];
-
         const playlist = await ytpl(url, { limit: Infinity }).catch((err) => {
             return super.respond("It seems that this playlist cannot be imported.");
         });
 
-        playlist.items = playlist.items.filter((videos) => videos.title !== "[Private video]" && videos.title !== "[Deleted video]" );
+        playlist.items
+        .filter((v) => (["[Private video]", "[Deleted video]"].includes(v.title)))
+        .map(  (v) => {
 
-        playlist.items.map((video) => {
-
-            let duration = video.duration !== null ? video.duration.split(':').reverse().reduce((prev, curr, i) => prev + curr * Math.pow(60, i), 0) : "live";
+            let duration = video.duration !== null
+                ? video.duration.split(':').reverse().reduce((prev, curr, i) => prev + curr * Math.pow(60, i), 0)
+                : "live";
 
             if ( typeof duration === 'number' )
-                ttlTime += duration;
+                player._ttl[0] += duration;
             else
-                ttlLive++;
+                player._ttl[1] ++;
 
             player._queue.push({
                 "id" : video.id,
