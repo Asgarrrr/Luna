@@ -19,6 +19,7 @@ Structures.extend("Guild", (Guild) => class extends Guild {
             _volume     : 1,
             _embed      : {},
             _loop       : false,
+            _ttl        : [0, 0],
         };
 
 
