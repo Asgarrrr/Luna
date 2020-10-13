@@ -10,6 +10,8 @@ const ytdl    = require("discord-ytdl-core"),
 // —— Simple js only module to search YouTube Doesn't need any login or GoogleAPI key.
       ytsr    = require("ytsr");
 
+      const fs = require("fs");
+
 // ██████ | ███████████████████████████████████████████████████████████ | ██████
 
 // —— Create a class for the command that extends the base command
@@ -57,17 +59,19 @@ class Play extends Command {
 
         try {
 
-            let clearUrl = new URL(url);
+            let validUrl = new URL(url);
 
-            switch (clearUrl.hostname) {
+            console.log(validUrl);
+
+            switch (validUrl.hostname) {
 
                 case "www.youtube.com":
 
-                    clearUrl.searchParams.get("list")
-                    && await this.addYbPlaylist(player, url);
+                    validUrl.searchParams.get("list")
+                    && await this.addYbPlaylist(player, validUrl);
 
-                    clearUrl.searchParams.get("v")
-                    && await this.addYbVideo(player, url);
+                    validUrl.searchParams.get("v")
+                    && await this.addYbVideo(player, validUrl);
 
                     break;
 
@@ -85,6 +89,7 @@ class Play extends Command {
             }
 
         } catch (err) {
+            console.log(err);
             this.search(query, player);
         }
 
@@ -92,12 +97,7 @@ class Play extends Command {
             this.play(player);
     }
 
-
-    // —— Play method ——————————————————————————————————————————————————————————
     play(player) {
-
-        if (Object.entries(player._embed).length === 0)
-            this.createPlayer(player);
 
         let stream = ytdl(player._queue[0].url, {
             filter           : "audioonly",
@@ -107,115 +107,46 @@ class Play extends Command {
         });
 
         player._dispatcher = player._connection.play(stream, {
-            type: 'opus',
-            bitrate: 'auto'
+            type    : 'opus',
+            bitrate : 'auto'
         });
 
         player._dispatcher.on('start', () => {
+
+
             console.log("_Dispatcher : Start");
         });
 
         player._dispatcher.on('finish', () => {
-
-            if (player._loop === true)
-                return this.play(player);
-
-            if (player._queue.length > 0 && player._loop === false) {
-                player._queue.shift();
-                return this.play(player);
-            }
-
-            if (player._queue.length === 0)
-                return this.destroy();
-        });
-
-    }
-
-    async next(player, manual = false) {
-
-        if( manual === true ) {
-            player._queue > 0
-                ? player._queue.shift(player) && this.play(player)
-                : this.destroy(player);
-        } else {
-            if (player._loop === true) {
-                this.play(player);
-            } else {
-                player._queue > 0
-                    ? player._queue.shift(player) && this.play(player)
-                    : this.destroy(player);
-            }
-        }
-    }
-
-    // —— Resolve YouTube playlist —————————————————————————————————————————————
-    async addYbPlaylist(player, url) {
-
-        const playlist = await ytpl(url, { limit: Infinity }).catch((err) => {
-            return super.respond("It seems that this playlist cannot be imported.");
-        });
-
-        playlist.items
-        .filter((v) => (["[Private video]", "[Deleted video]"].includes(v.title)))
-        .map(  (v) => {
-
-            let duration = video.duration !== null
-                ? video.duration.split(':').reverse().reduce((prev, curr, i) => prev + curr * Math.pow(60, i), 0)
-                : "live";
-
-            if ( typeof duration === 'number' )
-                player._ttl[0] += duration;
-            else
-                player._ttl[1] ++;
-
-            player._queue.push({
-                "id" : video.id,
-                "url": video.url_simple,
-                "title": video.title,
-                "thumbnail": video.thumbnail,
-                "duration": [video.duration, duration],
-                "author": {
-                    "name": video.author.name,
-                    "ref": video.author.ref
-                }
-            });
+            console.log("_Dispatcher : Finish");
         })
 
-        super.respond({embed: {
-            author : {
-                name: `${playlist.items.length} elements added to the queue`,
-            },
-            title: playlist.title,
-            url: playlist.url,
-            thumbnail : {
-                url : `https://i.ytimg.com/vi/${playlist.items[0].id}/mqdefault.jpg`
-            },
-            fields : {
-                name: "Total length :",
-                value: `${new Date(ttlTime * 1000).toISOString().substr(11, 8)} ${ttlLive > 0 && `& ${ttlLive} Lives` || ""}`
+        player._dispatcher.on('info', (info, format) => {
+            if (!format.url) {
+                console.log(info.video_id, format);
             }
-        }});
+        });
 
     }
 
-    async createPlayer(player) {
+    async addYbVideo(player, url) {
 
-        const now = player._queue[0];
+        const videoId   = url.searchParams.get("v");
 
-        player._embed = {
-            title : now.title
-        };
+        const { videoDetails } = await ytdl.getBasicInfo(videoId);
 
-        super.respond({embed: player._embed});
+        //console.log(videoDetails);
+
+        player._queue.push({
+            url : url.href
+        })
+
+
+        console.log(player._queue);
+
+
     }
 
-    destroy(player) {
-        player.queue      = [];
-        player.connection = null;
-        player.dispatcher = null;
-        player.isPlaying  = false;
-        player.embed      = {};
-    }
 }
 
 module.exports = Play;
