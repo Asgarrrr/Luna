@@ -1,5 +1,5 @@
 // —— The fastest and simplest library for SQLite3 in Node.js.
-const db = require('better-sqlite3')('database.sqlite');
+const db = require("better-sqlite3")("database.sqlite");
 
 db.exec(
     `
@@ -49,7 +49,7 @@ db.exec(
 
         CREATE TABLE IF NOT EXISTS Guilds (
             "_ID"           TEXT NOT NULL PRIMARY KEY,
-            "Local"         INT DEFAULT 0
+            "Local"         TEXT DEFAULT "English"
         );
     `
 );
