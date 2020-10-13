@@ -28,39 +28,27 @@ class Language extends Command {
     async run(message, args) {
 
         const client = this.client;
-
         // —— Retrieve the language information for this command
         const lang = client.language.get(message.guild.local).language();
-
-        const selector = await super.respond({embed : {
+        // —— Sending the request message
+        const selector = await super.respond({ embed : {
             description : lang[0]
         }});
-
-        ["🇬🇧", "🇫🇷"].forEach((e) => selector.react(e));
-
-        const filter = (reaction, user) => {
-            return ["🇬🇧", "🇫🇷"].includes(reaction.emoji.name) && user.id === message.author.id;
-        };
-
+        // —— React with available country flags
+        const flag = client.language.map((x) => selector.react(x.flag) && x.flag);
+        // —— Create a filter so that only the applicant and the available flags are processed
+        const filter = (reaction, user) => flag.includes(reaction.emoji.name) && user.id === message.author.id;
+        // —— Awaits language selection for one minute
         const collected = await selector.awaitReactions(filter, { max: 1, time: 60000 });
+        // —— Selects the language according to the emoji
+        const index = flag.indexOf(collected.first().emoji.name)
+        // —— Changing the language and saving in the database
+        message.guild.local = Array.from(client.language.keys())[index];
 
-        switch (collected.first().emoji.name) {
-
-            case "🇬🇧":
-                message.guild.local = "English";
-                await this.client.db.prepare('UPDATE Guilds SET Local = ? WHERE _ID = ?').run(0, message.guild.id);
-                break;
-
-            case "🇫🇷":
-                message.guild.local = "French";
-                await this.client.db.prepare('UPDATE Guilds SET Local = ? WHERE _ID = ?').run(1, message.guild.id);
-                break;
-
-            default:
-                break;
-        }
-
+        await this.client.db.prepare('UPDATE Guilds SET Local = ? WHERE _ID = ?').run(message.guild.local, message.guild.id);
+        // —— Deleting the message and sending the confirmation
         selector.delete({ reason: 'Command completed.' });
+
         super.respond(client.language.get(message.guild.local).language()[1]);
 
     }
