@@ -44,7 +44,6 @@ class Language extends Command {
         const index = flag.indexOf(collected.first().emoji.name)
         // —— Changing the language and saving in the database
         message.guild.local = Array.from(client.language.keys())[index];
-
         await this.client.db.prepare('UPDATE Guilds SET Local = ? WHERE _ID = ?').run(message.guild.local, message.guild.id);
         // —— Deleting the message and sending the confirmation
         selector.delete({ reason: 'Command completed.' });

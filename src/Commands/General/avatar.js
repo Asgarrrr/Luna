@@ -36,36 +36,19 @@ class Avatar extends Command {
 
         const client = this.client;
 
-        // —— In private, only the ID can be used.
-        if (message.channel.type === "dm" && !(parseInt(args[0], 10) && args[0].length === 18))
-            return message.channel.send(client.language.get("avatar", 0)[0]);
-
         // —— Try to retrieve an ID against a mention, a username or an ID, if nothing is found, use author's ID
-        const userId =
-            parseInt(args[0], 10) && args[0].length === 18 ? args[0] : NaN
-            || args[0] && args[0].replace(/\D/g,"") !== "" ? args[0] = args[0].replace(/\D/g,"") : NaN
-            || client.users.cache.find((x) => x.username === args[0]) && client.users.cache.find((x) => x.username === args[0]).id
-            || message.member.user.id;
-
-        // —— Retrieve a user's information through the API
-        const userData =
-            await fetch(`https://discord.com/api/users/${userId}`, {
-                headers: { "Authorization": `Bot ${client.config.token}`}
-            }).then((res) => res.json());
+        const user = await client.resolveUser(args[0]) || message.author;
 
         // —— Retrieve the language information for this command
-        const lang = client.language.get(message.guild.local).avatar(userData);
+        const lang = client.language.get(message.guild && message.guild.local || "English").avatar(user);
 
-        try {
-            super.respond({ embed: {
-                description: message.author.id === userData.id ? lang[1] : lang[2],
-                image: {
-                    url: `https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}.${userData.avatar.substring(0, 2) === "a_" ? "gif" : "png"}?size=4096`,
-                }
-            }});
-        } catch {
-            super.respond(lang[3]);
-        }
+        super.respond({ embed: {
+            description: message.author.id === user.id ? lang[1] : lang[2],
+            image: {
+                url: user.displayAvatarURL({dynamic: true, size: 4096})
+            }
+        }});
+
     }
 }
 

@@ -10,8 +10,6 @@ const ytdl    = require("discord-ytdl-core"),
 // —— Simple js only module to search YouTube Doesn't need any login or GoogleAPI key.
       ytsr    = require("ytsr");
 
-      const fs = require("fs");
-
 // ██████ | ███████████████████████████████████████████████████████████ | ██████
 
 // —— Create a class for the command that extends the base command
@@ -45,13 +43,13 @@ class Play extends Command {
 
         // —— Verifies if the user is connected to a voice channel
         if (!message.member.voice.channel)
-            return super.respond("You need to be a in voice channel");
+           return super.respond("You need to be a in voice channel");
 
         // —— Verifies that Luna is not already occupied
         if (player._connection
-            && !player._connection.voice.channel.members.has(message.author.id)
-            && player._connection.voice.channel.members > 0 )
-            return super.respond("Luna is already busy with other listeners, join her!");
+           && !player._connection.voice.channel.members.has(message.author.id)
+           && player._connection.voice.channel.members > 0 )
+           return super.respond("Luna is already busy with other listeners, join her!");
 
         // —— Join the user in his voice channel
         player._connection = await message.member.voice.channel.join()
@@ -61,18 +59,14 @@ class Play extends Command {
 
             let validUrl = new URL(url);
 
-            console.log(validUrl);
-
             switch (validUrl.hostname) {
 
                 case "www.youtube.com":
-
                     validUrl.searchParams.get("list")
                     && await this.addYbPlaylist(player, validUrl);
 
                     validUrl.searchParams.get("v")
                     && await this.addYbVideo(player, validUrl);
-
                     break;
 
                 case "soundcloud.com":
@@ -99,6 +93,8 @@ class Play extends Command {
 
     play(player) {
 
+        console.log(player._queue);
+
         let stream = ytdl(player._queue[0].url, {
             filter           : "audioonly",
             quality         : "highestaudio",
@@ -112,8 +108,6 @@ class Play extends Command {
         });
 
         player._dispatcher.on('start', () => {
-
-
             console.log("_Dispatcher : Start");
         });
 
@@ -121,29 +115,80 @@ class Play extends Command {
             console.log("_Dispatcher : Finish");
         })
 
-        player._dispatcher.on('info', (info, format) => {
-            if (!format.url) {
-                console.log(info.video_id, format);
-            }
-        });
+    }
+
+    // —— Resolve YouTube playlist —————————————————————————————————————————————
+    async addYbPlaylist(player, url) {
+
+            const playlist = await ytpl(url, { limit: Infinity }).catch((err) => {
+                return super.respond("It seems that this playlist cannot be imported.")
+            });
+
+            let ttlTime = 0,
+                ttlLive = 0;
+
+            playlist.items = playlist.items.filter((videos) => videos.title !== "[Private video]" && videos.title !== "[Deleted video]" );
+
+            playlist.items.map((video) => {
+
+                let duration = video.duration !== null ? video.duration.split(':').reverse().reduce((prev, curr, i) => prev + curr * Math.pow(60, i), 0) : "live";
+
+                if ( typeof duration === 'number' )
+                    ttlTime += duration;
+                else
+                    ttlLive++;
+
+                player._queue.push({
+                    "id" : video.id,
+                    "url": video.url_simple,
+                    "title": video.title,
+                    "thumbnail": video.thumbnail,
+                    "duration": [video.duration, duration],
+                    "author": {
+                        "name": video.author.name,
+                        "ref": video.author.ref
+                    }
+                })
+            })
+
+            super.respond({embed: {
+                author : {
+                    name: `${playlist.items.length} elements added to the queue`,
+                },
+                title: playlist.title,
+                url: playlist.url,
+                thumbnail : {
+                    url : `https://i.ytimg.com/vi/${playlist.items[0].id}/mqdefault.jpg`
+                },
+                fields : {
+                    name: "Total length :",
+                    value: `${new Date(ttlTime * 1000).toISOString().substr(11, 8)} ${ttlLive > 0 && `& ${ttlLive} Lives` || ""}`
+                }
+            }});
 
     }
 
     async addYbVideo(player, url) {
 
-        const videoId   = url.searchParams.get("v");
-
-        const { videoDetails } = await ytdl.getBasicInfo(videoId);
-
-        //console.log(videoDetails);
+        const { videoDetails } = await ytdl.getBasicInfo(
+            url.searchParams.get("v")
+        );
 
         player._queue.push({
-            url : url.href
+            url     : videoDetails.video_url,
+            title   : videoDetails.title,
+            author  : {
+                name     : videoDetails.author.name,
+                url      : videoDetails.author.user_url,
+                avatar   : videoDetails.author.avatar
+            },
+            media   : {
+                song    : videoDetails.media.song,
+                artist  : videoDetails.media.artist,
+                album   : videoDetails.media.album
+            },
+            length  : videoDetails.lengthSeconds
         })
-
-
-        console.log(player._queue);
-
 
     }
 

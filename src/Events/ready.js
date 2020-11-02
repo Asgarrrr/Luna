@@ -19,19 +19,19 @@ class Ready {
                 lang = client.language.get(client.config.Language || "English").ready();
 
         // —— Cleaning the console 💨
-        console.clear();
+        //console.clear();
 
         // —— Just an ascii header, because I like it.
         console.log(
             chalk.bold(
-                gradient("#8EA6DB", "#7354F6")([
-                    "    __                      ____        __     ",
-                    "   / /   __  ______  ____ _/ __ )____  / /_    ",
-                    "  / /   / / / / __ \\/ __ `/ __  / __ \\/ __/  ",
-                    " / /___/ /_/ / / / / /_/ / /_/ / /_/ / /_      ",
-                    "/_____/\\__,_/_/ /_/\\__,_/_____/\\____/\\__/  ",
-                    "\n",
-                ].join("\n"))
+                // gradient("#8EA6DB", "#7354F6")([
+                //     "    __                      ____        __     ",
+                //     "   / /   __  ______  ____ _/ __ )____  / /_    ",
+                //     "  / /   / / / / __ \\/ __ `/ __  / __ \\/ __/  ",
+                //     " / /___/ /_/ / / / / /_/ / /_/ / /_/ / /_      ",
+                //     "/_____/\\__,_/_/ /_/\\__,_/_____/\\____/\\__/  ",
+                //     "\n",
+                // ].join("\n"))
             )
             + lang.slice(0, 2).join("\n")
         );

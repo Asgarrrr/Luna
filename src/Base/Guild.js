@@ -12,19 +12,27 @@ Structures.extend("Guild", (Guild) => class extends Guild {
         super(client, data);
 
         this.player = {
-            _queue      : [],
-            _connection : null,
-            _dispatcher : null,
-            _isPlaying  : false,
-            _volume     : 1,
-            _embed      : {},
-            _loop       : false,
-            _ttl        : [0, 0],
+            _queue       : [],
+            _connection  : null,
+            _dispatcher  : null,
+            _isPlaying   : false,
+            _volume      : 1,
+            _embed       : {},
+            _loop        : false,
+            _ttl         : [0, 0],
         };
 
-        this.local =
-            (this.client.db.prepare("SELECT Local FROM Guilds WHERE _ID = ?").get(data.id)
-            || this.client.db.prepare("INSERT INTO Guilds VALUES(?, ?)").run(data.id, "English") && { Local : "English" }).Local;
+        const guildData = this.client.db.prepare("SELECT * FROM Guilds WHERE _ID = ?").get(data.id)
+
+        if (!guildData)
+            this.client.db.prepare("INSERT INTO Guilds('_ID') Values(?)").run(data.id)
+
+        const { local,
+                logChan } = guildData
+
+        this.local    = local || "English";
+        this.logchan = logChan
+
 
     }
 });

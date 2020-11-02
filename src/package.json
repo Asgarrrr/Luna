@@ -25,12 +25,12 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
-        "@discordjs/opus": "^0.3.2",
+        "@discordjs/opus": "^0.3.3",
         "better-sqlite3": "^7.1.1",
         "bufferutil": "^4.0.1",
         "chalk": "^4.1.0",
-        "discord-ytdl-core": "^4.0.8",
-        "discord.js": "^12.3.1",
+        "discord-ytdl-core": "^4.1.3",
+        "discord.js": "^12.4.1",
         "enquirer": "^2.3.6",
         "erlpack": "^0.1.3",
         "ffmpeg-static": "^4.2.7",
@@ -38,10 +38,10 @@
         "libsodium-wrappers": "^0.7.8",
         "sqlite3": "^5.0.0",
         "utf-8-validate": "^5.0.2",
-        "ytdl-core": "^3.2.2",
-        "ytdl-core-discord": "^1.2.1",
+        "ytdl-core": "^3.4.2",
+        "ytdl-core-discord": "^1.2.4",
         "ytpl": "^1.0.1",
-        "ytsr": "^1.0.1",
+        "ytsr": "^1.0.4",
         "zlib-sync": "^0.1.7"
     }
 }

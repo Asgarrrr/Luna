@@ -19,7 +19,8 @@ class Command {
             clientPerms : options.clientPerms || "SEND_MESSAGES",
             cooldown    : options.cooldown    || 1000,
             aliases     : options.aliases     || [],
-            allowDMs    : options.allowDMs    || false
+            allowDMs    : options.allowDMs    || false,
+            ownerOnly   : options.ownerOnly   || false
         };
 
         this.cooldown = new Map();

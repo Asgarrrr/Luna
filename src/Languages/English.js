@@ -49,6 +49,8 @@ class Language {
                 "You lack the required privileges to execute this command..."
             ],
 
+            guildBanAdd: () => ["Banning", "Reason", "No reason provided", "Executor" ],
+
             // ██████ COMMANDS █████████████████████████████████████████████████
 
             ping: (time, message) => [
@@ -70,6 +72,38 @@ class Language {
             language: () => [
                 "What language do you want to use?",
                 "I speak english now !"
+            ],
+
+            setlog: () => [
+                "The specified channel was not found",
+                "The channel could not be defined",
+                "This channel will be assigned to log messages"
+            ],
+
+            ban: () => [
+                "You need to choice a valid user",
+                "You cannot banner yourself",
+                "You cannot banish me;3",
+                "Target member is higher in role hierarchy than you.",
+                "Oww it's too powerful I can't !! èwé",
+                "Banning",
+                "Reason",
+                "No reason provided",
+                "Executor",
+                "Damn, I think something happened :(",
+            ],
+
+            kick: () => [
+                "You need to choice a valid user",
+                `You cannot kick yourself`,
+                `You cannot kick me !!`,
+                "Target member is higher in role hierarchy than you.",
+                "Too heavy, I can't put it outside ;(",
+                "Kicking",
+                "Reason",
+                "No reason provided",
+                "Executor",
+                "Damn, I think something happened :(",
             ],
 
             lvlUp : (lvl) => `You've leveled up to level **${lvl}**! Yeaa ^^`

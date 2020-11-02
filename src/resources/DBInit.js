@@ -49,7 +49,8 @@ db.exec(
 
         CREATE TABLE IF NOT EXISTS Guilds (
             "_ID"           TEXT NOT NULL PRIMARY KEY,
-            "Local"         TEXT DEFAULT "English"
+            "Local"         TEXT DEFAULT "English",
+            "logChan"       TEXT
         );
     `
 );
