@@ -1,7 +1,7 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Import base command
-const Command = require("../../Base/Command");
+const Command = require("../../Structures/Command");
 
 // —— A ytdl-core wrapper focused on efficiency for use in Discord music bots.
 const ytdl    = require("discord-ytdl-core"),

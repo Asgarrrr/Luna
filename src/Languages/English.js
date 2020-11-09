@@ -27,27 +27,34 @@ class Language {
             ],
 
             // —— Events > message.js ——————————————————————————————————————————
-            message : (message, cmd) =>  [
-                (tLeft) => `Please wait ${tLeft} second(s) to reuse the ${cmd.help.name} command.`,
-                "This command cannot be executed as a direct message.",
-                `You didn't provide any arguments, ${message.author} !`,
-                {
-                    title : `${cmd.help.name.replace(/\b\w/g, (l) => l.toUpperCase())}`,
-                    description: `> *${cmd.help.description}*`,
-                    fields : [
-                        {
-                            name: "Syntax",
-                            value:`\`\`\`${cmd.help.usage}\`\`\``
-                        },
-                        {
-                            name: "Examples use",
-                            value:`\`\`\`${cmd.help.exemple && cmd.help.exemple.map((x) => `${client.config.prefix}${cmd.help.name} ${x}`).join("\n") || "No examples provided"}\`\`\``
-                        },
-                    ]
-                 },
-                "I do not have sufficient rights to execute this command.",
-                "You lack the required privileges to execute this command..."
-            ],
+            message : (message, cmd) => {
+
+            },
+
+
+
+
+            // [
+            //     (tLeft) => `Please wait ${tLeft} second(s) to reuse the ${cmd.name} command.`,
+            //     "This command cannot be executed as a direct message.",
+            //     `You didn't provide any arguments, ${message.author} !`,
+            //     {
+            //         title : `${cmd.name.replace(/\b\w/g, (l) => l.toUpperCase())}`,
+            //         description: `> *${cmd.description}*`,
+            //         fields : [
+            //             {
+            //                 name: "Syntax",
+            //                 value:`\`\`\`${cmd.usage}\`\`\``
+            //             },
+            //             {
+            //                 name: "Examples use",
+            //                 value:`\`\`\`${cmd.exemple && cmd.exemple.map((x) => `${client.config.prefix}${cmd.name} ${x}`).join("\n") || "No examples provided"}\`\`\``
+            //             },
+            //         ]
+            //      },
+            //     "I do not have sufficient rights to execute this command.",
+            //     "You lack the required privileges to execute this command..."
+            // ],
 
             guildBanAdd: () => ["Banning", "Reason", "No reason provided", "Executor" ],
 
@@ -92,6 +99,14 @@ class Language {
                 "Executor",
                 "Damn, I think something happened :(",
             ],
+
+            unban: () => [
+                "You need to choice a valid user",
+                "You can't unban yourself.",
+                "User was not found in the list of banned members",
+
+            ],
+
 
             kick: () => [
                 "You need to choice a valid user",

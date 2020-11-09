@@ -1,13 +1,14 @@
 // —— Import base command
-const Command = require("../../Base/Command");
+const { DiscordAPIError } = require("discord.js");
+const Command = require("../../Structures/Command");
 
 class Unban extends Command {
 
     constructor(client) {
         super(client, {
             name        : "unban",
-            description : "unban a user",
-            usage       : "unban @user reason",
+            description : "unban",
+            usage       : "unban @user",
             args        : true,
             category    : "Moderation",
             cooldown    : 5000,
@@ -17,27 +18,45 @@ class Unban extends Command {
         });
     }
 
-    async run(message, args) {
+    async run(message, [user]) {
 
         const client = this.client,
-              lang   = client.language.get("unban");
+              lang   = client.language.get(message.guild.local).unban();
 
-        // —— Try to retrieve an ID against a mention, a username or an ID
-        const target = await client.resolveUser(args[0])
+        /// —— Try to retrieve an ID against a mention, a username or an ID
+        const target = await client.resolveUser(user);
+
+        console.log(target);
 
         if(!target)
-            return super.respond("You need to choice user");
+            return super.respond(lang[0]);
+
+        if (target.id === message.author.id)
+            return super.respond(lang[1]);
+
+        if (target.id === this.client.user.id)
+            return super.respond(lang[2]);
 
         const banlist = await message.guild.fetchBans();
 
         if(!banlist.find((b) => b.user.id === target.id))
-            return super.respond("not find")
+            return super.respond(lang[3]);
 
-        message.guild.members.unban(target).catch(() => {
+        message.guild.members.unban(target)
+        .then((data) => {
+            message.guild.logchan
+            && message.guild.channels.cache.get(message.guild.logchan).send({
+                "embed": {
+                    title: `${data.username}#${data.discriminator} \`${data.id}\``,
+                }
+            })
+        })
+        .catch(() => {
             super.respond("user not unaban")
         });
 
     }
 }
+
 
 module.exports = Unban;

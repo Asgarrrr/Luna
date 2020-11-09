@@ -1,7 +1,7 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Import base command
-const Command = require("../../Base/Command");
+const Command = require("../../Structures/Command");
 
 // ██████ | ███████████████████████████████████████████████████████████ | ██████
 
@@ -26,32 +26,27 @@ class Language extends Command {
 
     async run(message, [channel]) {
 
-        const client = this.client;
         // —— Retrieve the language information for this command
-        const lang = client.language.get(message.guild.local).setlog();
+        const lang = this.client.language.get(message.guild.local).setlog();
 
+        channel = await this.client.resolveChannel(channel, message.guild) || message.channel;
 
-        if (channel) {
-            channel = await client.resolveChannel(channel)
-            if (!channel)
-                return super.respond(lang[0])
-        } else {
-            channel = message.channel
-        }
+        if (!channel)
+            return super.respond(lang[0]);
 
         try {
             // —— Changing the logChan and saving in the database
-            message.guild.logChan = channel.id
+            message.guild.logChan = channel.id;
             await this.client.db.prepare('UPDATE Guilds SET logChan = ? WHERE _ID = ?').run(channel.id, message.guild.id);
 
         } catch (error) {
 
             console.log(error);
-            return super.respond(lang[1])
+            return super.respond(lang[1]);
 
         }
 
-        message.guild.channels.cache.get(message.guild.logChan).send(lang[2])
+        message.guild.channels.cache.get(message.guild.logChan).send(lang[2]);
 
     }
 }

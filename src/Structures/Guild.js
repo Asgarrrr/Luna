@@ -1,7 +1,7 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— A powerful library for interacting with the Discord API
-const { Structures } = require('discord.js');
+const { Structures } = require("discord.js");
 
 // ██████ | ███████████████████████████████████████████████████████████ | ██████
 
@@ -22,16 +22,16 @@ Structures.extend("Guild", (Guild) => class extends Guild {
             _ttl         : [0, 0],
         };
 
-        const guildData = this.client.db.prepare("SELECT * FROM Guilds WHERE _ID = ?").get(data.id)
+        const guildData = this.client.db.prepare("SELECT * FROM Guilds WHERE _ID = ?").get(data.id);
 
         if (!guildData)
-            this.client.db.prepare("INSERT INTO Guilds('_ID') Values(?)").run(data.id)
+            this.client.db.prepare("INSERT INTO Guilds('_ID') Values(?)").run(data.id);
 
         const { local,
-                logChan } = guildData
+                logChan } = guildData;
 
-        this.local    = local || "English";
-        this.logchan = logChan
+        this.local   = local || "English";
+        this.logchan = logChan;
 
 
     }

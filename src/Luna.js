@@ -10,7 +10,7 @@
 
 // ██████ Integrations █████████████████████████████████████████████████████████
 
-const Luna = require("./Base/Luna");
+const Luna = require("./Structures/Luna");
 
 // ██████ Initialization ███████████████████████████████████████████████████████
 
@@ -18,14 +18,14 @@ const client = new Luna();
 
 client.init();
 
-process.on('rejectionHandled', (err) => {
+process.on("rejectionHandled", (err) => {
     console.error(err);
 });
 
-process.on('unhandledRejection', (err) => {
+process.on("unhandledRejection", (err) => {
     console.error(err);
 });
 
-process.on('uncaughtException', (err) => {
+process.on("uncaughtException", (err) => {
     console.error(err);
 });

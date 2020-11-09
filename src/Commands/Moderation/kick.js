@@ -1,5 +1,5 @@
 // —— Import base command
-const Command = require("../../Base/Command");
+const Command = require("../../Structures/Command");
 
 class Kick extends Command {
 
