@@ -21,7 +21,7 @@ class Command {
 		this.ownerOnly   = options.ownerOnly   || false;
         this.nsfw        = options.nsfw        || false;
 
-        this.cooldown = new Map();
+        this.cmdCooldown = new Map();
 
 	}
 
@@ -31,13 +31,10 @@ class Command {
 
     startCooldown(user) {
 
-        console.log(this.cooldown);
-
-
-        this.cooldown.set(user, Date.now() + this.cooldown);
+        this.cmdCooldown.set(user, this.cooldown);
 
         setTimeout(() => {
-            this.cooldown.delete(user);
+            this.cmdCooldown.delete(user);
         }, this.cooldown);
     }
 
