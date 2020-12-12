@@ -13,7 +13,7 @@ class guildBanAdd {
 
         const data = await guild.fetchAuditLogs({
             limit: 1,
-            type: 'MEMBER_BAN_ADD',
+            type: "MEMBER_BAN_ADD",
         });
 
         const ban  = data.entries.first(),
@@ -36,12 +36,12 @@ class guildBanAdd {
                     value: `${ban.executor.username}#${ban.executor.discriminator} \`${ban.executor.id}\``,
                 }]
             }
-        })
+        });
 
-        if (client.db.prepare('SELECT 1 FROM Members WHERE _ID = ? LIMIT 1').get(`${guild.id}-${ban.target.id}`))
-            client.createUser(guild, ban.target)
+        if (client.db.prepare("SELECT 1 FROM Members WHERE _ID = ? LIMIT 1").get(`${guild.id}-${ban.target.id}`))
+            client.createUser(guild, ban.target);
 
-        client.db.prepare('UPDATE Members SET Ban = 1 WHERE _ID = ?').run(`${message.guild.id}-${ban.target.id}`)
+        client.db.prepare("UPDATE Members SET Ban = 1 WHERE _ID = ?").run(`${guild.id}-${ban.target.id}`);
 
     }
 }
