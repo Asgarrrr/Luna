@@ -63,11 +63,11 @@ class Ready {
                 // —— Every x seconds, the activity (and its type) will change.
                 setInterval(() => {
                     // —— Generates a random number between 0 and the length of the game array
-                    const index = parseInt(Math.floor(Math.random() * (games.length)), 10);
+                    const index = Math.floor(Math.random() * (games.length));
                     // —— Redefined the bot's activity
-                    client.user.setActivity(games[index].name, {
-                        type: games[index].type,
-                        url : games[index].url || "https://www.twitch.tv/"
+                    client.user.setActivity(games[parseInt(index, 10)].name, {
+                        type: games[parseInt(index, 10)].type,
+                        url : games[parseInt(index, 10)].url || "https://www.twitch.tv/"
                     });
                 }, ((typeof interval === "number" && interval) || 30) * 1000);
         }
