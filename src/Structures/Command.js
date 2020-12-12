@@ -1,5 +1,5 @@
 
-const { Permissions } = require('discord.js');
+const { Permissions } = require("discord.js");
 
 class Command {
 
@@ -9,8 +9,8 @@ class Command {
 
 		this.name        = options.name        || null;
 		this.aliases     = options.aliases     || [];
-        this.description = options.description || 'No information specified.';
-        this.category    = options.category    || 'General';
+        this.description = options.description || "No information specified.";
+        this.category    = options.category    || "General";
         this.args        = options.args        || false;
         this.usage       = options.usage       || null;
         this.cooldown    = options.cooldown    || 1000;
@@ -46,6 +46,6 @@ class Command {
         return this.message.channel.send(message);
     }
 
-};
+}
 
 module.exports = Command;

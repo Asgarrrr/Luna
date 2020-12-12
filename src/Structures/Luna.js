@@ -1,18 +1,19 @@
 
 // ██████ Integrations █████████████████████████████████████████████████████████
 
-// —— A powerful library for interacting with the Discord API
+// —— A powerful library for interacting with the Discord API.
 const { Client, Collection } = require("discord.js");
 // —— Terminal string styling done right.
 const chalk                  = require("chalk");
+// —— Provides utilities for working with file and directory paths.
+const path                   = require("path");
+// —— Glob implementation in JavaScript.
+const glob                   = require("glob");
 
-const Guild                  = require("../Structures/Guild");
+// —————————————————————————————————————————————————————————————————————————————
 
-const path = require('path');
-
-const glob = require('glob');
-
-const Command = require('./Command');
+const Guild   = require("../Structures/Guild");
+const Command = require("./Command");
 
 // ██████ Initialization ███████████████████████████████████████████████████████
 
@@ -65,7 +66,7 @@ class Luna extends Client {
 
             for (const file of files) {
 
-                delete require.cache[file];
+                delete require.cache[[`${file}`]];
                 const command = new (require(file))(this),
                       filename = file.slice(file.lastIndexOf("/")+1, file.length-3);
 
@@ -75,10 +76,10 @@ class Luna extends Client {
                 this.commands.set(command.name, command);
 
                 command.aliases.length
-                    && command.aliases.map(alias => this.aliases.set(alias, command.name))
+                    && command.aliases.map((alias) => this.aliases.set(alias, command.name));
             }
 
-        })
+        });
 
     }
 

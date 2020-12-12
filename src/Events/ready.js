@@ -63,7 +63,7 @@ class Ready {
                 // —— Every x seconds, the activity (and its type) will change.
                 setInterval(() => {
                     // —— Generates a random number between 0 and the length of the game array
-                    const index = Math.floor(Math.random() * (games.length));
+                    const index = parseInt(Math.floor(Math.random() * (games.length)));
                     // —— Redefined the bot's activity
                     client.user.setActivity(games[index].name, {
                         type: games[index].type,
