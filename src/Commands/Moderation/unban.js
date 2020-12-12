@@ -49,10 +49,10 @@ class Unban extends Command {
                 "embed": {
                     title: `${data.username}#${data.discriminator} \`${data.id}\``,
                 }
-            })
+            });
         })
         .catch(() => {
-            super.respond("user not unaban")
+            super.respond("user not unaban");
         });
 
     }
