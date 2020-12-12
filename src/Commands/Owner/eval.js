@@ -33,10 +33,10 @@ class Eval extends Command {
 
         } catch (error) {
 
-            let errorDetails = error;
+            let errorDetails = error.toString();
 
-            if( error.includes(this.client.token) )
-                errorDetails = error.replace(this.client.token, "gm", "*Token*");
+            if( errorDetails.includes(this.client.token) )
+                errorDetails = errorDetails.replace(this.client.token, "gm", "*Token*");
 
             message.channel.send(errorDetails, { code: "js" });
 
