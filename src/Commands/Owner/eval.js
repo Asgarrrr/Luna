@@ -27,18 +27,18 @@ class Eval extends Command {
                 evaled = require("util").inspect(evaled, { depth: 0 });
 
             if( evaled.includes(this.client.token) )
-                evaled = evaled.replace(new RegExp(this.client.token, "g"), '*Token*');
+                evaled = evaled.replace(this.client.token, "gm", "*Token*");
 
             message.channel.send(evaled, { code: "js" });
 
         } catch (error) {
 
-            error = error.toString();
+            let errorDetails = error;
 
             if( error.includes(this.client.token) )
-                error = error.replace(new RegExp(this.client.token, "g"), '*Token*');
+                errorDetails = error.replace(this.client.token, "gm", "*Token*");
 
-            message.channel.send(error, { code: "js" });
+            message.channel.send(errorDetails, { code: "js" });
 
         }
 
