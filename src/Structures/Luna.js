@@ -93,14 +93,14 @@ class Luna extends Client {
 
             for (const file of files) {
 
-                delete require.cache[file];
+                delete require.cache[[`${file}`]];
                 const event     = new (require(file))(this),
                       eventname = file.slice(file.lastIndexOf("/")+1, file.length-3);
 
                 super.on(eventname, (...args) => event.run(...args));
 
             }
-        })
+        });
 
     }
 
@@ -112,15 +112,14 @@ class Luna extends Client {
 
             for (const file of files) {
 
-                delete require.cache[file];
+                delete require.cache[[`${file}`]];
                 const local     = new (require(file))(this),
                       localname = file.slice(file.lastIndexOf("/")+1, file.length-3);
 
                 this.language.set(localname, local.language);
 
             }
-
-        })
+        });
 
     }
 
