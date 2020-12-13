@@ -41,10 +41,10 @@ class Language extends Command {
         // —— Awaits language selection for one minute
         const collected = await selector.awaitReactions(filter, { max: 1, time: 60000 });
         // —— Selects the language according to the emoji
-        const index = flag.indexOf(collected.first().emoji.name)
+        const index = flag.indexOf(collected.first().emoji.name);
         // —— Changing the language and saving in the database
-        message.guild.local = Array.from(client.language.keys())[index];
-        await this.client.db.prepare('UPDATE Guilds SET Local = ? WHERE _ID = ?').run(message.guild.local, message.guild.id);
+        message.guild.local = Array.from(client.language.keys())[parseInt(index, 10)];
+        await this.client.db.prepare("UPDATE Guilds SET Local = ? WHERE _ID = ?").run(message.guild.local, message.guild.id);
         // —— Deleting the message and sending the confirmation
         selector.delete({ reason: "Command completed." });
 
