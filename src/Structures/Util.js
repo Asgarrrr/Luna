@@ -1,4 +1,9 @@
+// ██████ Integrations █████████████████████████████████████████████████████████
 
+// —— Terminal string styling done right.
+const chalk = require("chalk");
+
+// ██████ | ███████████████████████████████████████████████████████████ | ██████
 
 class Util {
 
@@ -8,14 +13,14 @@ class Util {
 
         return !isNaN(search) || search.match(/^<@(!|&)?(\d+)>$/)
             ? (
-                search = search.replace(/\D/g,''),
+                search = search.replace(/\D/g,""),
                 guild
                     ? guild.members.cache.get(search)
                     : await this.users.fetch(search).catch(() => {})
             )
             : (guild ? guild.members : this.users).cache.find((x) => x.username === search);
 
-    };
+    }
 
     async resolveChannel(search, guild){
 
@@ -42,10 +47,10 @@ class Util {
                 .run(`${guild.id}-${user.id}`, user.id, guild.id, guild.name, JSON.stringify(user._roles), user.joinedTimestamp);
 
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
 
-        return user
+        return user;
 
     }
 
@@ -66,9 +71,6 @@ class Util {
                     .prepare("INSERT INTO Event ('Type', 'DATA') VALUES ('WARNING', ?)")
                     .run(message);
             } break;
-
-            default:
-                break;
         }
     }
 }
