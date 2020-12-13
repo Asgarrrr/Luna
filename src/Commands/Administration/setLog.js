@@ -11,7 +11,7 @@ class Language extends Command {
     constructor(client) {
         super(client, {
             name        : "setlog",
-            description : "defined the log room",
+            description : "Defined the log room",
             exemple     : [],
             args        : false,
             category    : "Administration",
@@ -29,7 +29,7 @@ class Language extends Command {
         // —— Retrieve the language information for this command
         const lang = this.client.language.get(message.guild.local).setlog();
 
-        channel = await this.client.resolveChannel(channel, message.guild) || message.channel;
+        channel = await this.client.resolveChannel(channel, message.guild) || message.channel;
 
         if (!channel)
             return super.respond(lang[0]);
@@ -37,7 +37,7 @@ class Language extends Command {
         try {
             // —— Changing the logChan and saving in the database
             message.guild.logChan = channel.id;
-            await this.client.db.prepare('UPDATE Guilds SET logChan = ? WHERE _ID = ?').run(channel.id, message.guild.id);
+            await this.client.db.prepare("UPDATE Guilds SET logChan = ? WHERE _ID = ?").run(channel.id, message.guild.id);
 
         } catch (error) {
 
