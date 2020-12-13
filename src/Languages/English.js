@@ -30,7 +30,9 @@ class Language {
 
             message : (message, cmd) => [
                 (tLeft) => `Please wait ${tLeft} second(s) to reuse the ${cmd.name} command.`,
-                "This command cannot be executed as a direct message.",
+                "Sorry, this command can only be used by the bot owners.",
+                "Sorry, this command can only be used in a discord server.",
+                "Sorry, this command can only be ran in a NSFW marked channel.",
                 `You didn't provide any arguments, ${message.author} !`,
                 {
                     title : `${cmd.name.replace(/\b\w/g, (l) => l.toUpperCase())}`,
@@ -49,6 +51,7 @@ class Language {
                 "I do not have sufficient rights to execute this command.",
                 "You lack the required privileges to execute this command..."
             ],
+
 
             guildBanAdd: () => ["Banning", "Reason", "No reason provided", "Executor" ],
 

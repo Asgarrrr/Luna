@@ -47,30 +47,30 @@ class Message {
                    .then((msg) => msg.delete({ timeout: 10000 }));
 
         if (command.ownerOnly && client.config.Master !== message.author.id)
-            return message.reply('Sorry, this command can only be used by the bot owners.');
+            return message.reply(lang[1]);
 
         // —— Checks if the command can be executed in DM
         if (command.guildOnly && !message.guild)
-			return message.reply('Sorry, this command can only be used in a discord server.');
+			return message.reply(lang[2]);
 
 		if (command.nsfw && !message.channel.nsfw)
-            return message.reply('Sorry, this command can only be ran in a NSFW marked channel.');
+            return message.reply(lang[3]);
 
         // —— Checks if arguments are required and if they are present
         if (command.args && !args.length)
-            return message.channel.send(!command.usage || "" ? lang[2] : { embed : lang[3] });
+            return message.channel.send(!command.usage || "" ? lang[4] : { embed : lang[5] });
 
         if (message.guild) {
 
             const userPerms = message.channel.permissionsFor(message.member).missing(command.userPerms);
 
             if (userPerms.length)
-                return message.reply(``)
+                return message.reply(lang[6])
 
             const botPerms = message.channel.permissionsFor(client.user).missing(command.botPerms);
 
 			if (botPerms.length)
-				return message.reply(``);
+				return message.reply(lang[7]);
 
         }
 
