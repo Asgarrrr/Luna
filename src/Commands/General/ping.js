@@ -83,7 +83,7 @@ class Ping extends Command {
 
                 const res = data.components.find((x) => x.name === c[0]);
 
-                components[i][1] = res ? res.status === "operational" ? "✔" : "✗" : "?";
+                components[parseInt(i, 10)][1] = res ? res.status === "operational" ? "✔" : "✗" : "?";
 
             });
 
