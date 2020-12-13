@@ -28,14 +28,14 @@ class Util {
 
         return !isNaN(search) || search.match(/^<#(!|&)?(\d+)>$/)
             ? (
-                search = search.replace(/\D/g,''),
+                search = search.replace(/\D/g,""),
                 guild
                     ? guild.channels.cache.get(search)
                     : await this.channels.fetch(search).catch(() => {})
             )
             : (guild ? guild.channels : this.channels).cache.find((x) => x.name === search);
 
-    };
+    }
 
     async createUser(user, guild) {
 
@@ -57,16 +57,16 @@ class Util {
     async logger(type = "INFO", message) {
 
         if (this.config.logger !== true)
-            return
+            return;
 
         const time = `${chalk.grey(new Date().toLocaleTimeString())}`;
 
         switch (type) {
-            case "INFO": console.log(`${time} │ ${message}`);
+            case "INFO": { console.log(`${time} │ ${message}`) };
                 break;
 
             case "WARNING": {
-                console.log(`${time} ⨯ ${chalk.hex("#ba8b00")(message)}`);
+                console.log(`${time} ⨯ ${chalk.hex("#ba8b00")(message)}`);
                 this.db
                     .prepare("INSERT INTO Event ('Type', 'DATA') VALUES ('WARNING', ?)")
                     .run(message);
