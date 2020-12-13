@@ -65,7 +65,7 @@ class Message {
             const userPerms = message.channel.permissionsFor(message.member).missing(command.userPerms);
 
             if (userPerms.length)
-                return message.reply(lang[6])
+                return message.reply(lang[6]);
 
             const botPerms = message.channel.permissionsFor(client.user).missing(command.botPerms);
 
