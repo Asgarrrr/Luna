@@ -62,11 +62,11 @@ class Ban extends Command {
                         value: `${message.author.username}#${message.author.discriminator} \`${message.author.id}\``,
                     }]
                 }
-            })
+            });
 
         })
         .catch((err) => {
-            super.respond(lang[6])
+            super.respond(lang[6]);
         });
 
     }
