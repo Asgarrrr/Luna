@@ -22,17 +22,18 @@ Structures.extend("Guild", (Guild) => class extends Guild {
             _ttl         : [0, 0],
         };
 
-        const guildData = this.client.db.prepare("SELECT * FROM Guilds WHERE _ID = ?").get(data.id);
+        let guildData;
 
-        if (!guildData)
+        if (!(guildData = this.client.db.prepare("SELECT * FROM Guilds WHERE _ID = ?").get(data.id))) {
             this.client.db.prepare("INSERT INTO Guilds('_ID') Values(?)").run(data.id);
+            guildData = {
+                Local   : "English",
+                logChan : null
+            }
+        }
 
-        const { local,
-                logChan } = guildData;
-
-        this.local   = local || "English";
-        this.logchan = logChan;
-
+        this.local   = guildData.Local || "English";
+        this.logchan = guildData
 
     }
 });
