@@ -41,7 +41,7 @@ class Ban extends Command {
         if (!target.bannable)
             return super.respond(lang[4]);
 
-        reason = reason ? reason.join(" ") : null;
+        reason = reason.length ? reason.join(" ") : null;
 
         message.guild.members.ban(target, { reason })
         .then((data) => {
