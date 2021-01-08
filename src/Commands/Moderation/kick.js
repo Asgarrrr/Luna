@@ -41,7 +41,7 @@ class Kick extends Command {
         if (!target.kickable)
             return super.respond(lang[4]);
 
-        reason = reason ? reason.join(" ") : null;
+        reason = reason.length ? reason.join(" ") : null;
 
         target.kick(reason)
         .then((data) => {
