@@ -1,5 +1,4 @@
 // —— Import base command
-const { DiscordAPIError } = require("discord.js");
 const Command = require("../../Structures/Command");
 
 class Unban extends Command {
