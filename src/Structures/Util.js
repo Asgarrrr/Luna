@@ -5,9 +5,7 @@ const chalk = require("chalk");
 
 // ██████ | ███████████████████████████████████████████████████████████ | ██████
 
-class Util {
-
-    async resolveUser(search, guild){
+    async function resolveUser(search, guild){
 
         if (!search) return;
 
@@ -22,7 +20,7 @@ class Util {
 
     }
 
-    async resolveChannel(search, guild){
+    async function resolveChannel(search, guild){
 
         if (!search) return;
 
@@ -37,7 +35,7 @@ class Util {
 
     }
 
-    async createUser(user, guild) {
+    async function createUser(user, guild) {
 
         user = await this.resolveUser(user.id, guild);
 
@@ -54,7 +52,7 @@ class Util {
 
     }
 
-    async logger(type = "INFO", message) {
+    async function logger(type = "INFO", message) {
 
         if (this.config.logger !== true)
             return;
@@ -73,6 +71,20 @@ class Util {
             } break;
         }
     }
-}
 
-module.exports = Util;
+    function formatTime(seconds) {
+        const h = Math.floor(seconds / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const s = Math.round(seconds % 60);
+        return [
+          h,
+          m > 9 ? m : (h ? '0' + m : m || '0'),
+          s > 9 ? s : '0' + s
+        ].filter(Boolean).join(':');
+      }
+
+
+
+module.exports = {
+    formatTime
+};
