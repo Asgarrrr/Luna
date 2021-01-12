@@ -47,7 +47,7 @@ class Ping extends Command {
             cooldown    : 5000,
             aliases     : ["🏓", "pong"],
             permLevel   : 0,
-            permission  : "READ_MESSAGES",
+            permission  : ["READ_MESSAGES", "SEND_MESSAGES"],
             allowDMs    : true
         });
     }
@@ -79,13 +79,11 @@ class Ping extends Command {
 
             var data = await (await fetch(url)).json();
 
-            components.map((c, i) => {
-
+            components.forEach((c, i) => {
                 const res = data.components.find((x) => x.name === c[0]);
 
                 components[parseInt(i, 10)][1] = res ? res.status === "operational" ? "✔" : "✗" : "?";
-
-            });
+            })
 
             // —— Adds component information to the embed if available
             dataEmbed.fields.push({
