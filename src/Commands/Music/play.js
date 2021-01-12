@@ -1,20 +1,20 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
+const ytdl    = require("discord-ytdl-core")
+// —— Simple js only module to resolve YouTube playlist ids Doesn't need any login or GoogleAPI key.
+    , ytpl    = require("ytpl")
+// —— Simple js only module to search YouTube Doesn't need any login or GoogleAPI key.
+    , ytsr    = require("ytsr")
+
+    , { formatTime } = require("../../Structures/Util");
+
+
+const chalk = require("chalk");
+
 // —— Import base command
 const Command = require("../../Structures/Command");
 
-// —— A ytdl-core wrapper focused on efficiency for use in Discord music bots.
-const ytdl    = require("discord-ytdl-core"),
-// —— Simple js only module to resolve YouTube playlist ids Doesn't need any login or GoogleAPI key.
-      ytpl    = require("ytpl"),
-// —— Simple js only module to search YouTube Doesn't need any login or GoogleAPI key.
-      ytsr    = require("ytsr");
-
-// ██████ | ███████████████████████████████████████████████████████████ | ██████
-
-// —— Create a class for the command that extends the base command
 class Play extends Command {
-
     constructor(client) {
         super(client, {
             name        : "play",
@@ -31,167 +31,140 @@ class Play extends Command {
             allowDMs    : true
         });
     }
-
     async run(message, args) {
 
-        console.log("—— Command start");
-
-        const url    = args[0],
-              lang   = this.client.language.get("play"),
-              query  = args.join(" "),
-              player = message.guild.player;
+        const client = this.client
+            , lang   = this.client.language.get("play")
+            , player = message.guild.player
 
         // —— Verifies if the user is connected to a voice channel
         if (!message.member.voice.channel)
-           return super.respond("You need to be a in voice channel");
+            return super.respond("You need to be a in voice channel");
 
-        // —— Verifies that Luna is not already occupied
         if (player._connection
-           && !player._connection.voice.channel.members.has(message.author.id)
-           && player._connection.voice.channel.members > 0 )
-           return super.respond("Luna is already busy with other listeners, join her!");
+            && !player._connection.voice.channel.members.has(message.author.id)
+            && player._connection.voice.channel.members > 0 )
+            return super.respond("Luna is already busy with other listeners, join her!");
 
-        // —— Join the user in his voice channel
         player._connection = await message.member.voice.channel.join()
-        .catch((err) => { return super.respond("Unable to join voice channel"); });
+            .catch((err) => { return super.respond("Unable to join voice channel"); });
 
-        try {
-
-            let validUrl = new URL(url);
-
-            switch (validUrl.hostname) {
-
-                case "www.youtube.com":
-                    validUrl.searchParams.get("list")
-                    && await this.addYbPlaylist(player, validUrl);
-
-                    validUrl.searchParams.get("v")
-                    && await this.addYbVideo(player, validUrl);
-                    break;
-
-                case "soundcloud.com":
-                    console.log("soundcloud is not yet supported");
-                    break;
-
-                case "open.spotify.com":
-                    console.log("spotify is not yet supported");
-                    break;
-
-                default:
-                    this.search(query, player);
-                    break;
-            }
-
-        } catch (err) {
-            console.log(err);
-            this.search(query, player);
-        }
+        await this.handleQuery(args[0], player);
 
         if (!player._dispatcher)
             this.play(player);
     }
 
-    play(player) {
+    async play(player) {
 
-        console.log(player._queue);
+        console.log("———");
 
         let stream = ytdl(player._queue[0].url, {
             filter           : "audioonly",
             quality         : "highestaudio",
             opusEncoded     : true,
-            highWaterMark   : 1 << 25
+            highWaterMark   : 1024 * 1024 * 10
         });
 
         player._dispatcher = player._connection.play(stream, {
-            type    : 'opus',
-            bitrate : 'auto'
+            type    : "opus",
+            bitrate : "auto"
         });
 
-        player._dispatcher.on('start', () => {
+        player._dispatcher.on("start", () => {
             console.log("_Dispatcher : Start");
         });
 
-        player._dispatcher.on('finish', () => {
-            console.log("_Dispatcher : Finish");
-        })
+        player._dispatcher.on("finish", () => {
 
+            if (player._queue.length >= 2) {
+
+                !player._loop && player._oldQueue.unshift(player._queue.shift());
+
+                this.play(player);
+
+            } else {
+                this.resetPlayer();
+                this.message.guild.me.voice.channel.leave();
+            }
+        })
     }
 
-    // —— Resolve YouTube playlist —————————————————————————————————————————————
-    async addYbPlaylist(player, url) {
+    async handleQuery(query) {
 
-            const playlist = await ytpl(url, { limit: Infinity }).catch((err) => {
-                return super.respond("It seems that this playlist cannot be imported.")
-            });
+        if (query.match(/^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/.+$/)) {
 
-            let ttlTime = 0,
-                ttlLive = 0;
+            if (query.match(/[&?]list=([^&]+)/i)) {
 
-            playlist.items = playlist.items.filter((videos) => videos.title !== "[Private video]" && videos.title !== "[Deleted video]" );
+                const playlistID = await ytpl.getPlaylistID(query)
+                    .catch(err => err);
 
-            playlist.items.map((video) => {
+                if (playlistID instanceof Error) {
+                    if (playlistID.message === "Mixes not supported")
+                        super.respond("Mixes not supported.");
 
-                let duration = video.duration !== null ? video.duration.split(':').reverse().reduce((prev, curr, i) => prev + curr * Math.pow(60, i), 0) : "live";
-
-                if ( typeof duration === 'number' )
-                    ttlTime += duration;
-                else
-                    ttlLive++;
-
-                player._queue.push({
-                    "id" : video.id,
-                    "url": video.url_simple,
-                    "title": video.title,
-                    "thumbnail": video.thumbnail,
-                    "duration": [video.duration, duration],
-                    "author": {
-                        "name": video.author.name,
-                        "ref": video.author.ref
-                    }
-                })
-            })
-
-            super.respond({embed: {
-                author : {
-                    name: `${playlist.items.length} elements added to the queue`,
-                },
-                title: playlist.title,
-                url: playlist.url,
-                thumbnail : {
-                    url : `https://i.ytimg.com/vi/${playlist.items[0].id}/mqdefault.jpg`
-                },
-                fields : {
-                    name: "Total length :",
-                    value: `${new Date(ttlTime * 1000).toISOString().substr(11, 8)} ${ttlLive > 0 && `& ${ttlLive} Lives` || ""}`
+                    return;
                 }
-            }});
 
+                if (!ytpl.validateID(playlistID))
+                    return super.respond("Invalide playlist")
+
+                const playlist = await ytpl(playlistID, { limit: Infinity })
+                    .catch(err => err);
+
+                if (playlist instanceof Error)
+                    return super.respond("The playlist does not exist.");
+
+                let tTime = 0
+                  , tLive = 0;
+
+                for (const video of playlist.items) {
+                    if (!video.isPlayable)
+                        return
+                    this.message.guild.player._queue.push({
+                        title : video.title,
+                        url : video.shortUrl,
+                        thumbnail : video.bestThumbnail && video.bestThumbnail.url
+                                    || video.thumbnails[0] &&  video.thumbnails[0].url,
+                        author : {
+                            url : video.author.url,
+                            name : video.author.name
+                        },
+                        duration : video.durationSec || "live"
+                    });
+
+                    if (video.isLive === true)
+                        tLive++
+                    else
+                        tTime += video.durationSec
+                }
+
+                super.respond({embed: {
+                    title : playlist.title,
+                    url : playlist.url,
+                    description: `<@${this.message.author.id}> added ${playlist.estimatedItemCount} elements to the track. ( ${formatTime(tTime)} ${tLive > 0 ? `& ${tLive} Live` : ""} )`
+                }})
+
+            } else {
+                getYoutubeVideo()
+
+            }
+        }
     }
 
-    async addYbVideo(player, url) {
-
-        const { videoDetails } = await ytdl.getBasicInfo(
-            url.searchParams.get("v")
-        );
-
-        player._queue.push({
-            url     : videoDetails.video_url,
-            title   : videoDetails.title,
-            author  : {
-                name     : videoDetails.author.name,
-                url      : videoDetails.author.user_url,
-                avatar   : videoDetails.author.avatar
-            },
-            media   : {
-                song    : videoDetails.media.song,
-                artist  : videoDetails.media.artist,
-                album   : videoDetails.media.album
-            },
-            length  : videoDetails.lengthSeconds
-        })
-
+    resetPlayer() {
+        this.message.guild.player = {
+            _queue       : [],
+            _oldQueue    : [],
+            _connection  : null,
+            _dispatcher  : null,
+            _isPlaying   : false,
+            _volume      : 1,
+            _embed       : {},
+            _loop        : false,
+            _ttl         : [0, 0],
+        };
     }
-
 }
 
 module.exports = Play;
