@@ -13,6 +13,7 @@ Structures.extend("Guild", (Guild) => class extends Guild {
 
         this.player = {
             _queue       : [],
+            _oldQueue    : [],
             _connection  : null,
             _dispatcher  : null,
             _isPlaying   : false,
