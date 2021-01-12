@@ -11,8 +11,8 @@ const path                   = require("path");
 const glob                   = require("glob");
 
 // —————————————————————————————————————————————————————————————————————————————
-
-const Guild   = require("../Structures/Guild");
+// ——
+require("../Structures/Guild");
 const Command = require("./Command");
 
 // ██████ Initialization ███████████████████████████████████████████████████████
@@ -39,6 +39,8 @@ class Luna extends Client {
         this.language  = new Collection();
         // —— Import custom function (avoid duplicated block)
         this.func      = new (require("../resources/Functions"))(this);
+
+        this.dashboard = require("../Dashboard/app")(this);
 
         // —— Inform the user that the client has been initialised
         console.log(`Client initialised. —— Node ${process.version}.`);
