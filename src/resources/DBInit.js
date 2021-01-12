@@ -1,10 +1,13 @@
+
 // —— The fastest and simplest library for SQLite3 in Node.js.
-const db = require("better-sqlite3")("database.sqlite");
+const db = require("better-sqlite3")("Database/Database.db");
+
+
+db.pragma("journal_mode = WAL");
+db.pragma("synchronous = 1");
 
 db.exec(
     `
-        PRAGMA journal_mode = WAL;
-
         CREATE TABLE IF NOT EXISTS Members (
             "_ID"           TEXT PRIMARY KEY NOT NULL,
             "UserID"        TEXT,
