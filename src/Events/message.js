@@ -12,6 +12,23 @@ class Message {
 
         const client = this.client;
 
+        // —— Message log in the database
+        client.config.logger && client.db
+            .prepare("INSERT INTO Messages VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+            .run(
+                message.id,
+                new Date(message.createdTimestamp).toLocaleString(),
+                message.author.id,
+                message.author.tag,
+                message.channel.id,
+                message.channel.name,
+                message.guild && message.guild.id   || "DM",
+                message.guild && message.guild.name || "DM",
+                message.content,
+                message.attachments.size !== 0 ? message.attachments.first().url : null
+            );
+
+
         // —— Exclude messages from bot or system
         if (message.author.bot || message.system)
             return;
@@ -21,8 +38,7 @@ class Message {
             message.member = await message.guild.members.fetch(message.author);
 
         // —— Experience module
-        if (client.config.module.xp === true)
-            client.func.setXp(message);
+        client.config.module.xp && client.func.setXp(message);
 
         // —— Exclude messages those not starting with prefix
         if (!message.content.startsWith(client.config.prefix))
@@ -81,22 +97,6 @@ class Message {
 
         // —— Starts the cooldown if it is set
         if (command.cooldown > 0) command.startCooldown(message.author.id);
-
-        // —— Message log in the database
-        client.db
-            .prepare("INSERT INTO Messages VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
-            .run(
-                message.id,
-                new Date(message.createdTimestamp).toLocaleString(),
-                message.author.id,
-                message.author.tag,
-                message.channel.id,
-                message.channel.name,
-                message.guild && message.guild.id   || "DM",
-                message.guild && message.guild.name || "DM",
-                message.content,
-                message.attachments.size !== 0 ? message.attachments.first().url : null
-            );
     }
 }
 
