@@ -56,5 +56,9 @@
         "ytpl": "^2.0.3",
         "ytsr": "^3.2.0",
         "zlib-sync": "^0.1.7"
+    },
+    "devDependencies": {
+        "stylelint": "^13.8.0",
+        "stylelint-config-standard": "^20.0.0"
     }
 }
