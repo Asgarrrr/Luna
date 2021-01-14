@@ -8,3 +8,4 @@ node_modules
 Database/
 setup.js
 config.json
+.stylelintrc.json
