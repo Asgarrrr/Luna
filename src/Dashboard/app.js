@@ -61,15 +61,6 @@ module.exports = (client) => {
         }
     }
 
-    // —— Event listener for HTTP server "listening" event.
-    function onListening() {
-        const addr = server.address();
-        const bind = typeof addr === "string"
-            ? "pipe " + addr
-            : "port " + addr.port;
-        console.log("Listening on " + bind);
-    }
-
     const app = express();
 
     app
@@ -99,11 +90,20 @@ module.exports = (client) => {
         .set("views", path.join(__dirname, "/views"))
         .set("port", port);
 
-        const server = http.createServer(app);
+    const server = http.createServer(app);
 
-        server.listen(app.get("port"));
-        server.on("error", onError);
-        server.on("listening", onListening);
+    server.listen(app.get("port"));
+    server.on("error", onError);
+    server.on("listening", onListening);
+
+    // —— Event listener for HTTP server "listening" event.
+    function onListening() {
+        const addr = server.address();
+        const bind = typeof addr === "string"
+            ? "pipe " + addr
+            : "port " + addr.port;
+        console.log("Listening on " + bind);
+    }
 
     // —— Catch 404 and forward to error handler
     app.use(function(req, res, next) {
