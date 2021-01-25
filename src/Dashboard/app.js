@@ -15,9 +15,8 @@ const http          = require("http")
 
 // ██████ Routes ███████████████████████████████████████████████████████████████
 
-const indexRouter = require("./routes/index");
-
-const authRouter  = require("./routes/OAuth2");
+const indexRouter = require("./routes/index")
+    , authRouter  = require("./routes/OAuth2");
 
 module.exports = (client) => {
 
