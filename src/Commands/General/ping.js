@@ -1,18 +1,9 @@
-
-/* › Commands / ping.js ————————————————————————————————————————————————————————
-
-   — Send test packets to the bot, and measures the response time, also,
-     display information from the statuspage api about server & service
-     states.
-
-     ヽ( •_•)O´¯`°.¸.·´¯`Q(^o^ )`                                              */
-
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Import base command
-const Command = require("../../Structures/Command"),
+const Command = require("../../Structures/Command")
 // —— A light-weight module that brings window.fetch to node.js
-      fetch   = require("node-fetch");
+    , fetch   = require("node-fetch");
 
 // —— Discord status page API URL
 const url = "https://srhpyqt94yxb.statuspage.io/api/v2/summary.json";
@@ -21,7 +12,7 @@ const url = "https://srhpyqt94yxb.statuspage.io/api/v2/summary.json";
 const components = [
     [ "CloudFlare"  ], [ "Voice"                   ],
     [ "API"         ], [ "Tax Calculation Service" ],
-    [ "Gateway"     ], [ "Push Notifications"       ],
+    [ "Gateway"     ], [ "Push Notifications"      ],
     [ "Media Proxy" ], [ "Third-party"             ],
     [ "EU West"     ], [ "US West"                 ],
     [ "EU Central"  ], [ "Brazil"                  ],
@@ -48,7 +39,7 @@ class Ping extends Command {
             aliases     : ["🏓", "pong"],
             permLevel   : 0,
             permission  : ["READ_MESSAGES", "SEND_MESSAGES"],
-            allowDMs    : true
+            allowDMs    : true,
         });
     }
 
@@ -69,21 +60,21 @@ class Ping extends Command {
                     "```",
                     lang[0],
                     lang[1],
-                    "```"
-                ].join("\n")
-            }]
+                    "```",
+                ].join("\n"),
+            }],
         };
 
         // —— Try to add the information provided by the status discord api
         try {
 
-            var data = await (await fetch(url)).json();
+            const data = await (await fetch(url)).json();
 
             components.forEach((c, i) => {
                 const res = data.components.find((x) => x.name === c[0]);
 
                 components[parseInt(i, 10)][1] = res ? res.status === "operational" ? "✔" : "✗" : "?";
-            })
+            });
 
             // —— Adds component information to the embed if available
             dataEmbed.fields.push({
@@ -94,8 +85,8 @@ class Ping extends Command {
                     `       API │ ${[components[2][1]]} : ${[components[3][1]]} │ Tax Calc`,
                     `   Gateway │ ${[components[4][1]]} : ${[components[5][1]]} │ Push Notif`,
                     `Med. Proxy │ ${[components[6][1]]} : ${[components[7][1]]} │ Third-party`,
-                    "```"
-                ].join("\n")
+                    "```",
+                ].join("\n"),
             }, {
                 name  : lang[3],
                 value : [
@@ -107,17 +98,17 @@ class Ping extends Command {
                     `US Central │ ${[components[16][1]]} : ${[components[17][1]]} │ Japan`,
                     `   US East │ ${[components[18][1]]} : ${[components[19][1]]} │ South Afr`,
                     `  US South │ ${[components[20][1]]} :   │ `,
-                    "```"
-                ].join("\n")
+                    "```",
+                ].join("\n"),
             }, {
                 name  : lang[4],
-                value : `\`\`\`${data.incidents ? "ok" : data.incidents}\`\`\``
+                value : `\`\`\`${data.incidents ? "ok" : data.incidents}\`\`\``,
             });
 
         } catch (error) {error;}
 
         // —— Send the embed
-        message.channel.send({embed: dataEmbed});
+        message.channel.send({ embed: dataEmbed });
 
     }
 }
