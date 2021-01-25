@@ -33,7 +33,6 @@ module.exports = (client) => {
         return false;
     }
 
-
     const port = normalizePort(client.config.dashboard.port || "3000");
 
     // —— Event listener for HTTP server "error" event.
@@ -92,10 +91,6 @@ module.exports = (client) => {
 
     const server = http.createServer(app);
 
-    server.listen(app.get("port"));
-    server.on("error", onError);
-    server.on("listening", onListening);
-
     // —— Event listener for HTTP server "listening" event.
     function onListening() {
         const addr = server.address();
@@ -104,6 +99,10 @@ module.exports = (client) => {
             : "port " + addr.port;
         console.log("Listening on " + bind);
     }
+
+    server.listen(app.get("port"));
+    server.on("error", onError);
+    server.on("listening", onListening);
 
     // —— Catch 404 and forward to error handler
     app.use(function(req, res, next) {
