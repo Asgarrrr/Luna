@@ -5,36 +5,51 @@ const chalk = require("chalk");
 
 // ██████ | ███████████████████████████████████████████████████████████ | ██████
 
-    async function resolveUser(search, guild){
+    /**
+     * Search in all guilds or only one specific user by his ID or username.
+     * @param {string}  query  // User ID or Username
+     * @param {object}  [guild] // query only on specific guild
+     */
+    async function resolveUser(query, guild) {
 
-        if (!search) return;
+        if (!query) return;
 
-        return !isNaN(search) || search.match(/^<@(!|&)?(\d+)>$/)
+        return !isNaN(query) || query.match(/^<@(!|&)?(\d+)>$/)
             ? (
-                search = search.replace(/\D/g,""),
+                query = query.replace(/\D/g, ""),
                 guild
-                    ? guild.members.cache.get(search)
-                    : await this.users.fetch(search).catch(() => {})
+                    ? guild.members.cache.get(query)
+                    : await this.users.fetch(query).catch(() => 0)
             )
-            : (guild ? guild.members : this.users).cache.find((x) => x.username === search);
+            : (guild ? guild.members : this.users).cache.find((x) => x.username === query);
 
     }
 
-    async function resolveChannel(search, guild){
+    /**
+    * Search in all guilds or only one specific channel by his ID or name.
+    * @param {string}  query  // User ID or Username
+    * @param {object}  [guild] // Search only on specific guild
+    */
+    async function resolveChannel(query, guild) {
 
-        if (!search) return;
+        if (!query) return;
 
-        return !isNaN(search) || search.match(/^<#(!|&)?(\d+)>$/)
+        return !isNaN(query) || query.match(/^<#(!|&)?(\d+)>$/)
             ? (
-                search = search.replace(/\D/g,""),
+                query = query.replace(/\D/g, ""),
                 guild
-                    ? guild.channels.cache.get(search)
-                    : await this.channels.fetch(search).catch(() => {})
+                    ? guild.channels.cache.get(query)
+                    : await this.channels.fetch(query).catch(() => 0)
             )
-            : (guild ? guild.channels : this.channels).cache.find((x) => x.name === search);
+            : (guild ? guild.channels : this.channels).cache.find((x) => x.name === query);
 
     }
 
+    /**
+    * Adds a user to the database
+    * @param {object}  user     // Guild user object
+    * @param {object}  guild    // Guild object
+    */
     async function createUser(user, guild) {
 
         user = await this.resolveUser(user.id, guild);
@@ -60,7 +75,7 @@ const chalk = require("chalk");
         const time = `${chalk.grey(new Date().toLocaleTimeString())}`;
 
         switch (type) {
-            case "INFO": { console.log(`${time} │ ${message}`) };
+            case "INFO": { console.log(`${time} │ ${message}`); }
                 break;
 
             case "WARNING": {
@@ -72,19 +87,25 @@ const chalk = require("chalk");
         }
     }
 
+    /**
+     * Converts a certain number of seconds to formatted time hh:mm:ss
+     * @param {number} seconds // Name of second to convert
+     */
     function formatTime(seconds) {
         const h = Math.floor(seconds / 3600);
         const m = Math.floor((seconds % 3600) / 60);
         const s = Math.round(seconds % 60);
         return [
           h,
-          m > 9 ? m : (h ? '0' + m : m || '0'),
-          s > 9 ? s : '0' + s
-        ].filter(Boolean).join(':');
-      }
-
-
+          m > 9 ? m : (h ? "0" + m : m || "0"),
+          s > 9 ? s : "0" + s,
+        ].filter(Boolean).join(":");
+    }
 
 module.exports = {
-    formatTime
+    resolveUser,
+    resolveChannel,
+    createUser,
+    logger,
+    formatTime,
 };
