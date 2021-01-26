@@ -1,10 +1,11 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Fast, unopinionated, minimalist web framework for Node.js
-const express = require("express");
+const express         = require("express")
+// —— Include OAuth2 verification function
+    , { OAuth2Check } = require("../utils/api");
 
-const { OAuth2Check } = require("../utils/api");
-
+// —— Get an instance of router
 const router = new express.Router();
 
 // █████████████████████████████████████████████████████████████████████████████
