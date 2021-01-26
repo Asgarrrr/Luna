@@ -21,12 +21,12 @@ router.get("/", OAuth2Check, async (req, res) => {
 
 router.get("/guild/:id", OAuth2Check, async (req, res) => {
 
-        res.render("gdash", {
-            title: "Luna — Dashboard",
-            client: req.client,
-            user : req.user,
-            guild: req.client.guilds.cache.get(req.params.id),
-        });
+    res.render("gdash", {
+        title: "Luna — Dashboard",
+        client: req.client,
+        user : req.user,
+        guild: req.client.guilds.cache.get(req.params.id),
+    });
 
 });
 
