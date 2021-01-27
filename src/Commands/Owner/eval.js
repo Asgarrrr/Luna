@@ -1,5 +1,9 @@
-// —— Import base command
-const Command = require("../../Structures/Command");
+// ██████ Integrations █████████████████████████████████████████████████████████
+
+// —— Terminal string styling done right
+const chalk = require("chalk")
+    // —— Import base command
+    , Command = require("../../Structures/Command");
 
 class Eval extends Command {
 
@@ -13,7 +17,7 @@ class Eval extends Command {
             cooldown    : 0,
             permLevel   : 10,
             allowDMs    : true,
-            ownerOnly   : true
+            ownerOnly   : true,
         });
     }
 
@@ -23,10 +27,10 @@ class Eval extends Command {
 
             let evaled = await eval(code.join(" "));
 
-            if( typeof evaled !== "string" )
+            if(typeof evaled !== "string")
                 evaled = require("util").inspect(evaled, { depth: 0 });
 
-            if( evaled.includes(this.client.token) )
+            if(evaled.includes(this.client.token))
                 evaled = evaled.replace(this.client.token, "gm", "*Token*");
 
             message.channel.send(evaled, { code: "js" });
@@ -35,10 +39,26 @@ class Eval extends Command {
 
             let errorDetails = error.toString();
 
-            if( errorDetails.includes(this.client.token) )
+            if(errorDetails.includes(this.client.token))
                 errorDetails = errorDetails.replace(this.client.token, "gm", "*Token*");
 
             message.channel.send(errorDetails, { code: "js" });
+
+        } finally {
+
+            const time = new Date(message.createdTimestamp)
+                , log  = ` USE OF EVAL by ${message.author.username} [ ${message.author.id} ]`;
+
+            console.log(
+                time.toLocaleTimeString(),
+                time.toLocaleDateString(),
+                chalk.bgRed.black(log),
+            );
+
+            // —— Eval report inserted in the Event table
+            this.client.db
+                .prepare("INSERT INTO Event ('Type', 'DATA') VALUES ('EVAL', ?)")
+                .run(`${message.createdTimestamp} — ${log}`);
 
         }
 
