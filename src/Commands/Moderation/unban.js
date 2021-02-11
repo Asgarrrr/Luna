@@ -12,8 +12,8 @@ class Unban extends Command {
             category    : "Moderation",
             cooldown    : 5000,
             permLevel   : 9,
-            permission  : "BAN_MEMBERS",
-            allowDMs    : true
+            userPerms   : "BAN_MEMBERS",
+            allowDMs    : true,
         });
     }
 
@@ -22,7 +22,7 @@ class Unban extends Command {
         const client = this.client,
               lang   = client.language.get(message.guild.local).unban();
 
-        /// —— Try to retrieve an ID against a mention, a username or an ID
+        // —— Try to retrieve an ID against a mention, a username or an ID
         const target = await client.resolveUser(user);
 
         console.log(target);
@@ -47,7 +47,7 @@ class Unban extends Command {
             && message.guild.channels.cache.get(message.guild.logchan).send({
                 "embed": {
                     title: `${data.username}#${data.discriminator} \`${data.id}\``,
-                }
+                },
             });
         })
         .catch(() => {
@@ -56,6 +56,5 @@ class Unban extends Command {
 
     }
 }
-
 
 module.exports = Unban;

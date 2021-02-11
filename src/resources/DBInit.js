@@ -1,4 +1,3 @@
-
 // —— The fastest and simplest library for SQLite3 in Node.js.
 const db = require("better-sqlite3")("Database/Database.db");
 
@@ -55,7 +54,7 @@ db.exec(
             "Local"         TEXT DEFAULT "English",
             "logChan"       TEXT
         );
-    `
+    `,
 );
 
 module.exports = db;

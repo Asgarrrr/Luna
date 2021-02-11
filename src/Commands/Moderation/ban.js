@@ -12,8 +12,8 @@ class Ban extends Command {
             category    : "Moderation",
             cooldown    : 5000,
             permLevel   : 9,
-            permission  : "BAN_MEMBERS",
-            allowDMs    : true
+            userPerms   : "SEND_MESSAGES",
+            allowDMs    : true,
         });
     }
 

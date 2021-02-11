@@ -1,4 +1,3 @@
-
 /* › Commands / avatar.js ——————————————————————————————————————————————————————
 
    — Returns the profile image of a player, present or not in the guild.
@@ -25,8 +24,8 @@ class Avatar extends Command {
             cooldown    : 1000,
             aliases     : ["pp"],
             permLevel   : 0,
-            permission  : "READ_MESSAGES",
-            allowDMs    : true
+            userPerms   : "SEND_MESSAGES",
+            allowDMs    : true,
         });
     }
 
@@ -43,9 +42,9 @@ class Avatar extends Command {
         super.respond({ embed: {
             description: message.author.id === user.id ? lang[1] : lang[2],
             image: {
-                url: user.displayAvatarURL({dynamic: true, size: 4096})
-            }
-        }});
+                url: user.displayAvatarURL({ dynamic: true, size: 4096 }),
+            },
+        } });
 
     }
 }

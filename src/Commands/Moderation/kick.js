@@ -12,8 +12,8 @@ class Kick extends Command {
             category    : "Moderation",
             cooldown    : 5000,
             permLevel   : 9,
-            permission  : "KICK_MEMBERS",
-            allowDMs    : true
+            userPerms   : "KICK_MEMBERS",
+            allowDMs    : true,
         });
     }
 
@@ -34,8 +34,8 @@ class Kick extends Command {
         if (target.id === this.client.user.id)
             return super.respond(lang[2]);
 
-        if ( message.member.ownerID !== message.author.id
-            && target.roles.highest.position >= message.member.roles.highest.position )
+        if (message.member.ownerID !== message.author.id
+            && target.roles.highest.position >= message.member.roles.highest.position)
             return super.respond(lang[3]);
 
         if (!target.kickable)
@@ -60,12 +60,12 @@ class Kick extends Command {
                     }, {
                         name: lang[8],
                         value: `${message.author.username}#${message.author.discriminator} \`${message.author.id}\``,
-                    }]
-                }
+                    }],
+                },
             });
 
         })
-        .catch((err) => {
+        .catch(() => {
             super.respond(lang[9]);
         });
     }

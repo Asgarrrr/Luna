@@ -38,7 +38,7 @@ class Ping extends Command {
             cooldown    : 5000,
             aliases     : ["🏓", "pong"],
             permLevel   : 0,
-            permission  : ["READ_MESSAGES", "SEND_MESSAGES"],
+            userPerms   : "SEND_MESSAGES",
             allowDMs    : true,
         });
     }
