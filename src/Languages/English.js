@@ -1,9 +1,9 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Terminal string styling done right
-const chalk       = require("chalk"     ),
+const chalk       = require("chalk")
 // —— NodeJS Core Module Extended
-      os          = require("os"        );
+    , os          = require("os");
 
 // ██████ | ███████████████████████████████████████████████████████████ | ██████
 
@@ -11,13 +11,12 @@ class Language {
 
     constructor(client) {
 
-        this.client   = client;
+        this.client = client;
 
         this.language = {
 
             flag  : "🇬🇧",
             local: "English",
-
 
             setUp : () => [
                 "Luna's opened her eyes, but she still has a lot to learn...",
@@ -29,7 +28,7 @@ class Language {
             ready: () => [
                 `${chalk.bold("Connected")} — ${client.user.tag} is here !`,
                 `On ${client.guilds.cache.size} servers, for ${client.users.cache.size} users and ${client.channels.cache.size} channels`,
-                `${client.user.tag} is online, hosted by ${os.hostname()}`
+                `${client.user.tag} is online, hosted by ${os.hostname()}`,
             ],
 
             // —— Events > message.js ——————————————————————————————————————————
@@ -46,16 +45,16 @@ class Language {
                     fields : [
                         {
                             name: "Syntax",
-                            value:`\`\`\`${cmd.usage}\`\`\``
+                            value:`\`\`\`${cmd.usage}\`\`\``,
                         },
                         {
                             name: "Examples use",
-                            value:`\`\`\`${cmd.exemple && cmd.exemple.map((x) => `${client.config.prefix}${cmd.name} ${x}`).join("\n") || "No examples provided"}\`\`\``
+                            value:`\`\`\`${cmd.exemple && cmd.exemple.map((x) => `${client.config.prefix}${cmd.name} ${x}`).join("\n") || "No examples provided"}\`\`\``,
                         },
-                    ]
+                    ],
                  },
                 "I do not have sufficient rights to execute this command.",
-                "You lack the required privileges to execute this command..."
+                "You lack the required privileges to execute this command...",
             ],
 
 
@@ -76,18 +75,18 @@ class Language {
                 "in DM, you can only target a user with his ID",
                 `**This is your avatar, <@${target.id}>**`,
                 `**This is the profile picture of <@${target.id}>**`,
-                "Unable to retrieve user information"
+                "Unable to retrieve user information",
             ],
 
             language: () => [
                 "What language do you want to use?",
-                "I speak english now !"
+                "I speak english now !",
             ],
 
             setlog: () => [
                 "The specified channel was not found",
                 "The channel could not be defined",
-                "This channel will be assigned to log messages"
+                "This channel will be assigned to log messages",
             ],
 
             ban: () => [
@@ -113,8 +112,8 @@ class Language {
 
             kick: () => [
                 "You need to choice a valid user",
-                `You cannot kick yourself`,
-                `You cannot kick me !!`,
+                "You cannot kick yourself",
+                "You cannot kick me !!",
                 "Target member is higher in role hierarchy than you.",
                 "Too heavy, I can't put it outside ;(",
                 "Kicking",
