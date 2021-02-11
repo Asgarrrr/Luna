@@ -16,10 +16,9 @@ class Language extends Command {
             args        : false,
             category    : "Administration",
             cooldown    : 0,
-            aliases     : [],
             permLevel   : 9,
-            permission  : "ADMINISTRATOR",
-            allowDMs    : false
+            userPerms   : "ADMINISTRATOR",
+            allowDMs    : false,
         });
 
     }
