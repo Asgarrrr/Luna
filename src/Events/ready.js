@@ -1,9 +1,9 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Beautiful color gradients in terminal output
-const gradient    = require("gradient-string"   ),
+const gradient    = require("gradient-string")
 // —— Terminal string styling done right
-      chalk       = require("chalk"             );
+    , chalk       = require("chalk");
 
 // ██████ Initialization ███████████████████████████████████████████████████████
 
@@ -24,23 +24,23 @@ class Ready {
         // —— Just an ascii header, because I like it.
         console.log(
             chalk.bold(
-                // gradient("#8EA6DB", "#7354F6")([
-                //     "    __                      ____        __     ",
-                //     "   / /   __  ______  ____ _/ __ )____  / /_    ",
-                //     "  / /   / / / / __ \\/ __ `/ __  / __ \\/ __/  ",
-                //     " / /___/ /_/ / / / / /_/ / /_/ / /_/ / /_      ",
-                //     "/_____/\\__,_/_/ /_/\\__,_/_____/\\____/\\__/  ",
-                //     "\n",
-                // ].join("\n"))
+                gradient("#8EA6DB", "#7354F6")([
+                    "    __                      ____        __     ",
+                    "   / /   __  ______  ____ _/ __ )____  / /_    ",
+                    "  / /   / / / / __ \\/ __ `/ __  / __ \\/ __/  ",
+                    " / /___/ /_/ / / / / /_/ / /_/ / /_/ / /_      ",
+                    "/_____/\\__,_/_/ /_/\\__,_/_____/\\____/\\__/  ",
+                    "\n",
+                ].join("\n")),
             )
-            // + lang.slice(0, 2).join("\n")
+            + lang.slice(0, 2).join("\n"),
         );
 
         // —— Setting up the bot avatar
         // x– Common err: "You are changing your avatar too fast."
         client.user.setAvatar("resources/Assets/Faces/Icon.jpg")
             .catch((error) => {
-                //client.error(error);
+                console.error(error);
             });
 
         if (client.config.presence) {
@@ -54,8 +54,8 @@ class Ready {
                     activity: {
                         name: games[0].name ? games[0].name : null,
                         type: games[0].type ? games[0].type : null,
-                        url : games[0].url  ? games[0].url  : null
-                    }
+                        url : games[0].url  ? games[0].url  : null,
+                    },
                 });
 
             // —— If the user has chosen a multiple custom activity
@@ -67,7 +67,7 @@ class Ready {
                     // —— Redefined the bot's activity
                     client.user.setActivity(games[parseInt(index, 10)].name, {
                         type: games[parseInt(index, 10)].type,
-                        url : games[parseInt(index, 10)].url || "https://www.twitch.tv/"
+                        url : games[parseInt(index, 10)].url || "https://www.twitch.tv/",
                     });
                 }, ((typeof interval === "number" && interval) || 30) * 1000);
         }
