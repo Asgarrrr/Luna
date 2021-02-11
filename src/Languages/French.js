@@ -1,9 +1,9 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Terminal string styling done right
-const chalk       = require("chalk"     ),
+const chalk = require("chalk")
 // —— NodeJS Core Module Extended
-      os          = require("os"        );
+    , os    = require("os");
 
 // ██████ | ███████████████████████████████████████████████████████████ | ██████
 
@@ -11,11 +11,12 @@ class Language {
 
     constructor(client) {
 
-        this.client   = client;
+        this.client = client;
 
         this.language = {
 
             flag:  "🇫🇷",
+            local: "Français",
 
             // ██████ EVENTS ███████████████████████████████████████████████████
 
@@ -23,11 +24,11 @@ class Language {
             ready: () => [
                 `${chalk.bold("Connecté")} — ${client.user.tag} est là !`,
                 `Sur ${client.guilds.cache.size} serveurs, avec ${client.users.cache.size} utilisateurs et ${client.channels.cache.size} salons`,
-                `${client.user.tag} est en ligne, hebergé par ${os.hostname()}`
+                `${client.user.tag} est en ligne, hebergé par ${os.hostname()}`,
             ],
 
             // —— Events > message.js ——————————————————————————————————————————
-            message : (message, cmd) =>  [
+            message : (message, cmd) => [
                 (tLeft) => `Veuillez patienter ${tLeft} seconde (s) pour réutiliser la commande ${cmd.help.name}.`,
                 "Cette commande ne peut être exécutée en message direct.",
                 `Vous n'avez fourni aucun argument ${message.author} !`,
@@ -37,16 +38,16 @@ class Language {
                     fields : [
                         {
                             name: "Syntax",
-                            value:`\`\`\`${cmd.help.usage}\`\`\``
+                            value:`\`\`\`${cmd.help.usage}\`\`\``,
                         },
                         {
                             name: "Exemples d'utilisation",
-                            value:`\`\`\`${cmd.help.exemple && cmd.help.exemple.map((x) => `${client.config.prefix}${cmd.help.name} ${x}`).join("\n") || "No examples provided"}\`\`\``
+                            value:`\`\`\`${cmd.help.exemple && cmd.help.exemple.map((x) => `${client.config.prefix}${cmd.help.name} ${x}`).join("\n") || "No examples provided"}\`\`\``,
                         },
-                    ]
+                    ],
                  },
                 "Je n'ai pas les droits suffisants pour exécuter cette commande.",
-                "Vous ne disposez pas des privilèges requis pour exécuter cette commande..."
+                "Vous ne disposez pas des privilèges requis pour exécuter cette commande...",
             ],
 
             // ██████ COMMANDS █████████████████████████████████████████████████
@@ -64,21 +65,30 @@ class Language {
                 "En MP, vous ne pouvez cibler qu'un utilisateur via son ID",
                 `**Ceci est votre avatar, <@${target.id}>**`,
                 `**Voici la photo de profil de <@${target.id}>**`,
-                "Impossible de récupérer les informations utilisateur"
+                "Impossible de récupérer les informations utilisateur",
             ],
 
             language: () => [
                 "Quelle langue voulez vous utiliser ?",
-                "Je parle à present en Français !"
+                "Je parle à present en Français !",
             ],
 
-            lvlUp : (lvl) => `Vous avez atteint le niveau **${lvl}**! Yeaa ^^`
+            lvlUp : (lvl) => `Vous avez atteint le niveau **${lvl}**! Yeaa ^^`,
+
+
+            // —— Music ————————————————————————————————————————————————————————
+
+            skip: () => [
+                "Vous devez être dans channel vocal.",
+                "Luna n'est pas en train de jouer.",
+                "Vous devez être dans le même channel que Luna pour faire cela.",
+            ],
 
         };
     }
 
     get(term, ...args) {
-        const value = this.language[term];
+        const value = this.language[String(term)];
         return typeof value === "function" ? value(...args) : value;
     }
 }

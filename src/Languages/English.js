@@ -16,6 +16,12 @@ class Language {
         this.language = {
 
             flag  : "🇬🇧",
+            local: "English",
+
+
+            setUp : () => [
+                "Luna's opened her eyes, but she still has a lot to learn...",
+            ],
 
             // ██████ EVENTS ███████████████████████████████████████████████████
 
@@ -118,7 +124,15 @@ class Language {
                 "Damn, I think something happened :(",
             ],
 
-            lvlUp : (lvl) => `You've leveled up to level **${lvl}**! Yeaa ^^`
+            lvlUp : (lvl) => `You've leveled up to level **${lvl}**! Yeaa ^^`,
+
+            // —— Music ————————————————————————————————————————————————————————
+
+            skip: () => [
+                "You need to be a in voice channel.",
+                "Luna does not play in a vocal room.",
+                "You must be in the same room as Luna to do this.",
+            ],
 
         };
     }
