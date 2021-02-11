@@ -1,30 +1,62 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Terminal string styling done right.
-const chalk = require("chalk");
+const chalk = require("chalk")
+// —— A powerful library for interacting with the Discord API
+    , Discord = require("discord.js");
 
 // ██████ | ███████████████████████████████████████████████████████████ | ██████
 
+function resolveMention(query, guild = undefined) {
+
+    // —— Throwing any necessary errors.
+    if (typeof query !== "string")
+        throw new TypeError("Invalid string provided.");
+
+    if (typeof guild !== "undefined" && !(guild instanceof Discord.Guild))
+        throw new TypeError("Invalid guild provided.");
+
+    // —— Using a Regular Expression to test the mention and extract the parts.
+    const match = query.match(/^<(@!?|@&|#)([0-9]+)>$/);
+
+    if (match) {
+
+        const prefix = match[1]
+            , id     = match[2];
+
+        // —— Returning objects with corresponding properties.
+        return {
+
+            [prefix.match(/^@!?$/)] : { member: guild ? guild.members.cache.get(id) || id : id },
+            "@&" : { role: guild ? guild.roles.cache.get(id) || id : id },
+            "#"  : { channel: guild ? guild.channels.cache.get(id) || id : id },
+
+        }[prefix];
+
+    // —— Returning null if the provided string was not a mention.
+    } else return null;
+}
+
+
     /**
      * Search in all guilds or only one specific user by his ID or username.
-     * @param {string}  query  // User ID or Username
+     * @param {string}  query  // User mention
      * @param {object}  [guild] // query only on specific guild
      */
-    async function resolveUser(query, guild) {
+async function resolveUser(query, guild = undefined) {
 
-        if (!query) return;
+        // —— Throwing any necessary errors.
+        if (typeof query !== "string")
+            throw new TypeError("Invalid string provided.");
 
-        return !isNaN(query) || query.match(/^<@(!|&)?(\d+)>$/)
-            ? (
-                query = query.replace(/\D/g, ""),
-                guild
-                    ? guild.members.cache.get(query)
-                    : await this.users.fetch(query).catch(() => 0)
-            )
-            : (guild ? guild.members : this.users).cache.find((x) => x.username === query);
+        if (typeof guild !== "undefined" && !(guild instanceof Discord.Guild))
+            throw new TypeError("Invalid guild provided.");
 
-    }
+        const match = query.match(/^<@!?(\d+)>$/);
 
+        if (match && guild)
+            return guild.members.cache.get(match[1]);
+}
     /**
     * Search in all guilds or only one specific channel by his ID or name.
     * @param {string}  query  // User ID or Username
@@ -103,6 +135,7 @@ const chalk = require("chalk");
     }
 
 module.exports = {
+    resolveMention,
     resolveUser,
     resolveChannel,
     createUser,
