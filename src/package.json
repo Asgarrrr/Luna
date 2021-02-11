@@ -22,14 +22,15 @@
         "url": "https://github.com/Asgarrrr/Luna/issues"
     },
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "start": "nodemon Luna.js",
+        "lint": "eslint . --ext .js"
     },
     "dependencies": {
         "@discordjs/opus": "^0.3.3",
         "better-sqlite3": "^7.1.2",
         "body-parser": "^1.19.0",
         "btoa": "^1.2.1",
-        "bufferutil": "^4.0.2",
+        "bufferutil": "^4.0.3",
         "chalk": "^4.1.0",
         "compression": "^1.7.4",
         "cookie-parser": "^1.4.5",
@@ -43,22 +44,25 @@
         "express-session": "^1.17.1",
         "ffmpeg-static": "^4.2.7",
         "gradient-string": "^1.2.0",
-        "helmet": "^4.2.0",
+        "helmet": "^4.4.1",
         "http-errors": "^1.8.0",
+        "inquirer": "^7.3.3",
         "jquery": "^3.5.1",
         "libsodium-wrappers": "^0.7.8",
+        "lyrics-finder": "^21.7.0",
         "node-fetch": "^2.6.1",
-        "socket.io": "^3.0.4",
-        "sqlite3": "^5.0.0",
-        "utf-8-validate": "^5.0.3",
-        "ytdl-core": "^4.4.2",
-        "ytdl-core-discord": "^1.2.4",
-        "ytpl": "^2.0.3",
-        "ytsr": "^3.2.0",
+        "socket.io": "^3.1.0",
+        "sqlite3": "^5.0.1",
+        "utf-8-validate": "^5.0.4",
+        "ytdl-core": "^4.4.5",
+        "ytdl-core-discord": "^1.2.5",
+        "ytpl": "^2.0.4",
+        "ytsr": "^3.2.3",
         "zlib-sync": "^0.1.7"
     },
     "devDependencies": {
-        "stylelint": "^13.8.0",
+        "eslint": "^7.18.0",
+        "stylelint": "^13.9.0",
         "stylelint-config-standard": "^20.0.0"
     }
 }
