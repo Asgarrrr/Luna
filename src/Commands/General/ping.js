@@ -53,7 +53,7 @@ class Ping extends Command {
         // —— Generates the embed containing the basic results
         const dataEmbed = {
             title : "P O N G !",
-            color : 0x7354f6,
+            color : "0x7354f6",
             fields : [{
                 name  : "— ヽ( •_•)O´¯\\`°.¸.·´¯\\`Q(^o^ )\\`",
                 value : [
