@@ -1,18 +1,16 @@
-
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— A powerful library for interacting with the Discord API.
-const { Client, Collection } = require("discord.js");
-// —— Terminal string styling done right.
-const chalk                  = require("chalk");
+const { Client, Collection } = require("discord.js")
 // —— Provides utilities for working with file and directory paths.
-const path                   = require("path");
+    , path                   = require("path")
 // —— Glob implementation in JavaScript.
-const glob                   = require("glob");
+    , glob                   = require("glob");
 
 // —————————————————————————————————————————————————————————————————————————————
-// ——
+
 require("../Structures/Guild");
+
 const Command = require("./Command");
 
 // ██████ Initialization ███████████████████████████████████████████████████████
@@ -70,7 +68,7 @@ class Luna extends Client {
 
                 delete require.cache[[`${file}`]];
                 const command = new (require(file))(this),
-                      filename = file.slice(file.lastIndexOf("/")+1, file.length-3);
+                      filename = file.slice(file.lastIndexOf("/") + 1, file.length - 3);
 
                 if (!(command instanceof Command))
                     throw new TypeError(`${filename} does not seem to be a correct command...`);
@@ -87,7 +85,7 @@ class Luna extends Client {
 
     // –– Events Handler ––––––––––––––––––––––––––––––––––––––––——–––––––––––––
 
-    loadEvents () {
+    loadEvents() {
 
         glob(`${this.directory}/Events/**/*.js`, (er, files) => {
 
@@ -97,7 +95,7 @@ class Luna extends Client {
 
                 delete require.cache[[`${file}`]];
                 const event     = new (require(file))(this),
-                      eventname = file.slice(file.lastIndexOf("/")+1, file.length-3);
+                      eventname = file.slice(file.lastIndexOf("/") + 1, file.length - 3);
 
                 super.on(eventname, (...args) => event.run(...args));
 
@@ -106,7 +104,7 @@ class Luna extends Client {
 
     }
 
-    loadLocal () {
+    loadLocal() {
 
         glob(`${this.directory}/Languages/**/*.js`, (er, files) => {
 
@@ -116,7 +114,7 @@ class Luna extends Client {
 
                 delete require.cache[[`${file}`]];
                 const local     = new (require(file))(this),
-                      localname = file.slice(file.lastIndexOf("/")+1, file.length-3);
+                      localname = file.slice(file.lastIndexOf("/") + 1, file.length - 3);
 
                 this.language.set(localname, local.language);
 
