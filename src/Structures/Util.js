@@ -7,6 +7,12 @@ const chalk = require("chalk")
 
 // ██████ | ███████████████████████████████████████████████████████████ | ██████
 
+
+/** Extract the related object out of a Discord mention.**
+  * @param      {string}        query   Mention.
+  * @param      {Discord.Guild} [guild] Guild in which to search, if not mentioned, the mention ID is returned
+  * @returns    {Object|null}           An object with a "member", "role" or "channel" property corresponding to the mention, or "null" if the provided channel is not a mention
+  */
 function resolveMention(query, guild) {
 
     // —— Throwing any necessary errors.
@@ -27,7 +33,7 @@ function resolveMention(query, guild) {
         // —— Returning objects with corresponding properties.
         return {
 
-            [Boolean(prefix.match(/^@!?$/))] : { member: guild ? guild.members.cache.get(id) || id : id },
+            [`${prefix.match(/^@!?$/)}`] : { member: guild ? guild.members.cache.get(id) || id : id },
             "@&" : { role: guild ? guild.roles.cache.get(id) || id : id },
             "#"  : { channel: guild ? guild.channels.cache.get(id) || id : id },
 
@@ -38,11 +44,10 @@ function resolveMention(query, guild) {
 }
 
 
-/**
- * Search in all guilds or only one specific user by his ID or username.
- * @param {string}  query  // User mention
- * @param {object}  [guild] // query only on specific guild
- */
+/** Search in all guilds or only one specific user by his ID or username.
+  * @param {string}  query   User mention
+  * @param {object}  [guild] Query only on specific guild
+  */
 async function resolveUser(query, guild) {
 
         // —— Throwing any necessary errors.
@@ -57,11 +62,10 @@ async function resolveUser(query, guild) {
         if (match && guild)
             return guild.members.cache.get(match[1]);
 }
-/**
-* Search in all guilds or only one specific channel by his ID or name.
-* @param {string}  query  // User ID or Username
-* @param {object}  [guild] // Search only on specific guild
-*/
+/** Search in all guilds or only one specific channel by his ID or name.
+  * @param {string}  query  // User ID or Username
+  * @param {object}  [guild] // Search only on specific guild
+  */
 async function resolveChannel(query, guild) {
 
     if (!query) return;
@@ -77,11 +81,10 @@ async function resolveChannel(query, guild) {
 
 }
 
-/**
-* Adds a user to the database
-* @param {object}  user     // Guild user object
-* @param {object}  guild    // Guild object
-*/
+/** Adds a user to the database
+  * @param {object}  user     // Guild user object
+  * @param {object}  guild    // Guild object
+  */
 async function createUser(user, guild) {
 
     user = await this.resolveUser(user.id, guild);
@@ -119,10 +122,9 @@ async function logger(type = "INFO", message) {
     }
 }
 
-/**
- * Converts a certain number of seconds to formatted time hh:mm:ss
- * @param {number} seconds // Name of second to convert
- */
+/** Converts a certain number of seconds to formatted time hh:mm:ss
+  * @param {number} seconds // Name of second to convert
+  */
 function formatTime(seconds) {
     const h = Math.floor(seconds / 3600);
     const m = Math.floor((seconds % 3600) / 60);
