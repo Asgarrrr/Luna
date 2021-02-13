@@ -1,11 +1,12 @@
-
 // Emitted whenever a message is created
 
 class Message {
 
     constructor(client) {
 
+        this.enable = true;
         this.client = client;
+
     }
 
     async run(message) {
@@ -25,7 +26,7 @@ class Message {
                 message.guild && message.guild.id   || "DM",
                 message.guild && message.guild.name || "DM",
                 message.content,
-                message.attachments.size !== 0 ? message.attachments.first().url : null
+                message.attachments.size !== 0 ? message.attachments.first().url : null,
             );
 
 
@@ -54,12 +55,12 @@ class Message {
             return;
 
         // —— Load translation data
-        const lang = client.language.get(message.guild && message.guild.local || "English" ).message(message, command);
+        const lang = client.language.get(message.guild && message.guild.local || "English").message(message, command);
 
         // —— Checks if the command for this user is under cooldown
         if (command.cmdCooldown.has(message.author.id))
             return message.delete({ timeout: 10000 })
-                && message.reply(lang[0](command.cmdCooldown.get(message.author.id)/1000))
+                && message.reply(lang[0](command.cmdCooldown.get(message.author.id) / 1000))
                    .then((msg) => msg.delete({ timeout: 10000 }));
 
         if (command.ownerOnly && client.config.Master !== message.author.id)

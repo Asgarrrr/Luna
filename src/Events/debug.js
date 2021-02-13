@@ -7,16 +7,30 @@ const chalk = require("chalk");
 
 class Debug {
 
-    constructor(client) {
+    constructor() {
 
-        this.client = client;
+        this.enable = true;
+
     }
 
     async run(info) {
 
-        const client = this.client;
+        console.log(this.time, info);
 
-        //console.log(info)
+    }
+
+    format(i) {
+        return (i < 10) ? "0" + i : i;
+    }
+
+    get time() {
+
+        const today = new Date()
+            , h = this.format(today.getHours())
+            , m = this.format(today.getMinutes())
+            , s = this.format(today.getSeconds());
+
+        return chalk.grey(`[ ${h}:${m}:${s} ]`);
 
     }
 

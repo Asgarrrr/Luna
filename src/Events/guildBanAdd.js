@@ -4,6 +4,7 @@ class guildBanAdd {
 
     constructor(client) {
 
+        this.enable = true;
         this.client = client;
     }
 
@@ -34,8 +35,8 @@ class guildBanAdd {
                 }, {
                     name: lang[3],
                     value: `${ban.executor.username}#${ban.executor.discriminator} \`${ban.executor.id}\``,
-                }]
-            }
+                }],
+            },
         });
 
         if (client.db.prepare("SELECT 1 FROM Members WHERE _ID = ? LIMIT 1").get(`${guild.id}-${ban.target.id}`))

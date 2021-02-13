@@ -10,7 +10,10 @@ const gradient    = require("gradient-string")
 class Ready {
 
     constructor(client) {
+
+        this.enable = true;
         this.client = client;
+
     }
 
     async run() {
@@ -38,7 +41,7 @@ class Ready {
 
         // —— Setting up the bot avatar
         // x– Common err: "You are changing your avatar too fast."
-        client.user.setAvatar("resources/Assets/Faces/Icon.jpg")
+        client.user.setAvatar("resources/Assets/Faces/Icon.png")
             .catch((error) => {
                 console.error(error);
             });

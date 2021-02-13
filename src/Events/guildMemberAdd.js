@@ -4,6 +4,7 @@ class guildMemberAdd {
 
     constructor(client) {
 
+        this.enable = true;
         this.client = client;
     }
 
@@ -20,12 +21,12 @@ class guildMemberAdd {
                 const toChannel =
                     client.config.welcomeMsgChannel
                     || member.guild.systemChannelID
-                    || member.guild.channels.cache.find(channel => channel.permissionsFor(member.guild.me).has("SEND_MESSAGES"));
+                    || member.guild.channels.cache.find((channel) => channel.permissionsFor(member.guild.me).has("SEND_MESSAGES"));
 
                 client.channels.cache.get(toChannel).send("test");
 
             } catch (error) {
-
+                console.log(error);
             }
         }
     }
