@@ -9,7 +9,7 @@ class Debug {
 
     constructor() {
 
-        this.enable = true;
+        this.enable = false;
 
     }
 
