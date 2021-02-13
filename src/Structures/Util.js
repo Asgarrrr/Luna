@@ -27,7 +27,7 @@ function resolveMention(query, guild) {
         // —— Returning objects with corresponding properties.
         return {
 
-            [prefix.match(/^@!?$/)] : { member: guild ? guild.members.cache.get(id) || id : id },
+            [Boolean(prefix.match(/^@!?$/))] : { member: guild ? guild.members.cache.get(id) || id : id },
             "@&" : { role: guild ? guild.roles.cache.get(id) || id : id },
             "#"  : { channel: guild ? guild.channels.cache.get(id) || id : id },
 
@@ -43,13 +43,13 @@ function resolveMention(query, guild) {
  * @param {string}  query  // User mention
  * @param {object}  [guild] // query only on specific guild
  */
-async function resolveUser(query, guild = undefined) {
+async function resolveUser(query, guild) {
 
         // —— Throwing any necessary errors.
         if (typeof query !== "string")
             throw new TypeError("Invalid string provided.");
 
-        if (typeof guild !== "undefined" && !(guild instanceof Discord.Guild))
+        if (typeof guild && !(guild instanceof Discord.Guild))
             throw new TypeError("Invalid guild provided.");
 
         const match = query.match(/^<@!?(\d+)>$/);
