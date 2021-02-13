@@ -1,4 +1,3 @@
-
 const { Permissions } = require("discord.js");
 
 class Command {
@@ -9,23 +8,23 @@ class Command {
 
 		this.name        = options.name        || null;
 		this.aliases     = options.aliases     || [];
-        this.description = options.description || "No information specified.";
-        this.category    = options.category    || "General";
-        this.args        = options.args        || false;
-        this.usage       = options.usage       || null;
-        this.cooldown    = options.cooldown    || 1000;
+		this.description = options.description || "No information specified.";
+		this.category    = options.category    || "General";
+		this.args        = options.args        || false;
+		this.usage       = options.usage       || null;
+		this.cooldown    = options.cooldown    || 1000;
 
 		this.userPerms   = new Permissions(options.userPerms || "SEND_MESSAGES").freeze();
 		this.botPerms    = new Permissions(options.botPerms  || "SEND_MESSAGES").freeze();
 		this.guildOnly   = options.guildOnly   || false;
 		this.ownerOnly   = options.ownerOnly   || false;
-        this.nsfw        = options.nsfw        || false;
+		this.nsfw        = options.nsfw        || false;
 
         this.cmdCooldown = new Map();
 
 	}
 
-	async run(message, args) {
+	async run() {
 		throw new Error(`Command ${this.name} doesn't provide a run method!`);
     }
 
