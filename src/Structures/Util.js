@@ -33,7 +33,7 @@ function resolveMention(query, guild) {
         // —— Returning objects with corresponding properties.
         return {
 
-            [`${prefix.match(/^@!?$/)}`] : { member: guild ? guild.members.cache.get(id) || id : id },
+            [prefix.match(/^@!?$/)] : { member: guild ? guild.members.cache.get(id) || id : id },
             "@&" : { role: guild ? guild.roles.cache.get(id) || id : id },
             "#"  : { channel: guild ? guild.channels.cache.get(id) || id : id },
 
