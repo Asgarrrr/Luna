@@ -70,7 +70,7 @@ body {
 	align-items: center;
 	justify-content: center;
 	font-weight: 500;
-	transition: all .35s;
+	transition: all 0.35s;
 	overflow: hidden;
 	cursor: pointer;
 	color: white;
@@ -79,7 +79,7 @@ body {
 
 .guildIcon:hover {
 	background-color: var(--radio-group-dot-foreground);
-	transition: all .35s;
+	transition: all 0.35s;
 	border-radius: 25%;
 	color: white;
 	text-decoration: none;
@@ -178,7 +178,7 @@ body {
 	position: absolute;
 	top: 99px;
 	width: 57px;
-	transition: .35s all;
+	transition: 0.35s all;
 }
 
 .dataContent {
