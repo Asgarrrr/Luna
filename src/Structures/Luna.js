@@ -97,7 +97,8 @@ class Luna extends Client {
                 const event     = new (require(file))(this),
                       eventname = file.slice(file.lastIndexOf("/") + 1, file.length - 3);
 
-                super.on(eventname, (...args) => event.run(...args));
+                if (event.enable)
+                    super.on(eventname, (...args) => event.run(...args));
 
             }
         });
