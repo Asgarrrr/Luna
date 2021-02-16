@@ -13,5 +13,34 @@
 </div>
 
 * * *
+<!-- 
+# Contents
+1. Main features
+2. Installation
+    1. macOS
+    2. Linux
+    3. Windows, etc.
+    4. Python version
+    5. Unstable version
 
-Readme being rewritten ;3
+## Main features -->
+
+## Installation
+
+<small>Prerequisite</small>
+- To wake up Luna, Node.js 12.0.0 or newer must be installed.
+
+- Download the latest version of Luna.
+
+<small> Downloading and installing steps</small>
+
+1.  **[Download](https://github.com/Asgarrrrr/Luna/archive/master.zip)** the latest version of Luna.
+
+2.  Configure Luna :
+    -   Run `npm i`
+    -   You will need to create a bot application in the **[developers space](https://discordapp.com/developers/applications/me)**
+    -   complete the required information in the `config.json` file, **and that's it !**
+
+3.  Getting Started
+    -   Run `node luna.js`
+    -   **Luna is now operational ! 🎉**
