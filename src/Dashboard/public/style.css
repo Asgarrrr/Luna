@@ -50,7 +50,7 @@ body {
 
 .icon:hover {
     border-radius: 1rem;
-    transition: all ease .35s;
+    transition: all ease 0.35s;
     background-color: var(--blue);
 }
 
