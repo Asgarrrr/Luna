@@ -1,6 +1,6 @@
 <div align="center">
 
-  <img src="https://raw.githubusercontent.com/Asgarrrr/Luna/master/src/resources/Assets/Luna.png" width="600px">
+  <img src="https://raw.githubusercontent.com/Asgarrrr/Luna/master/resources/Assets/Luna.png" width="600px">
 
   <h4> An adorable Discord bot. Free, Open Source and Cross Platform </h4>
 
