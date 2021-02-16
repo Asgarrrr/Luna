@@ -182,7 +182,7 @@ class Play extends Command {
         if (!videoDetails)
             return super.respond("The video does not exist.");
 
-        const videoLength = parseInt(videoDetails.lengthSeconds);
+        const videoLength = parseInt(videoDetails.lengthSeconds, 10);
 
         this.message.guild.player._queue.push({
             id : videoDetails.videoId,
