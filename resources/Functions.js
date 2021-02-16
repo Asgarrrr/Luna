@@ -1,4 +1,3 @@
-
 // ––––––––––– | –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 class Functions {
@@ -21,7 +20,7 @@ class Functions {
         if (!message.guild) return;
 
         // —— Retrieve the player's information from the database, or create it.
-        let score =
+        const score =
             this.GScore.get(message.author.id, message.guild.id)
             || { "_ID" : `${message.guild.id}-${message.author.id}`, "UserID" : message.author.id, "GuildID" : message.guild.id, "Xp" : 0, "Lvl" : 1 };
 

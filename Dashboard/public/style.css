@@ -1,0 +1,83 @@
+:root {
+    --blue: #7289da;
+}
+
+body {
+    margin: 0;
+    background-color: #222429;
+}
+
+.slider {
+    overflow: scroll;
+    height: 100%;
+}
+
+.guildSelector {
+    background-color: #141419;
+    width: 80px;
+    height: 100vh;
+    float: left;
+    position: sticky;
+    top: 0;
+    overflow: hidden;
+}
+
+.optionSelector {
+    width: 250px;
+    height: 100vh;
+    background-color: #0f0f13;
+    float: left;
+    margin-right: 10px;
+}
+
+.icon {
+    height: 56px;
+    width: 56px;
+    border-radius: 50%;
+    transition: all ease 0.35s;
+    margin: 12px;
+    overflow: hidden;
+    background-color: #36393f;
+    font-weight: 500;
+    cursor: pointer;
+    color: #dcddde;
+    font-size: 16px;
+    font-family: Whitney, Helvetica Neue, Helvetica, Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon:hover {
+    border-radius: 1rem;
+    transition: all ease 0.35s;
+    background-color: var(--blue);
+}
+
+.icon img {
+    width: 100%;
+}
+
+.parent {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    grid-column-gap: 9px;
+    grid-row-gap: 9px;
+}
+
+.div1 {
+    grid-area: 1 / 1 / 2 / 2;
+}
+
+.div2 {
+    grid-area: 1 / 2 / 2 / 3;
+}
+
+.div3 {
+    grid-area: 1 / 3 / 2 / 4;
+}
+
+.div4 {
+    grid-area: 1 / 4 / 2 / 5;
+}

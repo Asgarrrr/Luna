@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <title>Luna — Dashboard</title>
+    </head>
+    <body>
+
+        <nav class="guildSelector">
+            <div class="user">
+                <div class="icon">
+                    <img src="https://cdn.discordapp.com/avatars/<%= admin.id %>/<%= admin.avatar %>.webp?size=512">
+                </div>
+            </div>
+
+            <div class="separator"></div>
+
+            <div class="slider">
+                <% guilds.forEach((guild) => { %>
+                    <div class="icon">
+
+                        <% if(guild.icon){ %>
+                            <img src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>.webp?size=512"  alt="<%= guild.name %>'icon">
+                        <% } else { %>
+                            <span><%= guild.name.split(/\s/).reduce((response,word)=> response+=word.slice(0,1),'') %></span>
+                         <% } %>
+
+                    </div>
+                <% }); %>
+
+            </div>
+
+        </nav>
+
+        <nav class="optionSelector">
+
+        </nav>
+
+        <main class="parent">
+            <div class="div1"></div>
+            <div class="div2"></div>
+            <div class="div3"></div>
+            <div class="div4"></div>
+        </main>
+
+    </body>
+</html>

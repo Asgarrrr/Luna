@@ -1,4 +1,3 @@
-
 .DS_Store
 .env
 .vscode
@@ -6,8 +5,8 @@
 log.log
 package-lock.json
 node_modules
-database.sqlite
-database.sqlite-shm
-database.sqlite-wal
+Database/
 setup.js
 config.json
+.stylelintrc.json
+.eslintrc.json

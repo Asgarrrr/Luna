@@ -1,33 +1,38 @@
 <div align="center">
 
-<img src="https://cdn.glitch.com/cc3ac29e-f4ce-4208-9e45-eadb26258397%2FFinalTest.png?v=1582118840141" width="600px">
+  <img src="https://raw.githubusercontent.com/Asgarrrr/Luna/master/src/resources/Assets/Luna.png" width="600px">
 
-#### An adorable Discord bot. Free, Open Source and Cross Platform
+  <h4> An adorable Discord bot. Free, Open Source and Cross Platform </h4>
 
-##### Attention ! Luna is an ongoing project, and is still under development at the moment. Although on the master branch, everything (should) work! Thanks
+  <i><small> Attention ! Luna is an ongoing project, and is still under development at the moment. Although on the master branch, everything (should) work! Thanks </small></i>
 
-[![Codacy Badge](https://img.shields.io/codacy/grade/1770b308454b4ea5915d6b9fe1c631f3?color=2714E0&style=flat-square)](https://www.codacy.com/manual/Asgarrrrr/Luna?utm_source=github.com&utm_medium=referral&utm_content=Asgarrrrr/Luna&utm_campaign=Badge_Grade)
-[![Dependencies](https://img.shields.io/david/Asgarrrrr/Luna?color=4F36EC&style=flat-square)](https://david-dm.org/Asgarrrrr/Luna)
-[![Discord.js](https://img.shields.io/badge/Discord.js-V.12-7354F6?style=flat-square)](https://www.npmjs.com/package/discord.js)
-
-[Todo](#Todo) • [Installation](#Todo)
-
-* * *
+  [![Codacy Badge](https://img.shields.io/codacy/grade/1770b308454b4ea5915d6b9fe1c631f3?color=2714E0&style=flat-square)](https://www.codacy.com/manual/Asgarrrrr/Luna?utm_source=github.com&utm_medium=referral&utm_content=Asgarrrrr/Luna&utm_campaign=Badge_Grade)
+  [![Dependencies](https://img.shields.io/david/Asgarrrrr/Luna?color=4F36EC&style=flat-square)](https://david-dm.org/Asgarrrrr/Luna)
+  [![Discord.js](https://img.shields.io/badge/Discord.js-V.12-7354F6?style=flat-square)](https://www.npmjs.com/package/discord.js)
 
 </div>
 
-## Todo
+* * *
+<!-- 
+# Contents
+1. Main features
+2. Installation
+    1. macOS
+    2. Linux
+    3. Windows, etc.
+    4. Python version
+    5. Unstable version
 
--   [ ] Make Luna at least bilingual English - French, and have all commands and events translated
--   [ ] Finish event management
+## Main features -->
 
 ## Installation
 
-##### Prerequisite
+<small>Prerequisite</small>
+- To wake up Luna, Node.js 12.0.0 or newer must be installed.
 
--   To wake up Luna, Node.js 12.0.0 or newer must be [installed](https://nodejs.org/en/download/).
+- Download the latest version of Luna.
 
-##### Downloading and installing steps
+<small> Downloading and installing steps</small>
 
 1.  **[Download](https://github.com/Asgarrrrr/Luna/archive/master.zip)** the latest version of Luna.
 
