@@ -12,14 +12,21 @@ const fetch         = require("node-fetch")
 // —— Get an instance of router
 const router = new express.Router();
 
-const baseURL = `${dashboard.url}/auth`;
-
+// ——
 router.get("/", async (req, res) => {
 
-    if(!req.session.user || !req.session.user.id || !req.session.user.guildsData)
-        return res.redirect(`https://discord.com/api/v8/oauth2/authorize?client_id=${req.client.user.id}&redirect_uri=${encodeURIComponent(baseURL + "/authorize")}&response_type=code&scope=identify%20guilds&state=${req.session.state}`);
-    else
-        return res.redirect("/authorize");
+    req.session.state = Math.random().toString(36).substring(7);
+
+    const APIUrl = new URL("https://discord.com/api/v8/oauth2/authorize");
+    APIUrl.searchParams.append("client_id", req.client.user.id);
+    APIUrl.searchParams.append("redirect_uri", `${dashboard.url}/auth/authorize`);
+    APIUrl.searchParams.append("response_type", "code");
+    APIUrl.searchParams.append("scope", "identify guilds guilds.join");
+    APIUrl.searchParams.append("state", req.session.state);
+
+    return !req.session.user || !req.session.user.id || !req.session.user.guildsData
+        ? res.redirect(APIUrl)
+        : res.redirect("/authorize");
 
 });
 
@@ -36,7 +43,7 @@ router.get("/authorize", async (req, res) => {
     parameters.append("client_secret", req.client.config.CLIENT_SECRET);
     parameters.append("code", req.query.code);
     parameters.append("grant_type", "authorization_code");
-    parameters.append("redirect_uri", `${baseURL}/authorize`);
+    parameters.append("redirect_uri", `${dashboard.url}/auth/authorize`);
     parameters.append("scope", "identify guilds");
 
     const userGrant = await fetch("https://discord.com/api/v8/oauth2/token", {
@@ -46,11 +53,13 @@ router.get("/authorize", async (req, res) => {
             "Content-Type": "application/x-www-form-urlencoded" },
     }).then((response) => response.json());
 
-    res.redirect(`${baseURL}/data?token=${userGrant.access_token}`);
+    res.redirect(`${dashboard.url}/auth/data?token=${userGrant.access_token}`);
 
 });
 
 router.get("/data", async (req, res) => {
+
+    console.log("end");
 
     if (!req.query.token)
         return res.redirect("/");
@@ -61,16 +70,16 @@ router.get("/data", async (req, res) => {
             Authorization: `Bearer ${req.query.token}` },
     };
 
-    // —— Retrieve user information
-    const userData = await fetch("https://discord.com/api/users/@me", options)
-        .then((response) => response.json());
+    // —— Get user and guilds information
+    const [user, guilds] = await Promise.all([
+        fetch("https://discord.com/api/users/@me", options),
+        fetch("https://discord.com/api/users/@me/guilds", options),
+    ]).then((responses) => Promise.all(responses.map((response) => response.json())));
 
-    // —— Retrieve information from user's guilds and checks the user's administrative privileges
-    const guildsData = (await fetch("https://discord.com/api/users/@me/guilds", options)
-        .then((response) => response.json()))
-        .filter((guild) => ((guild.permissions & 0x8) !== 0));
+    user.token = req.query.token;
 
-    req.session.user = { ...userData, ...{ guildsData } };
+    // —— Checks the user's administrative privileges
+    req.session.user = { ...user, ...{ guilds: guilds.filter((guild) => ((guild.permissions & 0x8) !== 0)) } };
 
     return res.redirect("/");
 

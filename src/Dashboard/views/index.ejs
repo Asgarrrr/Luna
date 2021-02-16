@@ -1,62 +1,50 @@
-
 <!DOCTYPE html>
-<html lang="en">
+    <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Luna — Servers</title>
-
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-        <link rel='stylesheet' href='/stylesheets/style.css' />
-
+        <link rel="stylesheet" href="style.css">
+        <title>Luna — Dashboard</title>
     </head>
     <body>
 
-        <div class="guildSelector">
-
-            <div class="admin">
-                <div class="guildIcon">
-                    <img src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.webp?size=512" class="icon" alt="<%= user.username %>'s avatar ">
+        <nav class="guildSelector">
+            <div class="user">
+                <div class="icon">
+                    <img src="https://cdn.discordapp.com/avatars/<%= admin.id %>/<%= admin.avatar %>.webp?size=512">
                 </div>
             </div>
 
             <div class="separator"></div>
 
             <div class="slider">
-                <% for (const guild of user.guildsData) { %>
-                    <a class="guildIcon" data-bs-toggle="tooltip" data-bs-placement="right" title="<%= guild.name %>" id="<%= guild.id %>" href="/guild/<%= guild.id %>">
+                <% guilds.forEach((guild) => { %>
+                    <div class="icon">
+
                         <% if(guild.icon){ %>
                             <img src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>.webp?size=512"  alt="<%= guild.name %>'icon">
                         <% } else { %>
-                            <% let guildAcro = guild.name.split(/\s/).reduce((response,word)=> response+=word.slice(0,1),'') %>
-                            <%= guildAcro %>
+                            <span><%= guild.name.split(/\s/).reduce((response,word)=> response+=word.slice(0,1),'') %></span>
                          <% } %>
-                    </a>
-                <% } %>
 
-                <div class="guildIcon">
-                    <svg aria-hidden="false" fill="currentColor" width="24" height="24" viewBox="0 0 24 24">
-                        <path d="M20 11.1111H12.8889V4H11.1111V11.1111H4V12.8889H11.1111V20H12.8889V12.8889H20V11.1111Z"></path>
-                    </svg>
-                </div>
+                    </div>
+                <% }); %>
+
             </div>
-        </div>
 
-        <div class="dataContent container">
-            <h5>Hi,</h5>
-            <h1 class="display-5"><%= user.username %></h1>
-            <h6 class="text-secondary">Dashboard</h6>
-        </div>
+        </nav>
+
+        <nav class="optionSelector">
+
+        </nav>
+
+        <main class="parent">
+            <div class="div1"></div>
+            <div class="div2"></div>
+            <div class="div3"></div>
+            <div class="div4"></div>
+        </main>
 
     </body>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-    <script>
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        })
-    </script>
-    <script src="/jquery/jquery.js"></script>
-
 </html>
