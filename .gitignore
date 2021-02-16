@@ -9,3 +9,4 @@ Database/
 setup.js
 config.json
 .stylelintrc.json
+.eslintrc.json
