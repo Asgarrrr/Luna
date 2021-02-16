@@ -1,5 +1,5 @@
 :root {
-    --blue : #7289da;
+    --blue: #7289da;
 }
 
 body {
@@ -18,14 +18,14 @@ body {
     height: 100vh;
     float: left;
     position: sticky;
-    top: 0px;
+    top: 0;
     overflow: hidden;
 }
 
 .optionSelector {
     width: 250px;
     height: 100vh;
-    background-color: #0F0F13;
+    background-color: #0f0f13;
     float: left;
     margin-right: 10px;
 }
@@ -34,7 +34,7 @@ body {
     height: 56px;
     width: 56px;
     border-radius: 50%;
-    transition: all ease .35s;
+    transition: all ease 0.35s;
     margin: 12px;
     overflow: hidden;
     background-color: #36393f;
