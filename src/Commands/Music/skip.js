@@ -29,7 +29,7 @@ class Skip extends Command {
         if (!player._connection)
             return super.respond(lang[1]);
 
-        // ——  Check if the user and Luna are on the same voice channel
+        // —— Check if the user and Luna are on the same voice channel
         if (!player._connection.voice.channel.members.has(message.author.id))
             return super.respond(lang[2]);
 
