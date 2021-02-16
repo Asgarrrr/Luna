@@ -137,9 +137,10 @@ class Language {
     }
 
     get(term, ...args) {
-        const value = this.language[term];
+        const value = this.language[String(term)];
         return typeof value === "function" ? value(...args) : value;
     }
+
 }
 
 module.exports = Language;
