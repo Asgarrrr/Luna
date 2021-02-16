@@ -31,9 +31,7 @@ class Play extends Command {
 
     async run(message, args) {
 
-        const client = this.client
-            , lang   = this.client.language.get("play")
-            , player = message.guild.player
+        const player = message.guild.player
             , query  = args.join(" ");
 
         // —— Verifies if the user is connected to a voice channel
