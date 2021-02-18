@@ -1,31 +1,31 @@
 {
-    "token": "",
+    	"token": "",
 	"Master": "",
-    "prefix": "£",
-    "CLIENT_SECRET": "",
+    	"prefix": "£",
+    	"CLIENT_SECRET": "",
 
-    "presence": {
-        "status": "Online",
-        "games" : [{
-            "type" : "WATCHING",
-            "name" : "A cat",
-            "url"  : ""
-        }],
-        "interval": 15
-    },
+	"presence": {
+		"status": "Online",
+		"games" : [{
+		    "type" : "WATCHING",
+		    "name" : "A cat",
+		    "url"  : ""
+		}],
+		"interval": 15
+	},
 
 	"Language": "English",
 
-    "module": {
-        "xp": true
-    },
-    "logger" : true,
-    "welcomeMsgChannel" : "78746910296956938",
-    "logchan" : "787436910296956938",
-    "welcomeMsg": true,
+	"module": {
+		"xp": true
+	},
+	"logger" : true,
+	"welcomeMsgChannel" : "",
+	"logchan" : "",
+	"welcomeMsg": true,
 
-    "dashboard": {
-        "expressSPass": "secret",
-        "url": "http://localhost:3000"
-    }
+	"dashboard": {
+		"expressSPass": "secret",
+		"url": "http://localhost:3000"
+	}
 }
