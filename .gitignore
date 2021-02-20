@@ -7,6 +7,6 @@ package-lock.json
 node_modules
 Database/
 setup.js
-config.json
+config.js
 .stylelintrc.json
 .eslintrc.json
