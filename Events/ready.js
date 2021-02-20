@@ -46,9 +46,9 @@ class Ready {
                 console.error(error);
             });
 
-        if (client.config.presence) {
+        if (client.config.Presence) {
 
-            const { status, games, interval } = client.config.presence;
+            const { status, games, interval } = client.config.Presence;
 
             // —— Set default presence
             games instanceof Array && games.length > 0 &&
