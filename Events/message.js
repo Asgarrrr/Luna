@@ -42,11 +42,11 @@ class Message {
         client.config.module.xp && client.func.setXp(message);
 
         // —— Exclude messages those not starting with prefix
-        if (!message.content.startsWith(client.config.prefix))
+        if (!message.content.startsWith(client.config.Prefix))
             return;
 
         // —— Message decomposition
-        const [cmd, ...args] = message.content.slice(client.config.prefix.length).trim().split(/ +/g);
+        const [cmd, ...args] = message.content.slice(client.config.Prefix.length).trim().split(/ +/g);
 
         const command = client.commands.get(cmd.toLowerCase()) || client.commands.get(client.aliases.get(cmd.toLowerCase()));
 
