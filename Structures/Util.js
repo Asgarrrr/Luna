@@ -164,9 +164,9 @@ function pageEmbed(message, pages, paging = false, trash = false) {
 
     paging && pages.map( (x, pi) => x.footer = { text: `${++pi} / ${Object.keys(pages).length}` } );
 
-    message.channel.send({embed: pages[i]}).then( async msg => {
+    message.channel.send({embed: pages[i]}).then( async (msg) => {
 
-        await msg.react("⬅️")
+        await msg.react("⬅️");
 
         // —— Create a reaction collector
         const backFilter = (reaction) => reaction.emoji.name === "⬅️";
@@ -178,35 +178,32 @@ function pageEmbed(message, pages, paging = false, trash = false) {
         const nextFilter = (reaction) => reaction.emoji.name === "➡️";
         const nextCollector = msg.createReactionCollector(nextFilter, { time: 900000 });
 
-        backCollector.on('collect', (r) => {
+        backCollector.on("collect", (r) => {
 
             i > 0 && msg.edit({embed: pages[--i]});
-            r.users.remove(r.users.cache.filter(u => u === message.author).first())
+            r.users.remove(r.users.cache.filter(u => u === message.author).first());
 
         });
 
-        backCollector.on('end', () => msg.reactions.removeAll().catch(() => {}));
+        backCollector.on("end", () => msg.reactions.removeAll().catch(() => {}));
 
-        nextCollector.on('collect', (r) => {
+        nextCollector.on("collect", (r) => {
 
-            i < Object.keys(pages).length + 1 && msg.edit({embed: pages[++i]})
-            r.users.remove(r.users.cache.filter(u => u === message.author).first())
+            i < Object.keys(pages).length + 1 && msg.edit({embed: pages[++i]});
+            r.users.remove(r.users.cache.filter(u => u === message.author).first());
 
         });
 
         if (trash) {
 
-            await msg.react("🗑️")
-            // —— Create a reaction collector
+            await msg.react("🗑️");
 
+            // —— Create a reaction collector
             const trashFilter = (reaction) => reaction.emoji.name === "🗑️"
                 , trashCollector = msg.createReactionCollector(trashFilter, { time: 900000 });
 
-            trashCollector.on('collect', (r) => msg.delete({ timeout: 0 }));
+            trashCollector.on("collect", (r) => msg.delete({ timeout: 0 }));
         }
-
-
-
 
     });
 
