@@ -6,7 +6,7 @@ const Command       = require("../../Structures/Command")
 // —— Function for generating an embed with paging system
     , { pageEmbed } = require("../../Structures/Util");
 
-// —— A light-weight module that brings window.fetch to Node.js
+// —— A light-weight module that brings window.fetch to Node.js
 const fetch = require("node-fetch");
 
 // ██████ | ███████████████████████████████████████████████████████████ | ██████
@@ -39,18 +39,18 @@ class Konachan extends Command {
             ? query.splice(query.indexOf("nsfw"), 1) && "rating:explicit"
             : "rating:safe";
 
-        // —— Defined the number of items to retrieve
+        // —— Defined the number of items to retrieve
         post.searchParams.append("limit",
             query.includes("-l" || "-list")
                 ? query.splice(query.indexOf("-l" || "-list"), 1) && 10 : 1
         );
 
         // —— Resolves all tag for find the better
-        let tags = await Promise.all(query.map(tag => fetch(`https://konachan.com/tag.json?name=${tag}&order=count&limit=1`)));
-            tags = await Promise.all(tags.map(r => r.json()));
+        let tags = await Promise.all(query.map((tag) => fetch(`https://konachan.com/tag.json?name=${tag}&order=count&limit=1`)));
+            tags = await Promise.all(tags.map((r) => r.json()));
 
         tags = [
-            ...tags.flat(Infinity).map(tag => tag.name),
+            ...tags.flat(Infinity).map((tag) => tag.name),
             "order:random",
             rating
         ];
@@ -58,16 +58,16 @@ class Konachan extends Command {
         // —— Append tags to the URL
         post.searchParams.append("tags", tags.join(" "));
 
-        // —— Request
+        // —— Request
         let res = await fetch(post)
-            .catch(() => { return super.respond("Failure at fetch") });
+            .catch(() => { return super.respond("Failure at fetch"); });
 
         res = await res.json();
 
         if (!Object.keys(res).length)
             return super.respond("No result found");
 
-        if ( Object.keys(res).length > 1 ) {
+        if (Object.keys(res).length > 1) {
 
             const pages = [];
 
@@ -77,7 +77,7 @@ class Konachan extends Command {
                     "image": {
                         "url": result.jpeg_url,
                     },
-                })
+                });
 
             }
 
@@ -89,7 +89,7 @@ class Konachan extends Command {
                 "image": {
                     "url": res[0].jpeg_url,
                 },
-            }})
+            }});
 
         }
     }
