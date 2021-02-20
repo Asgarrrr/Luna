@@ -5,7 +5,7 @@ const fetch         = require("node-fetch")
 // —— Fast, unopinionated, minimalist web framework for Node.js.
     , express       = require("express")
 // —— Dashboard configuration information.
-    , { dashboard } = require("../../config.json");
+    , { dashboard } = require("../../config.js");
 
 // ██████ Routes ███████████████████████████████████████████████████████████████
 
@@ -40,7 +40,7 @@ router.get("/authorize", async (req, res) => {
     const parameters = new URLSearchParams();
 
     parameters.append("client_id", req.client.user.id);
-    parameters.append("client_secret", req.client.config.CLIENT_SECRET);
+    parameters.append("client_secret", req.client.config.Secret);
     parameters.append("code", req.query.code);
     parameters.append("grant_type", "authorization_code");
     parameters.append("redirect_uri", `${dashboard.url}/auth/authorize`);

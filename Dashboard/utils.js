@@ -1,4 +1,4 @@
-const { token } = require("../config.json");
+const { token } = require("../config.js");
 
 const fetch = require("node-fetch");
 

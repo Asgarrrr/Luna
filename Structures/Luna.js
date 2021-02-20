@@ -24,7 +24,7 @@ class Luna extends Client {
         super(options);
 
         // —— Import of the parameters required for operation
-        this.config     = require("../config.json");
+        this.config     = require("../config.js");
         // —— Collection of all commands
         this.commands  = new Collection();
         // —— Collection of all events
@@ -126,10 +126,10 @@ class Luna extends Client {
 
     async login() {
 
-        if(!this.config.token)
+        if(!this.config.Token)
             throw new Error("No token provided");
 
-        await super.login(this.config.token);
+        await super.login(this.config.Token);
 
     }
 
