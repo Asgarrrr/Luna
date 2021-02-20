@@ -136,6 +136,84 @@ function formatTime(seconds) {
     ].filter(Boolean).join(":");
 }
 
+/** Checks that the user can use a music command
+  * @param {Discord.Guild.player}   player  Guild Player
+  * @param {Discord.Message}        message Message
+  * @param {Object}                 lang    Language file
+  */
+function checkVoice(player, message, lang) {
+    // —— Verifies if the user is connected to a voice channel
+    if (!message.member.voice.channel)
+        return message.channel.send(lang[0]);
+
+    // —— Check if Luna is connected to a voice channel
+    if (!player._connection)
+        return message.channel.send(lang[1]);
+
+    // —— Check if the user and Luna are on the same voice channel
+    if (!player._connection.voice.channel.members.has(message.author.id))
+        return message.channel.send(lang[2]);
+
+    return 0;
+}
+
+
+function pageEmbed(message, pages, paging = false, trash = false) {
+
+    let i = 0;
+
+    paging && pages.map( (x, pi) => x.footer = { text: `${++pi} / ${Object.keys(pages).length}` } );
+
+    message.channel.send({embed: pages[i]}).then( async msg => {
+
+        await msg.react("⬅️")
+
+        // —— Create a reaction collector
+        const backFilter = (reaction) => reaction.emoji.name === "⬅️";
+        const backCollector = msg.createReactionCollector(backFilter, { time: 900000 });
+
+        await msg.react("➡️");
+
+        // —— Create a reaction collector
+        const nextFilter = (reaction) => reaction.emoji.name === "➡️";
+        const nextCollector = msg.createReactionCollector(nextFilter, { time: 900000 });
+
+        backCollector.on('collect', (r) => {
+
+            i > 0 && msg.edit({embed: pages[--i]});
+            r.users.remove(r.users.cache.filter(u => u === message.author).first())
+
+        });
+
+        backCollector.on('end', () => msg.reactions.removeAll().catch(() => {}));
+
+        nextCollector.on('collect', (r) => {
+
+            i < Object.keys(pages).length + 1 && msg.edit({embed: pages[++i]})
+            r.users.remove(r.users.cache.filter(u => u === message.author).first())
+
+        });
+
+        if (trash) {
+
+            await msg.react("🗑️")
+            // —— Create a reaction collector
+
+            const trashFilter = (reaction) => reaction.emoji.name === "🗑️"
+                , trashCollector = msg.createReactionCollector(trashFilter, { time: 900000 });
+
+            trashCollector.on('collect', (r) => msg.delete({ timeout: 0 }));
+        }
+
+
+
+
+    });
+
+
+
+}
+
 module.exports = {
     resolveMention,
     resolveUser,
@@ -143,4 +221,6 @@ module.exports = {
     createUser,
     logger,
     formatTime,
+    checkVoice,
+    pageEmbed,
 };
