@@ -42,6 +42,14 @@ module.exports = {
     dashboard: {
 		expressSPass: "secret",
 		url: "http://localhost:3000"
-	}
+	},
+
+// —— Save events, messages, etc in database
+    logger : true,
+
+// -- Modules
+    module : {
+        xp : true
+    }
 
 }
