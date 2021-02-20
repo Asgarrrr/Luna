@@ -190,7 +190,7 @@ function pageEmbed(message, pages, paging = false, trash = false) {
         nextCollector.on("collect", (r) => {
 
             i < Object.keys(pages).length + 1 && msg.edit({embed: pages[++i]});
-            r.users.remove(r.users.cache.filter(u => u === message.author).first());
+            r.users.remove(r.users.cache.filter((u) => u === message.author).first());
 
         });
 
