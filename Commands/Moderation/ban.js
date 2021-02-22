@@ -1,6 +1,8 @@
 // —— Import base command
 const Command = require("../../Structures/Command");
 
+const { resolveUser } = require ("../../Structures/Util");
+
 class Ban extends Command {
 
     constructor(client) {
@@ -12,7 +14,7 @@ class Ban extends Command {
             category    : "Moderation",
             cooldown    : 5000,
             permLevel   : 9,
-            userPerms   : "SEND_MESSAGES",
+            userPerms   : "BAN_MEMBERS",
             allowDMs    : true,
         });
     }
@@ -23,7 +25,7 @@ class Ban extends Command {
               lang   = client.language.get(message.guild.local).ban();
 
         // —— Try to retrieve an ID against a mention, a username or an ID
-        const target = await client.resolveUser(user, message.guild);
+        const target = await resolveUser(user, message.guild);
 
         if(!target)
             return super.respond(lang[0]);
@@ -46,11 +48,12 @@ class Ban extends Command {
         message.guild.members.ban(target, { reason })
         .then((data) => {
 
-            message.guild.logchan
-            && message.guild.channels.cache.get(message.guild.logchan).send({
+            (client.config.logchan
+                ? message.guild.channels.cache.get(client.config.logchan)
+                : message.channel).send({
                 "embed": {
                     color: 15158332,
-                    title: `${data.username}#${data.discriminator} \`${data.id}\``,
+                    title: `${data.user.username}#${data.user.discriminator} \`${data.id}\``,
                     author: {
                         name: lang[5],
                     },
@@ -65,9 +68,7 @@ class Ban extends Command {
             });
 
         })
-        .catch(() => {
-            super.respond(lang[6]);
-        });
+        .catch(() => super.respond(lang[9]));
 
     }
 }
