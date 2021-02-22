@@ -13,7 +13,7 @@
 </div>
 
 * * *
-<!-- 
+<!--
 # Contents
 1. Main features
 2. Installation
@@ -42,5 +42,5 @@
     -   complete the required information in the `config.json` file, **and that's it !**
 
 3.  Getting Started
-    -   Run `node luna.js`
+    -   Run `node Luna.js`
     -   **Luna is now operational ! 🎉**
