@@ -92,7 +92,7 @@ class Language {
             ban: () => [
                 "You need to choice a valid user",
                 "You cannot banner yourself",
-                "You cannot banish me;3",
+                "You cannot banish me ;3",
                 "Target member is higher in role hierarchy than you.",
                 "Oww it's too powerful I can't !! èwé",
                 "Banning",
@@ -106,7 +106,10 @@ class Language {
                 "You need to choice a valid user",
                 "You can't unban yourself.",
                 "User was not found in the list of banned members",
-
+                "This user is not banned",
+                "Unban",
+                "Executor",
+                "User not unaban",
             ],
 
 
