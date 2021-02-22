@@ -15,7 +15,7 @@ class Ban extends Command {
             cooldown    : 5000,
             permLevel   : 9,
             userPerms   : "BAN_MEMBERS",
-            allowDMs    : true,
+            allowDMs    : false,
         });
     }
 

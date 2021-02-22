@@ -15,7 +15,7 @@ class Kick extends Command {
             cooldown    : 5000,
             permLevel   : 9,
             userPerms   : "KICK_MEMBERS",
-            allowDMs    : true,
+            allowDMs    : false,
         });
     }
 
