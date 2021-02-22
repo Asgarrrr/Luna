@@ -39,7 +39,7 @@
 2.  Configure Luna :
     -   Run `npm i`
     -   You will need to create a bot application in the **[developers space](https://discordapp.com/developers/applications/me)**
-    -   complete the required information in the `config.json` file, **and that's it !**
+    -   complete the required information in the `sample-config.js` file, rename it to "config.js" **and that's it !**
 
 3.  Getting Started
     -   Run `node Luna.js`
