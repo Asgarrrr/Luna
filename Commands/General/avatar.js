@@ -6,7 +6,11 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Import base command
-const Command = require("../../Structures/Command");
+const Command = require("../../Structures/Command")
+
+    , { GuildMember } = require("discord.js")
+
+    , { resolveUser }  = require ("../../Structures/Util");
 
 // ██████ | ███████████████████████████████████████████████████████████ | ██████
 
@@ -34,7 +38,12 @@ class Avatar extends Command {
         const client = this.client;
 
         // —— Try to retrieve an ID against a mention, a username or an ID, if nothing is found, use author's ID
-        const user = await client.resolveUser(args[0]) || message.author;
+        let user = await resolveUser((args[0] || message.author.id), client);
+
+        if (!user)
+            return super.respond("No user found");
+
+        user = user instanceof GuildMember ? user.user : user;
 
         // —— Retrieve the language information for this command
         const lang = client.language.get(message.guild && message.guild.local || "English").avatar(user);
