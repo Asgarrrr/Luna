@@ -43,25 +43,29 @@ function resolveMention(query, guild) {
     } else return null;
 }
 
-
 /** Search in all guilds or only one specific user by his ID or username.
-  * @param {string}  query   User mention
-  * @param {object}  [guild] Query only on specific guild
+  * @param {string}                         query   User mention
+  * @param {Discord.Guild | Discord.Client} from    Query only on specific guild
   */
-async function resolveUser(query, guild) {
+async function resolveUser(query, from) {
 
-        // —— Throwing any necessary errors.
-        if (typeof query !== "string")
-            throw new TypeError("Invalid string provided.");
+    // —— Throwing any necessary errors.
+    if (typeof query !== "string")
+        throw new TypeError("Invalid string provided.");
 
-        if (typeof guild && !(guild instanceof Discord.Guild))
-            throw new TypeError("Invalid guild provided.");
+    const match = query.match(/^(?:<@!?)?(\d+)(?:>)?$/);
 
-        const match = query.match(/^<@!?(\d+)>$/);
+    if (!match) return;
 
-        if (match && guild)
-            return guild.members.cache.get(match[1]);
+    if (from && from instanceof Discord.Client)
+        return await from.users.fetch(match[1])
+            .catch((err) => {});
+
+    if (from && from instanceof Discord.Guild)
+        return await from.members.fetch(match[1])
+            .catch((err) => {});
 }
+
 /** Search in all guilds or only one specific channel by his ID or name.
   * @param {string}  query  // User ID or Username
   * @param {object}  [guild] // Search only on specific guild
