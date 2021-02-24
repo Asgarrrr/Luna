@@ -222,14 +222,19 @@ class Play extends Command {
 
         found.push("exit");
 
-        await this.message.channel.send("```" + found.join("\n") + "```");
+        const result = await this.message.channel.send("```" + found.join("\n") + "```");
 
         const filter = (selector) => (selector.content > 0 && selector.content < found.length) || selector.content === "exit";
 
         const collected = await this.message.channel.awaitMessages(filter, { max: 1, time: 30000, errors: ["time"] })
-            .catch(() => { return super.respond("Timeout"); });
+            .catch(() => { return result.delete({ timeout: 0}); });
 
-        const toAdd = items[collected.first().content--];
+        let toAdd = collected.first().content;
+
+        if (toAdd === "exit")
+            return result.delete({ timeout: 0});
+
+        toAdd = items[toAdd--];
 
         this.message.guild.player._queue.push({
             id: toAdd.id,
