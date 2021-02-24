@@ -44,8 +44,8 @@ class Unban extends Command {
         message.guild.members.unban(target)
         .then((data) => {
 
-             (client.config.logchan
-                ? message.guild.channels.cache.get(client.config.logchan)
+             (message.guild.logChan
+                ? message.guild.channels.cache.get(message.guild.logChan)
                 : message.channel).send({
                 "embed": {
                     color : "008000",

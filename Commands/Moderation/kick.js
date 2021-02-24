@@ -48,8 +48,8 @@ class Kick extends Command {
         target.kick(reason)
         .then((data) => {
 
-            (client.config.logchan
-                ? message.guild.channels.cache.get(client.config.logchan)
+            (message.guild.logChan
+                ? message.guild.channels.cache.get(message.guild.logChan)
                 : message.channel).send({
                 "embed": {
                     color: 15158332,
