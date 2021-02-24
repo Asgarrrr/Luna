@@ -47,7 +47,7 @@ module.exports = {
 // —— Save events, messages, etc in database
     logger : true,
 
-// -- Modules
+// —— Modules
     module : {
         xp : true
     }
