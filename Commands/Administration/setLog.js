@@ -3,6 +3,8 @@
 // —— Import base command
 const Command = require("../../Structures/Command");
 
+const { resolveChannel } = require("../../Structures/Util");
+
 // ██████ | ███████████████████████████████████████████████████████████ | ██████
 
 // —— Create & export a class for the command that extends the base command
@@ -28,7 +30,7 @@ class Language extends Command {
         // —— Retrieve the language information for this command
         const lang = this.client.language.get(message.guild.local).setlog();
 
-        channel = await this.client.resolveChannel(channel, message.guild) || message.channel;
+        channel = await resolveChannel(channel, message.guild) || message.channel;
 
         if (!channel)
             return super.respond(lang[0]);
