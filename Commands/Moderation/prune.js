@@ -64,24 +64,21 @@ class Prune extends Command {
         }
 
         // —— Deletes messages corresponding to the filtered collection
-        await message.channel.bulkDelete(fetchedMessages, true)
-            .then((removed) => {
-
-                super.respond(`${removed.size} message ${ (target && `from ${ target === "me" ? "you" : target } `) || "" }has been removed`);
-
-                if (removed.size > 0) {
-                    this.client.db.prepare("INSERT INTO Event('Type', 'DATA') VALUES(?, ?)").run(
-                        "PRUNE",
-                        JSON.stringify({ by: message.author.id, deleted: removed.map((x) => x.id) }),
-                    );
-                } else if(removed.size === 0)
-                    super.respond("You cannot delete messages older than 14 days, also, you can delete messages from a user, role, or use keywords `me`, `bots`, `uploads` or `pins`");
-
-            })
-            .catch((err) => {
-                console.log(err);
+        const removed = await message.channel.bulkDelete(fetchedMessages, true)
+            .catch(() => {
                 return super.respond(`Unable to remove ${fetchedMessages.size}`);
             });
+
+        if (removed.size > 1) {
+
+            super.respond(`${removed.size} message ${ (target && `from ${ target === "me" ? "you" : target } `) || "" }has been removed`);
+
+            this.client.db.prepare("INSERT INTO Event('Type', 'DATA') VALUES(?, ?)").run(
+                "PRUNE",
+                JSON.stringify({ by: message.author.id, deleted: removed.map((x) => x.id) }),
+            );
+        } else if(removed.size === 1)
+            super.respond("You cannot delete messages older than 14 days, also, you can delete messages from a user, role, or use keywords `me`, `bots`, `uploads` or `pins`");
 
     }
 }
