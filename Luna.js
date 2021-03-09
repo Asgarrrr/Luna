@@ -15,7 +15,7 @@ const Luna = require("./Structures/Luna");
 
 const client = new Luna();
 
-client.init();
+client.start()
 
 process.on("rejectionHandled", (err) => {
     console.error(err);

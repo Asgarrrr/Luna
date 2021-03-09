@@ -1,0 +1,28 @@
+const { model, Schema } = require("mongoose");
+
+module.exports = model("Guild", new Schema({
+
+    // —— Basic information
+    _ID         : String,
+
+    prefix      : { type : String, default: "£" },
+    language    : { type : String, default: "English" },
+
+    plugins     : { type: Object, default: {
+
+    	experience : { enabled: true, },
+
+        logger : {
+            enabled : true,
+            channel : null
+        }
+    }},
+
+    // —— Channels ignored
+    ignored     : { type: Array, default: [] },
+
+    // —— Commands disabled
+    disabled    : { type: Array, default: [] },
+
+
+}));

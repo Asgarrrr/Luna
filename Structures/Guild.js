@@ -3,7 +3,7 @@
 // —— A powerful library for interacting with the Discord API
 const { Structures } = require("discord.js");
 
-// ██████ | ███████████████████████████████████████████████████████████ | ██████
+// ██████ | ███████████████████████████████████████████████████████████████████
 
 Structures.extend("Guild", (Guild) => class extends Guild {
 
@@ -23,18 +23,19 @@ Structures.extend("Guild", (Guild) => class extends Guild {
             _ttl         : [0, 0],
         };
 
-        let guildData = this.client.db.prepare("SELECT * FROM Guilds WHERE _ID = ?").get(data.id);
+        this.client.db.Guild.findOneAndUpdate({
+            _ID : data.id
+        }, {} , {
+            new         : true,
+            upsert      : false,
+        }).exec().then( ( res ) => {
 
-        if (!guildData) {
-            this.client.db.prepare("INSERT INTO Guilds('_ID') Values(?)").run(data.id);
-            guildData = {
-                Local   : "English",
-                logChan : null,
-            };
-        }
+            this.local              = res.language;
+            this.plugins            = res.plugins;
+            this.prefix             = res.prefix;
+            this.disabledCommands   = res.disabled;
 
-        this.local   = guildData.Local || "English";
-        this.logchan = guildData;
+        });
 
     }
 });

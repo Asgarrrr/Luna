@@ -1,8 +1,11 @@
+// ██████ Integrations █████████████████████████████████████████████████████████
+
+// —— A powerful library for interacting with the Discord API.
 const { Permissions } = require("discord.js");
 
 class Command {
 
-	constructor(client, options = {}) {
+	constructor( client, options = {} ) {
 
         this.client      = client;
 
@@ -14,8 +17,8 @@ class Command {
 		this.usage       = options.usage       || null;
 		this.cooldown    = options.cooldown    || 1000;
 
-		this.userPerms   = new Permissions(options.userPerms || "SEND_MESSAGES").freeze();
-		this.botPerms    = new Permissions(options.botPerms  || "SEND_MESSAGES").freeze();
+		this.userPerms   = new Permissions( options.userPerms || "SEND_MESSAGES" ).freeze();
+		this.botPerms    = new Permissions( options.botPerms  || "SEND_MESSAGES" ).freeze();
 		this.guildOnly   = options.guildOnly   || false;
 		this.ownerOnly   = options.ownerOnly   || false;
 		this.nsfw        = options.nsfw        || false;
@@ -25,24 +28,24 @@ class Command {
 	}
 
 	async run() {
-		throw new Error(`Command ${this.name} doesn't provide a run method!`);
+		throw new Error( `Command ${this.name} doesn't provide a run method!` );
     }
 
-    startCooldown(user) {
+    startCooldown( user ) {
 
-        this.cmdCooldown.set(user, this.cooldown);
+        this.cmdCooldown.set( user, new Date( Date.now() + this.cooldown ) );
 
-        setTimeout(() => {
-            this.cmdCooldown.delete(user);
-        }, this.cooldown);
+        setTimeout( () => this.cmdCooldown.delete( user ), this.cooldown );
     }
 
-    setMessage(message) {
-        this.message = message;
+    setMessage( message ) {
+
+        this.message    = message;
+
     }
 
-    respond(message) {
-        return this.message.channel.send(message);
+    respond( message ) {
+        return this.message.channel.send( message );
     }
 
 }

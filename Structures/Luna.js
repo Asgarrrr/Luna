@@ -2,142 +2,164 @@
 
 // —— A powerful library for interacting with the Discord API.
 const { Client, Collection } = require("discord.js")
+// —— A MongoDB object modeling tool designed to work in an asynchronous environment.
+    , mongoose               = require('mongoose')
 // —— Provides utilities for working with file and directory paths.
     , path                   = require("path")
 // —— Glob implementation in JavaScript.
-    , glob                   = require("glob");
+    , glob                   = require("glob")
+// —— Beautiful color gradients in terminal output
+    , gradient               = require("gradient-string")
+// —— Terminal string styling done right
+    , chalk                  = require("chalk");
 
-// —————————————————————————————————————————————————————————————————————————————
+// —— Includes structures
+const Command = require("./Command.js")
+    , Event   = require("./Event.js")
+    , Guild   = require("./Guild");
 
-require("../Structures/Guild");
+// ██████ | ███████████████████████████████████████████████████████████████████
 
-const Command = require("./Command");
-
-// ██████ Initialization ███████████████████████████████████████████████████████
-
-// —— Create the Luna class, an extension of Client Discord
 class Luna extends Client {
 
-    constructor(options = {}) {
+    constructor( options = {} ) {
 
         // —— Initialise discord.js client
         super(options);
 
         // —— Import of the parameters required for operation
-        this.config     = require("../config.js");
+        this.config    = require("../config.js");
         // —— Collection of all commands
         this.commands  = new Collection();
-        // —— Collection of all events
-        this.event     = new Collection();
         // —— Collection of all command aliases
         this.aliases   = new Collection();
-        // —— SQLITE database management
-        this.db        = require("../resources/DBInit");
         // —— Loads the language dictionary
         this.language  = new Collection();
         // —— Import custom function (avoid duplicated block)
-        this.func      = new (require("../resources/Functions"))(this);
+        this.utils     = new (require("../Structures/Utils"))(this);
 
-        this.dashboard = require("../Dashboard/app")(this);
+        // —— Cleaning the console 💨
+        console.clear();
 
-        // —— Inform the user that the client has been initialised
-        console.log(`Client initialised. —— Node ${process.version}.`);
+        // —— Just an ascii header, because I like it.
+        console.log(
+            chalk.bold(
+                gradient("#8EA6DB", "#7354F6")([
+                    "    __                      ____        __     ",
+                    "   / /   __  ______  ____ _/ __ )____  / /_    ",
+                    "  / /   / / / / __ \\/ __ `/ __  / __ \\/ __/  ",
+                    " / /___/ /_/ / / / / /_/ / /_/ / /_/ / /_      ",
+                    "/_____/\\__,_/_/ /_/\\__,_/_____/\\____/\\__/  ",
+                    "\n",
+                ].join("\n")),
+            )
+        );
+
+        console.log(`Client initialised —— Node ${process.version}.\n`);
 
     }
 
     get directory() {
-		return `${path.dirname(require.main.filename)}${path.sep}`;
-	}
+        return `${path.dirname(require.main.filename)}${path.sep}`;
+    }
 
-    /* ██████ Handler ██████████████████████████████████████████████████████████
+    async loadDatabase() {
+
+        try {
+
+            await mongoose.connect(this.config.mongodb, {
+                useNewUrlParser     : true,
+                useUnifiedTopology  : true,
+                useFindAndModify    : false,
+                useCreateIndex      : true
+            });
+
+
+            glob.sync( `${this.directory}/Models/*.js` ).forEach( ( file ) => {
+                require( path.resolve( file ) );
+            });
+
+            this.db = mongoose.connection.models;
+
+        } catch (error) {
+            throw new Error(error);
+        }
+
+    }
+
+    loadLanguages() {
+
+        for (const language of glob.sync(`${this.directory}/Languages/**/*.js`)) {
+
+            delete require.cache[ language ];
+            const file = new ( require( path.resolve( language ) ) )( this );
+
+        }
+
+    }
+
+    /* ██████ Handler █████████████████████████████████████████████████████████
 
     A handler can divide the different commands and events, in separate
     batch file in subdirectories, providing more clarity. This also allows
     better configuration, to define aliases, a cooldown, and to manage
     bugs more easily.                                                     */
 
-    // –– Commands Handler –––––––––––––––––––––––––––––––––––––––––––––––––––––
-
-    loadCommands() {
-
-        glob(`${this.directory}/Commands/**/*.js`, (er, files) => {
-
-            if (er) throw new Error(er);
-
-            for (const file of files) {
-
-                delete require.cache[[`${file}`]];
-                const command = new (require(file))(this),
-                      filename = file.slice(file.lastIndexOf("/") + 1, file.length - 3);
-
-                if (!(command instanceof Command))
-                    throw new TypeError(`${filename} does not seem to be a correct command...`);
-
-                this.commands.set(command.name, command);
-
-                command.aliases.length
-                    && command.aliases.map((alias) => this.aliases.set(alias, command.name));
-            }
-
-        });
-
-    }
-
     // –– Events Handler ––––––––––––––––––––––––––––––––––––––––——–––––––––––––
 
     loadEvents() {
 
-        glob(`${this.directory}/Events/**/*.js`, (er, files) => {
+        for (const event of glob.sync( `${this.directory}/Events/**/*.js` )) {
 
-            if (er) throw new Error(er);
+            delete require.cache[ event ];
+            const file = new ( require( path.resolve( event ) ) )( this );
 
-            for (const file of files) {
+            if ( !( file instanceof Event ) )
+                return;
 
-                delete require.cache[[`${file}`]];
-                const event     = new (require(file))(this),
-                      eventname = file.slice(file.lastIndexOf("/") + 1, file.length - 3);
+            super[ file.listener ]( file.name, ( ...args )  => file.run( ...args ) );
 
-                if (event.enable)
-                    super.on(eventname, (...args) => event.run(...args));
-
-            }
-        });
+        }
 
     }
 
-    loadLocal() {
+    // –– Commands Handler ––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-        glob(`${this.directory}/Languages/**/*.js`, (er, files) => {
+    loadCommands() {
 
-            if (er) throw new Error(er);
+        for (const command of glob.sync(`${this.directory}/Commands/**/*.js`)) {
 
-            for (const file of files) {
+            delete require.cache[ command ];
+            const file = new ( require( path.resolve( command ) ) )( this );
 
-                delete require.cache[[`${file}`]];
-                const local     = new (require(file))(this),
-                      localname = file.slice(file.lastIndexOf("/") + 1, file.length - 3);
+            if ( !( file instanceof Command ) )
+                return;
 
-                this.language.set(localname, local.language);
+            this.commands.set( file.name, file );
 
-            }
-        });
+            if ( file.aliases && Array.isArray( file.aliases ) )
+                file.aliases.forEach( ( alias ) => this.aliases.set( alias, file.name ) );
 
-    }
-
-    async login() {
-
-        if(!this.config.Token)
-            throw new Error("No token provided");
-
-        await super.login(this.config.Token);
+        }
 
     }
 
-    init() {
+    login() {
+
+        if ( !this.config.Token )
+            throw new Error( 'You must pass the token for the client...' );
+
+        super.login( this.config.Token );
+
+    }
+
+    async start() {
+
+        await this.loadDatabase();
+        this.loadLanguages()
         this.loadCommands();
         this.loadEvents();
         this.login();
-        this.loadLocal();
     }
 
 }

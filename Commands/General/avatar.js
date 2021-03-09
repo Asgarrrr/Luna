@@ -1,18 +1,11 @@
-/* › Commands / avatar.js ——————————————————————————————————————————————————————
-
-   — Returns the profile image of a player, present or not in the guild.
-     Targeting by mention, username, or ID                                    */
-
 // ██████ Integrations █████████████████████████████████████████████████████████
 
+// —— A powerful library for interacting with the Discord API
+const { GuildMember }   = require("discord.js")
 // —— Import base command
-const Command = require("../../Structures/Command")
+    , Command           = require("../../Structures/Command");
 
-    , { GuildMember } = require("discord.js")
-
-    , { resolveUser }  = require ("../../Structures/Util");
-
-// ██████ | ███████████████████████████████████████████████████████████ | ██████
+// ██████ | ███████████████████████████████████████████████████████████████████
 
 // —— Create & export a class for the command that extends the base command
 class Avatar extends Command {
@@ -20,36 +13,33 @@ class Avatar extends Command {
     constructor(client) {
         super(client, {
             name        : "avatar",
-            description : "Returns the profile image of a player.\n> Targeting by mention, username, or ID",
+            description : "Returns the profile image of a player. Targeting by mention, username, or ID",
             usage       : "avatar {@mention || username || ID}",
             exemple     : ["662331369392832512", "@Luna", "Luna"],
             args        : false,
             category    : "General",
             cooldown    : 1000,
             aliases     : ["pp"],
-            permLevel   : 0,
             userPerms   : "SEND_MESSAGES",
             allowDMs    : true,
         });
     }
 
-    async run(message, args) {
+    async run(message, [ target ]) {
 
-        const client = this.client;
+        // —— If the user uses an id, transforms it into a mention
+        target = parseInt(target) ? `<@${target}>` : target
 
         // —— Try to retrieve an ID against a mention, a username or an ID, if nothing is found, use author's ID
-        let user = await resolveUser((args[0] || message.author.id), client);
+        let user = await this.client.utils.resolveMention( ( target || `<@${message.author.id}>` ), this.client, 1 );
 
-        if (!user)
-            return super.respond("No user found");
+        if ( !user )
+            return super.respond( "Unable to retrieve user information" );
 
         user = user instanceof GuildMember ? user.user : user;
 
-        // —— Retrieve the language information for this command
-        const lang = client.language.get(message.guild && message.guild.local || "English").avatar(user);
-
         super.respond({ embed: {
-            description: message.author.id === user.id ? lang[1] : lang[2],
+            description: `**This is ${message.author.id === user.id ? `your avatar, <@${user.id}>**` : `the profile picture of <@${user.id}>**`}`,
             image: {
                 url: user.displayAvatarURL({ dynamic: true, size: 4096 }),
             },
