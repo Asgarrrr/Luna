@@ -17,7 +17,6 @@ class Prefix extends Command {
 			args        : true,
 			category    : "Administration",
 			cooldown    : 10000,
-			permLevel   : 9,
 			userPerms   : "ADMINISTRATOR",
 			allowDMs    : false,
 		});
@@ -29,7 +28,7 @@ class Prefix extends Command {
         try {
 
             // —— Removes backslashes & applies changes
-            prefix = this.message.guild.prefix = prefix.replace(/\\/g, '');
+            prefix = prefix.replace(/\\/g, '');
 
             if (prefix === message.guild.prefix)
                 return super.respond("You already use this prefix");
@@ -40,6 +39,8 @@ class Prefix extends Command {
             }, {
                 prefix : prefix,
             }).exec();
+
+            this.message.guild.prefix = prefix;
 
             // —— Send a confirmation message
             super.respond({ embed: {
@@ -60,7 +61,6 @@ class Prefix extends Command {
             }});
 
         }
-
 
     }
 }

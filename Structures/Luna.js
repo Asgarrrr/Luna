@@ -33,8 +33,6 @@ class Luna extends Client {
         this.commands  = new Collection();
         // —— Collection of all command aliases
         this.aliases   = new Collection();
-        // —— Loads the language dictionary
-        this.language  = new Collection();
         // —— Import custom function (avoid duplicated block)
         this.utils     = new (require("../Structures/Utils"))(this);
 
@@ -83,17 +81,6 @@ class Luna extends Client {
 
         } catch (error) {
             throw new Error(error);
-        }
-
-    }
-
-    loadLanguages() {
-
-        for (const language of glob.sync(`${this.directory}/Languages/**/*.js`)) {
-
-            delete require.cache[ language ];
-            const file = new ( require( path.resolve( language ) ) )( this );
-
         }
 
     }
@@ -156,7 +143,6 @@ class Luna extends Client {
     async start() {
 
         await this.loadDatabase();
-        this.loadLanguages()
         this.loadCommands();
         this.loadEvents();
         this.login();

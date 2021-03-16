@@ -8,11 +8,10 @@ module.exports = class Utils {
 
     }
 
-
     /** Extract the related object out of a Discord mention
       * @param      { String }                      query   Mention.
       * @param      { Discord.(Client | Guild) }    from    Specifies whether you want to retrieve this information from the client or the guild.
-      * @param      { Number }                      type    What you want to extract | 0 = All, 1 = User, 2 = Channel, 3, Role
+      * @param      { Number }                      type    What you want to extract | 0 = All, 1 = User, 2 = Role, 3 = Channel
       * @returns    { Object|undefined }                    An object with a "member", "role" or "channel" property corresponding to the mention, or "null" if the provided channel is not a mention
       */
     async resolveMention(query, from, type = 0) {
@@ -37,6 +36,8 @@ module.exports = class Utils {
         if ( prefix === "@&" && from instanceof Discord.Client )
             throw new TypeError( "Roles only exist in a guild" );
 
+
+
         switch (prefix) {
 
             case "@":
@@ -46,14 +47,16 @@ module.exports = class Utils {
                 return await from[ type ].fetch( match[2] ).catch( () => {} );
                 break;
 
-            case "#":
-                return from.channels.cache.get( id ).catch( () => {} );
-                break;
-
             case "@&": {
-                return await from.roles.fetch( id ).catch( () => {} );
+
+                return await from.roles.cache.get( id )
                 break;
             }
+
+            case "#":
+                return await from.channels.cache.get( id ).then( x => x);
+                break;
+
         }
 
 
