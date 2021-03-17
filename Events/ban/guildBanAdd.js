@@ -1,14 +1,14 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
-// —— Base structure
-const Event = require('../../Structures/Event');
+// —— Base structure
+const Event = require( "../../Structures/Event" );
 
 // ██████ | █████████████████████████████████████████████████████████████████████
 
 class guildBanAdd extends Event {
 
     constructor( client ) {
-        super( client )
+        super( client );
     }
 
     async run( guild, user ) {
@@ -18,7 +18,7 @@ class guildBanAdd extends Event {
             const data = await guild.fetchAuditLogs({
                 limit   : 1,
                 type    : "MEMBER_BAN_ADD",
-                user    : user
+                user
             });
 
             if (!data.entries)

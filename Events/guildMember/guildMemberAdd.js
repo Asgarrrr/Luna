@@ -1,20 +1,19 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
-// —— Base structure
-const Event = require('../../Structures/Event');
+// —— Base structure
+const Event = require( "../../Structures/Event" );
 
 // ██████ | █████████████████████████████████████████████████████████████████████
 
 class guildMemberAdd extends Event {
 
     constructor( client ) {
-        super( client )
+        super( client );
     }
 
     async run( member ) {
 
-        // —— Autorole
-
+        // —— Automatic role assignment
         const { plugins: { autorole }} = await this.client.db.Guild.findOne( {_ID: member.guild.id}, "plugins.autorole" );
 
         const { enabled, roles } = autorole;
@@ -23,7 +22,7 @@ class guildMemberAdd extends Event {
 
             const toSet = await Promise.all( roles.map( ( role ) => member.guild.roles.fetch( role ) ) );
 
-            member.roles.add(toSet);
+            member.roles.add( toSet );
 
         }
 
