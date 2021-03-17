@@ -21,7 +21,7 @@ class Avatar extends Command {
             cooldown    : 1000,
             aliases     : ["pp"],
             userPerms   : "SEND_MESSAGES",
-            allowDMs    : true,
+            guildOnly   : false,
         });
     }
 
@@ -34,12 +34,12 @@ class Avatar extends Command {
         let user = await this.client.utils.resolveMention( ( target || `<@${message.author.id}>` ), this.client, 1 );
 
         if ( !user )
-            return super.respond( "Unable to retrieve user information" );
+            return super.respond( this.language.noUserInformation );
 
         user = user instanceof GuildMember ? user.user : user;
 
         super.respond({ embed: {
-            description: `**This is ${message.author.id === user.id ? `your avatar, <@${user.id}>**` : `the profile picture of <@${user.id}>**`}`,
+            description: `${this.language.thisIs} ${message.author.id === user.id ? this.language.userIsAuthor(user) : this.language.userAvatar(user) }`,
             image: {
                 url: user.displayAvatarURL({ dynamic: true, size: 4096 }),
             },
