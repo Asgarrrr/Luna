@@ -1,10 +1,15 @@
+// ██████ Integrations █████████████████████████████████████████████████████████
+
+// —— A powerful library for interacting with the Discord API.
 const Discord = require("discord.js")
+
+// ██████ | ███████████████████████████████████████████████████████████████████
 
 module.exports = class Utils {
 
     constructor(client) {
 
-        this.client = client
+        this.client = client;
 
     }
 
@@ -45,17 +50,10 @@ module.exports = class Utils {
 
                 const type = from instanceof Discord.Client ? "users" : "members";
                 return await from[ type ].fetch( match[2] ).catch( () => {} );
-                break;
 
-            case "@&": {
+            case "@&":  return await from.roles.cache.get( id );
 
-                return await from.roles.cache.get( id )
-                break;
-            }
-
-            case "#":
-                return await from.channels.cache.get( id ).then( x => x);
-                break;
+            case "#":   return await from.channels.cache.get( id ).then( ( x ) => x );
 
         }
 
