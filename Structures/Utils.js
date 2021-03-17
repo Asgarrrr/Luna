@@ -1,7 +1,7 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— A powerful library for interacting with the Discord API.
-const Discord = require("discord.js")
+const Discord = require( "discord.js" );
 
 // ██████ | ███████████████████████████████████████████████████████████████████
 
@@ -30,7 +30,9 @@ module.exports = class Utils {
         if ( type < 0 || type > 3)
             throw new TypeError( "The type goes from 0 to 3." );
 
-        const match = query.match( new RegExp( `^<(${[ "@!?|@&|#", "@!?", "@&", "#" ][type]})([0-9]+)>$` ) );
+        const filter = `^<(${[ "@!?|@&|#", "@!?", "@&", "#" ][type]})([0-9]+)>$`
+
+            , match  = query.match( new RegExp( filter ) );
 
         if ( !match )
             return;
@@ -57,7 +59,6 @@ module.exports = class Utils {
 
         }
 
-
     }
 
-}
+};
