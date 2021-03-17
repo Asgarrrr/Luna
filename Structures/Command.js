@@ -41,6 +41,7 @@ class Command {
     setMessage( message ) {
 
         this.message    = message;
+        this.language   = this.client.language[ message.guild && message.guild.local || "EN" ][this.name];
 
     }
 
