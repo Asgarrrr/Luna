@@ -171,6 +171,7 @@ class Luna extends Client {
     async start() {
 
         await this.loadDatabase();
+        this.loadLanguages();
         this.loadCommands();
         this.loadEvents();
         this.login();
