@@ -26,8 +26,9 @@ Structures.extend("Guild", (Guild) => class extends Guild {
         this.client.db.Guild.findOneAndUpdate({
             _ID : data.id
         }, {} , {
-            new         : true,
-            upsert      : false,
+            setDefaultsOnInsert : true,
+            upsert              : true,
+            new                 : true,
         }).exec().then( ( res ) => {
 
             this.local              = res.language;

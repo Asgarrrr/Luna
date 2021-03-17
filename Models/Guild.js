@@ -15,6 +15,11 @@ module.exports = model("Guild", new Schema({
         logger : {
             enabled : true,
             channel : null
+        },
+
+        autorole : {
+            enabled : false,
+            roles   : []
         }
     }},
 
