@@ -1,17 +1,17 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Base structure
-const Event = require('../../Structures/Event');
+const Event = require( "../../Structures/Event" );
 
 // ██████ | █████████████████████████████████████████████████████████████████████
 
 class message extends Event {
 
-    constructor(client) {
-        super(client);
+    constructor( client ) {
+        super( client );
     }
 
-    async run(message) {
+    async run( message ) {
 
         const client = this.client
             , langue = client.language[ message.guild && message.guild.local || "EN" ].message;
@@ -29,7 +29,7 @@ class message extends Event {
             content     : message.cleanContent,
             attachments : message.attachments.size !== 0 && message.attachments.first().url,
             timestamp   : message.createdTimestamp,
-        }).save().catch( ( err )  => console.error( err) );
+        }).save().catch( ( err )  => console.error( err ) );
 
         // —— Exclude messages from bot or system
         if ( message.author.bot || message.system )
@@ -124,7 +124,7 @@ class message extends Event {
 
         // —— Checks if arguments are required and if they are present
         if ( command.args && !args.length )
-            return message.channel.send( !command.usage || "" ? langue.args : { embed : langue.helpEmbed } );
+            return message.channel.send( !command.usage || "" ? langue.args : { embed : langue.helpEmbed( command, client ) } );
 
         if ( message.guild ) {
 

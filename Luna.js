@@ -15,16 +15,10 @@ const Luna = require("./Structures/Luna");
 
 const client = new Luna();
 
-client.start()
+client.start();
 
-process.on("rejectionHandled", (err) => {
-    console.error(err);
-});
+process.on("rejectionHandled"   , ( err ) => console.error( err ) );
 
-process.on("unhandledRejection", (err) => {
-    console.error(err);
-});
+process.on("unhandledRejection" , ( err ) => console.error( err ) );
 
-process.on("uncaughtException", (err) => {
-    console.error(err);
-});
+process.on("uncaughtException"  , ( err ) => console.error( err ) );

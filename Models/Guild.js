@@ -10,7 +10,7 @@ module.exports = model("Guild", new Schema({
 
     plugins     : { type: Object, default: {
 
-    	experience : { enabled: true, },
+        experience : { enabled: true, },
 
         logger : {
             enabled : true,
@@ -23,7 +23,7 @@ module.exports = model("Guild", new Schema({
         }
     }},
 
-    // —— Channels ignored
+    // —— Channels ignored
     ignored     : { type: Array, default: [] },
 
     // —— Commands disabled

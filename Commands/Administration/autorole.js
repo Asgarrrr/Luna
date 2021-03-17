@@ -103,7 +103,7 @@ class Autorole extends Command {
                     description : ` ${req.plugins.autorole.roles.map( ( role ) => `<@&${role}>` ).join( " " ) }`
                 } };
 
-                if (req.plugins.autorole.enabled === false)
+                if ( req.plugins.autorole.enabled === false )
                     response.embed.footer = {
                         text: "The automatic assignment is however disabled"
                     };
