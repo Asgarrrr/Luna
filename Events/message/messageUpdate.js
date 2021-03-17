@@ -1,14 +1,14 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
-// —— Base structure
-const Event = require('../../Structures/Event');
+// —— Base structure
+const Event = require( "../../Structures/Event" );
 
 // ██████ | █████████████████████████████████████████████████████████████████████
 
 class messageUpdate extends Event {
 
     constructor( client ) {
-        super( client )
+        super( client );
     }
 
     async run( oldMessage, newMessage ) {
@@ -30,7 +30,6 @@ class messageUpdate extends Event {
         }).exec();
 
     }
-
 
 }
 

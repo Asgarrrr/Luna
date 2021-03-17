@@ -7,11 +7,11 @@ module.exports = model("Member", new Schema({
     _guildID    : String,
     joinDate    : { type : Date, default : Date.now() },
 
-    // —— Levelling system
+    // —— Levelling system
     experience  : { type: Number, default: 0 },
     level       : { type: Number, default: 1 },
 
-    // —— Moderation register
+    // —— Moderation register
 	mute        : {
         type    : Object,
         default : { muted : false, end : null }
