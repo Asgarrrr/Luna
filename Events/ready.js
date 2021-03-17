@@ -1,9 +1,9 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Terminal string styling done right
-const chalk  = require("chalk")
-// —— Base structure
-    ,  Event = require('../Structures/Event');
+const chalk  = require( "chalk" )
+// —— Base structure
+    ,  Event = require( "../Structures/Event" );
 
 // ██████ | █████████████████████████████████████████████████████████████████████
 
@@ -17,7 +17,7 @@ class ready extends Event {
 
     async run() {
 
-        // —— A long sentence eh ...
+        // —— A long sentence eh ...
         console.log( chalk.green( `\n ——— ${this.client.user.tag} : READY !` ) );
 
         if (this.client.config.Presence) {
@@ -39,13 +39,13 @@ class ready extends Event {
                 // —— Every x seconds, the activity (and its type) will change.
                 setInterval(() => {
                     // —— Choose a random activity
-                    const thisGame = games[parseInt( ~~( Math.random() * ( games.length ) ), 10 )]
+                    const thisGame = games[parseInt( ~~( Math.random() * ( games.length ) ), 10 )];
                     // —— Redefined the bot's activity
-                     this.client.user.setActivity( thisGame.name, {
+                    this.client.user.setActivity( thisGame.name, {
                         type: thisGame.type,
                         url : thisGame.url || "https://www.twitch.tv/",
                     } );
-                }, ( ( typeof interval === "number" && interval ) || 30 ) * 1000)
+                }, ( ( typeof interval === "number" && interval ) || 30 ) * 1000);
 
             }
 
