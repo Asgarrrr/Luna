@@ -19,7 +19,7 @@ class Prefix extends Command {
 			cooldown    : 10000,
 			permLevel   : 9,
 			userPerms   : "ADMINISTRATOR",
-			allowDMs    : false,
+			guildOnly   : true,
 		});
 
 	}
