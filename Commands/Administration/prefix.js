@@ -1,7 +1,7 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Import base command
-const Command = require("../../Structures/Command");
+const Command = require( "../../Structures/Command" );
 
 // ██████ | ███████████████████████████████████████████████████████████████████
 
@@ -12,7 +12,7 @@ class Prefix extends Command {
 		super(client, {
 			name        : "prefix",
 			description : "Change the prefix used by Luna in the guild",
-			usage       : `prefix [prefix]`,
+			usage       : "prefix [prefix]",
 			exemple     : [],
 			args        : true,
 			category    : "Administration",
@@ -28,10 +28,10 @@ class Prefix extends Command {
         try {
 
             // —— Removes backslashes & applies changes
-            prefix = prefix.replace(/\\/g, '');
+            prefix = prefix.replace( /\\/g, "" );
 
-            if (prefix === message.guild.prefix)
-                return super.respond("You already use this prefix");
+            if ( prefix === message.guild.prefix )
+                return super.respond( "You already use this prefix" );
 
             // —— Save the new language in the database
             await this.client.db.Guild.findOneAndUpdate({
@@ -43,15 +43,15 @@ class Prefix extends Command {
             this.message.guild.prefix = prefix;
 
             // —— Send a confirmation message
-            super.respond({ embed: {
+            super.respond( { embed: {
                 color: "#7354f6",
                 author: {
                     name: "The prefix has been changed"
                 },
                 description : `You can now use \`${prefix}\` to run commands.`
-            }})
+            }} )
 
-        } catch (error) {
+        } catch ( error ) {
             super.respond({ embed : {
                 color: "#c0392b",
                 author: {

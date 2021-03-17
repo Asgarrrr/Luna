@@ -1,7 +1,7 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Import base command
-const Command = require("../../Structures/Command");
+const Command = require( "../../Structures/Command" );
 
 // ██████ | ███████████████████████████████████████████████████████████████████
 
@@ -12,7 +12,7 @@ class Autorole extends Command {
 		super(client, {
 			name        : "autorole",
 			description : "Defines the roles assigned automatically when a new member joins",
-			usage       : `autorole [operation] [role]`,
+			usage       : "autorole [operation] [role]",
 			exemple     : ["a @moderator", "off"],
 			args        : true,
 			category    : "Administration",
@@ -38,7 +38,7 @@ class Autorole extends Command {
                     { $set : { "plugins.autorole.enabled": state } }
                 );
 
-                // —— Retrieve all roles
+                // —— Retrieve all roles
                 const { plugins: { autorole : { roles: currentRoles } } } = await this.client.db.Guild.findOne( {_ID: message.guild.id}, "plugins.autorole.roles" );
 
                 super.respond( { embed: req.nModified
@@ -62,7 +62,7 @@ class Autorole extends Command {
 
         }
 
-        // —— 
+        // ——
         if ( ["a", "add", "r", "remove"].includes( operation ) ) {
 
             try {
@@ -75,16 +75,16 @@ class Autorole extends Command {
 
                 roleslist = await Promise.all( roleslist );
 
-                roleslist = roleslist.filter( role => {
+                roleslist = roleslist.filter( ( role ) => {
 
                     if ( role && role.comparePositionTo(message.guild.me.roles.highest) <= 0 )
-                        return role.id
+                        return role.id;
                     else
                         cantAdd.push(role);
 
                 });
 
-                // —— Retrieves information, and updates it. If the action is on "add", the role is added, otherwise, it is removed
+                // —— Retrieves information, and updates it. If the action is on "add", the role is added, otherwise, it is removed
                 const req = await this.client.db.Guild.findOneAndUpdate(
                     { _ID: message.guild.id },
                     ["a", "add"].includes( operation )
@@ -96,17 +96,17 @@ class Autorole extends Command {
                 cantAdd.length && super.respond({ embed: {
                     title       : "The following roles cannot be added (permissions)",
                     description : cantAdd.join(", ")
-                }})
+                }});
 
                 const response = { embed: {
                     title       : "The defined roles are as follows",
                     description : ` ${req.plugins.autorole.roles.map( ( role ) => `<@&${role}>` ).join( " " ) }`
-                } }
+                } };
 
                 if (req.plugins.autorole.enabled === false)
                     response.embed.footer = {
                         text: "The automatic assignment is however disabled"
-                    }
+                    };
 
                 super.respond(response);
 
