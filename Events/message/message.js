@@ -1,6 +1,6 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
-// —— Base structure
+// —— Base structure
 const Event = require('../../Structures/Event');
 
 // ██████ | █████████████████████████████████████████████████████████████████████
@@ -8,12 +8,13 @@ const Event = require('../../Structures/Event');
 class message extends Event {
 
     constructor(client) {
-        super(client)
+        super(client);
     }
 
     async run(message) {
 
-        const client   = this.client;
+        const client = this.client
+            , langue = client.language[ message.guild && message.guild.local || "EN" ].message;
 
         // —— If message.member is uncached, fetch it
         if ( !message.member && message.guild )
@@ -24,7 +25,7 @@ class message extends Event {
             _ID         : message.id,
             _userID     : message.author.id,
             _guildID    : message.guild && message.guild.id || "DM",
-            _channelID  : message.channel && message.channel.id || "DM",
+            _channelID  : message.channel && message.channel.id || "DM",
             content     : message.cleanContent,
             attachments : message.attachments.size !== 0 && message.attachments.first().url,
             timestamp   : message.createdTimestamp,
@@ -43,7 +44,7 @@ class message extends Event {
             }).exec();
 
             if ( !member ) {
-                // —— If it does not exist, it is created
+                // —— If it does not exist, it is created
                 member = await new client.db.Member({
                     _ID         : message.author.id,
                     _guildID    : message.guild.id,
@@ -67,7 +68,7 @@ class message extends Event {
             // —— LVL UP ! *Victory Fanfare* (Final Fantasy XI)
             if( member.level < curLevel ) {
 
-                member.level++
+                member.level++;
                 message.reply( `YES ! LVL ${curLevel}` );
 
             }
@@ -99,41 +100,43 @@ class message extends Event {
         if ( !command )
             return;
 
-        // —— Stop if the command is disabled
-        if ( message.guild.disabledCommands.includes( cmd ) )
+        // —— Stop if the command is disabled
+        if ( message.guild && message.guild.disabledCommands.includes( cmd ) )
             return;
+
+        // —— If the command can only be executed by the master
+        if ( command.ownerOnly && client.config.Master !== message.author.id )
+            return message.reply( langue.owner );
+
+        // —— Checks if the command can be executed in DM
+        if ( command.guildOnly && !message.guild )
+			return message.reply( langue.server );
+
+        // —— If the command can only be executed in a NSFW channel
+		if ( command.nsfw && !message.channel.nsfw )
+            return message.reply( langue.nsfw );
 
         // —— Checks if the command for this user is under cooldown
         if ( command.cmdCooldown.has( message.author.id ) )
             return message.delete({ timeout: 10000 })
-                && message.reply( `Please wait ${( ( command.cmdCooldown.get( message.author.id ) - Date.now() ) / 1000 ).toFixed(1) } second(s) to reuse the ${command.name} command.`)
+                && message.reply( langue.cooldown( command, message ) )
                    .then( ( msg ) => msg.delete({ timeout: 10000 }) );
-
-        if ( command.ownerOnly && client.config.Master !== message.author.id )
-            return message.reply( lang[1] );
-
-        // —— Checks if the command can be executed in DM
-        if ( command.guildOnly && !message.guild )
-			return message.reply( lang[2] );
-
-		if ( command.nsfw && !message.channel.nsfw )
-            return message.reply( lang[3] );
 
         // —— Checks if arguments are required and if they are present
         if ( command.args && !args.length )
-            return message.channel.send( !command.usage || "" ? lang[4] : { embed : lang[5] } );
+            return message.channel.send( !command.usage || "" ? langue.args : { embed : langue.helpEmbed } );
 
         if ( message.guild ) {
 
             const userPerms = message.channel.permissionsFor( message.member ).missing( command.userPerms );
 
             if ( userPerms.length )
-                return message.reply( lang[6] );
+                return message.reply( langue.youMiss );
 
             const botPerms = message.channel.permissionsFor( client.user ).missing( command.botPerms );
 
 			if ( botPerms.length )
-				return message.reply( lang[7] );
+				return message.reply( langue.missPerm );
 
         }
 
