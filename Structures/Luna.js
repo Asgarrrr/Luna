@@ -75,7 +75,7 @@ class Luna extends Client {
             });
 
 
-            glob.sync( `${this.directory}/Models/*.js` ).forEach( ( file ) => {
+            glob.sync( `${this.directory}/Models/*.js` ).forEach( ( file ) => {
                 require( path.resolve( file ) );
             });
 
@@ -91,15 +91,15 @@ class Luna extends Client {
 
         for ( const language of glob.sync( `${this.directory}/Languages/**/*.js` ) ) {
 
-            const match = language.match(/.*\/([A-Z]{2})\//)
+            const match = language.match(/.*\/([A-Z]{2})\//);
 
             if ( !match[1] )
                 return;
 
-            const ISO = match[1]
+            const ISO = match[1];
 
             if (!this.language[ISO])
-                this.language[ISO] = {}
+                this.language[ISO] = {};
 
             delete require.cache[ language ];
             const file = require( path.resolve( language ) )
@@ -163,7 +163,7 @@ class Luna extends Client {
         if ( !this.config.Token )
             throw new Error( "You must pass the token for the client..." );
 
-        // —— Logs the client in, establishing a websocket connection to Discord.
+        // —— Logs the client in, establishing a websocket connection to Discord.
         super.login( this.config.Token );
 
     }
