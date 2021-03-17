@@ -1,22 +1,22 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— A powerful library for interacting with the Discord API.
-const { Client, Collection } = require("discord.js")
+const { Client, Collection } = require( "discord.js" )
 // —— A MongoDB object modeling tool designed to work in an asynchronous environment.
-    , mongoose               = require('mongoose')
+    , mongoose               = require( "mongoose" )
 // —— Provides utilities for working with file and directory paths.
-    , path                   = require("path")
+    , path                   = require( "path" )
 // —— Glob implementation in JavaScript.
-    , glob                   = require("glob")
+    , glob                   = require( "glob" )
 // —— Beautiful color gradients in terminal output
-    , gradient               = require("gradient-string")
+    , gradient               = require( "gradient-string" )
 // —— Terminal string styling done right
-    , chalk                  = require("chalk");
+    , chalk                  = require( "chalk" );
 
 // —— Includes structures
-const Command = require("./Command.js")
-    , Event   = require("./Event.js")
-    , Guild   = require("./Guild");
+const Command = require( "./Command.js" )
+    , Event   = require( "./Event.js" )
+    , Guild   = require( "./Guild" );
 
 // ██████ | ███████████████████████████████████████████████████████████████████
 
@@ -28,15 +28,15 @@ class Luna extends Client {
         super(options);
 
         // —— Import of the parameters required for operation
-        this.config    = require("../config.js");
+        this.config    = require( "../config.js" );
         // —— Collection of all commands
         this.commands  = new Collection();
         // —— Collection of all command aliases
         this.aliases   = new Collection();
         // —— Loads the language dictionary
         this.language  = new Collection();
-        // —— Import custom function (avoid duplicated block)
-        this.utils     = new (require("../Structures/Utils"))(this);
+        // —— Import custom function ( avoid duplicated block )
+        this.utils     = new ( require( "../Structures/Utils" ) )( this );
 
         // —— Cleaning the console 💨
         console.clear();
@@ -53,9 +53,9 @@ class Luna extends Client {
                     "\n",
                 ].join("\n")),
             )
+            + `Client initialised —— Node ${process.version}.\n`
         );
 
-        console.log(`Client initialised —— Node ${process.version}.\n`);
 
     }
 
@@ -89,12 +89,26 @@ class Luna extends Client {
 
     loadLanguages() {
 
-        for (const language of glob.sync(`${this.directory}/Languages/**/*.js`)) {
+        for ( const language of glob.sync( `${this.directory}/Languages/**/*.js` ) ) {
+
+            const match = language.match(/.*\/([A-Z]{2})\//)
+
+            if ( !match[1] )
+                return;
+
+            const ISO = match[1]
+
+            if (!this.language[ISO])
+                this.language[ISO] = {}
 
             delete require.cache[ language ];
-            const file = new ( require( path.resolve( language ) ) )( this );
+            const file = require( path.resolve( language ) )
+                , name = language.slice( language.lastIndexOf("/") + 1, language.lastIndexOf(".") );
+
+            this.language[ISO][name] = file;
 
         }
+
 
     }
 
@@ -147,8 +161,9 @@ class Luna extends Client {
     login() {
 
         if ( !this.config.Token )
-            throw new Error( 'You must pass the token for the client...' );
+            throw new Error( "You must pass the token for the client..." );
 
+        // —— Logs the client in, establishing a websocket connection to Discord.
         super.login( this.config.Token );
 
     }
