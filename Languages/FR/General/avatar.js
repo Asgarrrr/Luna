@@ -5,4 +5,4 @@ module.exports = {
     userIsAuthor        : ( user ) => `votre avatar, <@${user.id}>**`,
     userAvatar          : ( user ) => `la photo de profil de <@${user.id}>**`,
 
-}
+};

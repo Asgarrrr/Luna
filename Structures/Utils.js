@@ -30,7 +30,7 @@ module.exports = class Utils {
         if ( type < 0 || type > 3)
             throw new TypeError( "The type goes from 0 to 3." );
 
-        const filter = `^<(${[ "@!?|@&|#", "@!?", "@&", "#" ][type]})([0-9]+)>$`
+        const filter = `^<(${[ "@!?|@&|#", "@!?", "@&", "#" ][type]})([0-9]+)>`
 
             , match  = query.match( new RegExp( filter ) );
 

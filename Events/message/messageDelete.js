@@ -1,14 +1,14 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Base structure
-const Event = require('../../Structures/Event');
+const Event = require( "../../Structures/Event" );
 
 // ██████ | █████████████████████████████████████████████████████████████████████
 
 class messageDelete extends Event {
 
     constructor( client ) {
-        super( client )
+        super( client );
     }
 
     async run( message ) {
@@ -24,7 +24,6 @@ class messageDelete extends Event {
         }).exec();
 
     }
-
 
 }
 

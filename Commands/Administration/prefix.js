@@ -37,7 +37,7 @@ class Prefix extends Command {
             await this.client.db.Guild.findOneAndUpdate({
                 _ID : this.message.guild.id
             }, {
-                prefix : prefix,
+                prefix,
             }).exec();
 
             this.message.guild.prefix = prefix;
@@ -49,7 +49,7 @@ class Prefix extends Command {
                     name: "The prefix has been changed"
                 },
                 description : `You can now use \`${prefix}\` to run commands.`
-            }} )
+            }} );
 
         } catch ( error ) {
             super.respond({ embed : {
