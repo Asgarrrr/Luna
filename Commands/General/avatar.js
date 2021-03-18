@@ -1,17 +1,17 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— A powerful library for interacting with the Discord API
-const { GuildMember }   = require("discord.js")
+const { GuildMember }   = require( "discord.js" )
 // —— Import base command
-    , Command           = require("../../Structures/Command");
+    , Command           = require( "../../Structures/Command" );
 
 // ██████ | ███████████████████████████████████████████████████████████████████
 
 // —— Create & export a class for the command that extends the base command
 class Avatar extends Command {
 
-    constructor(client) {
-        super(client, {
+    constructor( client ) {
+        super( client, {
             name        : "avatar",
             description : "Returns the profile image of a player. Targeting by mention, username, or ID",
             usage       : "avatar {@mention || username || ID}",
@@ -22,13 +22,13 @@ class Avatar extends Command {
             aliases     : ["pp"],
             userPerms   : "SEND_MESSAGES",
             guildOnly   : false,
-        });
+        } );
     }
 
-    async run(message, [ target ]) {
+    async run( message, [ target ] ) {
 
         // —— If the user uses an id, transforms it into a mention
-        target = parseInt(target) ? `<@${target}>` : target
+        target = parseInt( target ) ? `<@${target}>` : target;
 
         // —— Try to retrieve an ID against a mention, a username or an ID, if nothing is found, use author's ID
         let user = await this.client.utils.resolveMention( ( target || `<@${message.author.id}>` ), this.client, 1 );
@@ -39,7 +39,7 @@ class Avatar extends Command {
         user = user instanceof GuildMember ? user.user : user;
 
         super.respond({ embed: {
-            description: `${this.language.thisIs} ${message.author.id === user.id ? this.language.userIsAuthor(user) : this.language.userAvatar(user) }`,
+            description: `${this.language.thisIs} ${message.author.id === user.id ? this.language.userIsAuthor( user ) : this.language.userAvatar( user ) }`,
             image: {
                 url: user.displayAvatarURL({ dynamic: true, size: 4096 }),
             },
