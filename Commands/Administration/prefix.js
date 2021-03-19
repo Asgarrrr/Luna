@@ -13,7 +13,7 @@ class Prefix extends Command {
 			name        : "prefix",
 			description : "Change the prefix used by Luna in the guild",
 			usage       : "prefix [prefix]",
-			exemple     : [],
+			exemple     : ["_"],
 			args        : true,
 			category    : "Administration",
 			cooldown    : 10000,
@@ -31,9 +31,9 @@ class Prefix extends Command {
             prefix = prefix.replace( /\\/g, "" );
 
             if ( prefix === message.guild.prefix )
-                return super.respond( "You already use this prefix" );
+                return super.respond( this.language.alreadyUse );
 
-            // —— Save the new language in the database
+            // —— Save the new prefix in the database
             await this.client.db.Guild.findOneAndUpdate({
                 _ID : this.message.guild.id
             }, {
@@ -46,18 +46,19 @@ class Prefix extends Command {
             super.respond( { embed: {
                 color: "#7354f6",
                 author: {
-                    name: "The prefix has been changed"
+                    name: this.language.changed
                 },
-                description : `You can now use \`${prefix}\` to run commands.`
+                description : this.language.newPrefix( prefix )
             }} );
 
         } catch ( error ) {
+
             super.respond({ embed : {
                 color: "#c0392b",
                 author: {
-                    name: "The prefix has __not__ been modified"
+                    name: this.language.notModified
                 },
-                description : "It seems that an error occurred ..."
+                description : this.language.error
             }});
 
         }
