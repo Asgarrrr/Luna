@@ -1,5 +1,3 @@
-// ██████ Integrations █████████████████████████████████████████████████████████
-
 class Event {
 
 	constructor( client, options = {} ) {

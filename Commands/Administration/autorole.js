@@ -13,7 +13,7 @@ class Autorole extends Command {
 			name        : "autorole",
 			description : "Defines the roles assigned automatically when a new member joins",
 			usage       : "autorole [operation] [role]",
-			exemple     : ["a @moderator", "off"],
+			exemple     : ["on", "add @moderator", "remove @moderator", "off"],
 			args        : true,
 			category    : "Administration",
 			cooldown    : 100,
@@ -44,19 +44,18 @@ class Autorole extends Command {
                 super.respond( { embed: req.nModified
                     ? state
                         ? {
-                            title: "Automatic role assignment has been activated !",
-                            description: `Roles ${ currentRoles.map( ( x ) => `<@&${x}>` ).join( ", ") } will be automatically given to new arrivals.`
+                            title: this.language.enabled,
+                            description: this.language.currentRoles( currentRoles )
                         } : {
-                            title: "Automatic role assignment has been disabled !",
+                            title: this.language.disabled,
                         }
                     : {
-                        title: `No change made, automatic assignment was already ${ operation ? "enabled" : "disabled" } `
+                        title: this.language.noChanges( operation )
                 } } );
 
-            } catch (error) {
+            } catch ( error ) {
 
-                console.error(error);
-                super.respond( "Impossible to do this, an error occurred ..." );
+                super.respond( this.language.error );
 
             }
 
@@ -77,12 +76,15 @@ class Autorole extends Command {
 
                 roleslist = roleslist.filter( ( role ) => {
 
-                    if ( role && role.comparePositionTo(message.guild.me.roles.highest) <= 0 )
+                    if ( role && role.comparePositionTo( message.guild.me.roles.highest ) <= 0 )
                         return role.id;
                     else
-                        cantAdd.push(role);
+                        cantAdd.push( role );
 
                 });
+
+                if ( !roleslist.length )
+                    return super.respond( this.language.noRole );
 
                 // —— Retrieves information, and updates it. If the action is on "add", the role is added, otherwise, it is removed
                 const req = await this.client.db.Guild.findOneAndUpdate(
@@ -94,26 +96,25 @@ class Autorole extends Command {
                 );
 
                 cantAdd.length && super.respond({ embed: {
-                    title       : "The following roles cannot be added (permissions)",
+                    title       : this.language.missPerms,
                     description : cantAdd.join(", ")
                 }});
 
                 const response = { embed: {
-                    title       : "The defined roles are as follows",
+                    title       : this.language.assigned,
                     description : ` ${req.plugins.autorole.roles.map( ( role ) => `<@&${role}>` ).join( " " ) }`
                 } };
 
                 if ( req.plugins.autorole.enabled === false )
                     response.embed.footer = {
-                        text: "The automatic assignment is however disabled"
+                        text: this.language.notEnabled
                     };
 
-                super.respond(response);
+                super.respond( response );
 
-            } catch (error) {
+            } catch ( error ) {
 
-                console.error(error);
-                super.respond( "Impossible to do this, an error occurred ..." );
+                super.respond( this.language.error );
 
             }
 

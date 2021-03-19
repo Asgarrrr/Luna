@@ -1,20 +1,20 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Import base command
-const Command = require("../../Structures/Command");
+const Command = require( "../../Structures/Command" );
 
 // ██████ | ███████████████████████████████████████████████████████████████████
 
 // —— Create & export a class for the command that extends the base command
 class Language extends Command {
 
-	constructor(client) {
-		super(client, {
+	constructor( client ) {
+		super( client, {
 			name        : "language",
 			description : "Change the language used by Luna in the guild",
-			usage       : `language [language]`,
-			exemple     : ["french"],
-			args        : true,
+			usage       : "language [language]",
+			exemple     : ["FR"],
+			args        : false,
 			category    : "Administration",
 			cooldown    : 10000,
 			userPerms   : "ADMINISTRATOR",
@@ -25,8 +25,54 @@ class Language extends Command {
 
 	async run( message, [ language ] ) {
 
+        const available = Object.keys(this.client.language);
 
+        if ( language && available.includes( language ) ) {
 
+            return await this.save( language );
+
+        } else {
+
+            const awaitReponse = await super.respond({ embed: {
+                title       : this.language.choose,
+                description : this.language.available( available, this.client ),
+                footer      : {
+                    text    : this.language.howUse,
+                }
+            }});
+
+            const collector = message.channel.createMessageCollector(
+                ( m ) => available.includes( m.content ) && m.author.id === message.author.id,
+                { time: 15000, max: 1 }
+            );
+
+            collector.on( "collect", async ( m ) => { await this.save( m.content ) } );
+
+            collector.on( "end", ( ) => awaitReponse.delete( ) );
+
+        }
+
+    }
+
+    async save ( language ) {
+
+        // —— Save the new language in the database
+        await this.client.db.Guild.findOneAndUpdate({
+            _ID : this.message.guild.id
+        }, {
+            language,
+        }).exec();
+
+        this.message.guild.language = language;
+
+        // —— Send a confirmation message
+        super.respond( { embed: {
+            color: "#7354f6",
+            author: {
+                name: this.client.language[language].language.done
+            },
+            description : this.client.language[language].language.new
+        }} );
 
     }
 }

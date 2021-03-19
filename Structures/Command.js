@@ -3,6 +3,8 @@
 // —— A powerful library for interacting with the Discord API.
 const { Permissions } = require("discord.js");
 
+// ██████ | ███████████████████████████████████████████████████████████████████
+
 class Command {
 
 	constructor( client, options = {} ) {
