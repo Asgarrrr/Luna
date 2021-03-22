@@ -72,11 +72,11 @@ class Autorole extends Command {
                 // —— Validates all mentions entered by the user
                 let roleslist = ( await Promise.all( roles.map( async ( role ) => {
 
-                    return await resolveMention( role, message.guild, 2 )
+                    return await resolveMention( role, message.guild, 2 );
 
-                }) ) ).filter( role => {
+                }) ) ).filter( ( role ) => {
 
-                    // —— Luna can't give roles above her own
+                    // —— Luna can't give roles above her own
                     if ( role && role.comparePositionTo( message.guild.me.roles.highest ) < 0 )
                         return role;
                     else
