@@ -52,7 +52,7 @@ class Language extends Command {
                 { time: 15000, max: 1 }
             );
 
-            collector.on( "collect", async ( m ) => { await this.save( m.content ) } );
+            collector.on( "collect", async ( m ) => { await this.save( m.content ); } );
 
             collector.on( "end", ( ) => awaitReponse.delete( ) );
 
