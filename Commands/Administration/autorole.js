@@ -13,7 +13,7 @@ class Autorole extends Command {
 			name        : "autorole",
 			description : "Defines the roles assigned automatically when a new member joins",
 			usage       : "autorole [operation] [role]",
-			exemple     : ["on", "add @moderator", "remove @moderator", "off"],
+			exemple     : ["on", "add @moderator", "remove @moderator", "v", "off"],
 			args        : true,
 			category    : "Administration",
 			cooldown    : 100,
@@ -61,62 +61,77 @@ class Autorole extends Command {
 
         }
 
-        // ——
+        // —— Add or remove a role
         if ( ["a", "add", "r", "remove"].includes( operation ) ) {
 
             try {
 
-                const { resolveMention } = this.client.utils
-                    , cantAdd = [];
+                const { resolveMention } = this.client.utils;
+                const cantAdd = [];
 
                 // —— Validates all mentions entered by the user
-                let roleslist = roles.map( async ( role ) => await resolveMention( role, message.guild, 2 ) );
+                let roleslist = ( await Promise.all( roles.map( async ( role ) => {
 
-                roleslist = await Promise.all( roleslist );
+                    return await resolveMention( role, message.guild, 2 )
 
-                roleslist = roleslist.filter( ( role ) => {
+                }) ) ).filter( role => {
 
-                    if ( role && role.comparePositionTo( message.guild.me.roles.highest ) <= 0 )
-                        return role.id;
+                    // —— Luna can't give roles above her own
+                    if ( role && role.comparePositionTo( message.guild.me.roles.highest ) < 0 )
+                        return role;
                     else
                         cantAdd.push( role );
 
-                });
+                } );
+
+                if ( cantAdd.length )
+                    return super.respond( { embed: {
+                        title       : this.language.missPerms,
+                        description : this.language.cantAdd( cantAdd )
+                    } });
 
                 if ( !roleslist.length )
-                    return super.respond( this.language.noRole );
+                    return super.respond( this.language.nothingToAdd );
 
                 // —— Retrieves information, and updates it. If the action is on "add", the role is added, otherwise, it is removed
                 const req = await this.client.db.Guild.findOneAndUpdate(
                     { _ID: message.guild.id },
                     ["a", "add"].includes( operation )
                         ? { $addToSet   : { "plugins.autorole.roles": { $each: roleslist } } }
-                        : { $pull       : { "plugins.autorole.roles": { $in: roles } } },
+                        : { $pull       : { "plugins.autorole.roles": { $in: roleslist } } },
                     { new : true }
                 );
 
-                cantAdd.length && super.respond({ embed: {
-                    title       : this.language.missPerms,
-                    description : cantAdd.join(", ")
-                }});
-
-                const response = { embed: {
+                const confirmation = { embed: {
                     title       : this.language.assigned,
                     description : ` ${req.plugins.autorole.roles.map( ( role ) => `<@&${role}>` ).join( " " ) }`
                 } };
 
                 if ( req.plugins.autorole.enabled === false )
-                    response.embed.footer = {
+                    confirmation.embed.footer = {
                         text: this.language.notEnabled
                     };
 
-                super.respond( response );
+                super.respond( confirmation );
 
             } catch ( error ) {
 
                 super.respond( this.language.error );
 
             }
+
+        }
+
+        if ( ["v", "view"].includes( operation ) ) {
+
+            const { plugins : { autorole: { roles }}} = await this.client.db.Guild.findOne({
+                _ID: message.guild.id
+            }, "plugins.autorole.roles");
+
+            super.respond({ embed: {
+                title: this.language.assigned,
+                description: roles.map( ( role ) => `<@&${role}>`).join(", ")
+            }});
 
         }
 
