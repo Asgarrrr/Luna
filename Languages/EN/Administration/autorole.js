@@ -5,7 +5,7 @@ module.exports = {
     currentRoles    : ( currentRoles ) => `Roles ${ currentRoles.map( ( x ) => `<@&${x}>` ).join( ", ") } will be automatically assigned to newcomers.`,
     disabled        : "Automatic role assignment has been disabled!",
     cantAdd         : ( roles ) => `Roles ${ roles.join( ", " ) } cannot be added. Their privileges are above mine, I can't give them`,
-    noRole          : `You must specify one or more roles to add / remove`,
+    noRole          : "You must specify one or more roles to add / remove",
     noChanges       : ( operation ) => `No change, automatic assignment was already ${ operation ? "enabled" : "disabled" } `,
     nothingToAdd    : "There are no roles to add",
     error           : "Impossible to do this, an error has occurred ...",
