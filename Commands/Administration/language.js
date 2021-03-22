@@ -25,7 +25,7 @@ class Language extends Command {
 
 	async run( message, [ language ] ) {
 
-        const available = Object.keys(this.client.language);
+        const available = Object.keys( this.client.language );
 
         if ( language && available.includes( language ) ) {
 
@@ -35,7 +35,13 @@ class Language extends Command {
 
             const awaitReponse = await super.respond({ embed: {
                 title       : this.language.choose,
-                description : this.language.available( available, this.client ),
+                description : available.map( ( lang ) => {
+
+                        const { ISO, name } = client.language[lang].informations;
+                        return `\` ${ISO} \` : ${name} `
+
+                    }).join( "\n" ),
+
                 footer      : {
                     text    : this.language.howUse,
                 }
