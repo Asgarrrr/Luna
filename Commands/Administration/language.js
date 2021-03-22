@@ -37,8 +37,8 @@ class Language extends Command {
                 title       : this.language.choose,
                 description : available.map( ( lang ) => {
 
-                        const { ISO, name } = client.language[lang].informations;
-                        return `\` ${ISO} \` : ${name} `
+                        const { ISO, name } = this.client.language[lang].informations;
+                        return `\` ${ISO} \` : ${name} `;
 
                     }).join( "\n" ),
 
