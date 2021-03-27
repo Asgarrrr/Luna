@@ -26,10 +26,10 @@ class guildBanAdd extends Event {
             // —— Selects the first result
             const banned = data.entries.first();
 
-            // —— Sending a confirmation message if this option is activated
+            // —— Sending a confirmation message if this option is activated
             if ( guild.plugins.logger.enabled ) {
 
-                // —— Get the chosen channel
+                // —— Get the chosen channel
                 const channel = guild.channels.cache.get( guild.plugins.logger.channel );
 
                 // —— Sending a confirmation message

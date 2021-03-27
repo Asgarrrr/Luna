@@ -1,7 +1,7 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Import base command
-    const Command = require( "../../Structures/Command" );
+const Command = require( "../../Structures/Command" );
 
 // ██████ | ███████████████████████████████████████████████████████████████████
 
