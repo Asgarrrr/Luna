@@ -43,8 +43,6 @@ module.exports = class Utils {
         if ( prefix === "@&" && from instanceof Discord.Client )
             throw new TypeError( "Roles only exist in a guild" );
 
-
-
         switch (prefix) {
 
             case "@":
