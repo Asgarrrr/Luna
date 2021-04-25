@@ -6,7 +6,7 @@ const Command = require( "../../Structures/Command" );
 // ██████ | ███████████████████████████████████████████████████████████████████
 
 // —— Create & export a class for the command that extends the base command
-class Avatar extends Command {
+class Ban extends Command {
 
     constructor( client ) {
         super( client, {
@@ -59,4 +59,4 @@ class Avatar extends Command {
     }
 }
 
-module.exports = Avatar;
+module.exports = Ban;
