@@ -17,7 +17,7 @@ class message extends Event {
             , langue = client.language[ message.guild && message.guild.local || "EN" ].message;
 
         // —— If message.member is uncached, fetch it
-        if ( !message.member && message.guild )
+        if ( message.guild && !message.member )
             message.member = await message.guild.members.fetch( message.author );
 
         // —— Message log in the database
@@ -36,45 +36,44 @@ class message extends Event {
             return;
 
         // —— Experience module
-        if ( message.guild && message.guild.plugins.experience.enable ) {
+        if ( message.guild && message.guild.plugins.experience.enabled ) {
             // —— Search in the database if the member exists
             let member = await client.db.Member.findOne({
                 _ID         : message.author.id,
                 _guildID    : message.guild.id
             }).exec();
 
+            // —— If it does not exist, it is created
             if ( !member ) {
-                // —— If it does not exist, it is created
                 member = await new client.db.Member({
                     _ID         : message.author.id,
                     _guildID    : message.guild.id,
                     joinDate    : message.member.joinedAt,
                 }).save().catch(console.error);
-
             }
 
             // —— Give a random amount of xp per message
-            let gain = ~~( Math.random() * 50 ) + 1;
+            let gain = ~~( Math.random() * 50 ) + 20;
 
-            // –– Lucky drop, 1 chance in 100 to multiply the gain by 100
+            // –– Lucky drop, 1 chance in 100 to multiply the gain by 10
             if ( ~~( Math.random() * 101 ) === 100 )
-                message.react( "🔥" ) && ( gain *= 100 );
+                message.react( "🔥" ) && ( gain *= 10 );
 
             // —— Adds the gain to the old xp
             member.experience += gain;
 
-            const curLevel = ~~( 0.1 * Math.sqrt( member.experience) );
+            const curLevel = ~~( 0.1 * Math.sqrt( member.experience ) );
 
             // —— LVL UP ! *Victory Fanfare* (Final Fantasy XI)
             if( member.level < curLevel ) {
 
                 member.level++;
-                message.reply( `YES ! LVL ${curLevel}` );
+                message.channel.send( langue.lvlUp( member.level, member ) );
 
             }
 
             // —— Saving the updated experience and level in the database
-            client.db.Member.findOneAndUpdate({
+            await client.db.Member.findOneAndUpdate({
                 _ID         : message.author.id,
                 _guildID    : message.guild.id
             }, {
