@@ -4,9 +4,9 @@
 const Command               = require( "../../../Structures/Command" )
 // —— A powerful library for interacting with the Discord API
     , { MessageAttachment } = require( "discord.js" )
-// —— node-canvas is a Cairo-backed Canvas implementation for Node.js.
+// —— node-canvas is a Cairo-backed Canvas implementation for Node.js.
     , Canvas                = require( "canvas" )
-// —— FileSystem
+// —— FileSystem
     , fs                    = require( "fs" );
 
 // ██████ | ███████████████████████████████████████████████████████████████████
@@ -18,7 +18,7 @@ class Rank extends Command {
 		super(client, {
 			name        : "rank",
 			description : "Generates a custom card with progress, rank and biography",
-			usage       : `rank { user }`,
+			usage       : "rank { user }",
 			exemple     : [ "@asgarrrr" ],
 			args        : false,
 			category    : "Fun",
@@ -46,23 +46,24 @@ class Rank extends Command {
         const user = users.find( ( user ) => user._ID === target.id )
             , rank = users.findIndex( ( user ) => user._ID === target.id ) + 1;
 
+        // if ( !user.experience || !user.level )
+        //     return super.respond( this.language. )
+
         // —— Creating a new canvas
         const canvas = Canvas.createCanvas( 1500, 500 )
         // —— Two-dimensional representation context
             , ctx    = canvas.getContext( "2d" );
 
-        // —— Method for making rounded rect ( Thanks to @Corgalore )
+        // —— Method for making rounded rect ( Thanks to @Corgalore )
         ctx.roundRect = function ( x, y, width, height, radius, fill, stroke ) {
 
             let cornerRadius = { upperLeft: 0, upperRight: 0, lowerLeft: 0, lowerRight: 0 };
 
             typeof stroke == "undefined" && ( stroke = true );
 
-            if (typeof radius === "object") {
-                for (var side in radius) {
-                    cornerRadius[side] = radius[side];
-                }
-            }
+            if ( typeof radius === "object" )
+                for ( let [ key ] of Object.entries( radius ) )
+                    cornerRadius[key] = radius[key];
 
             this.beginPath();
             this.moveTo( x + cornerRadius.upperLeft, y );
@@ -77,7 +78,7 @@ class Rank extends Command {
             this.closePath();
             stroke  && this.stroke();
             fill    && this.fill();
-        }
+        };
 
         // —— Save the canvas context
         ctx.save();
@@ -85,7 +86,7 @@ class Rank extends Command {
         const DMSBoldPath = "./Assets/DMSans/DMSans-Bold.ttf"
             , DMSReguPath = "./Assets/DMSans/DMSans-Regular.ttf";
 
-        // —— Import the fonts to use
+        // —— Import the fonts to use
         fs.existsSync( DMSBoldPath ) && Canvas.registerFont( DMSBoldPath, { family: "DM Sans", weight: "bold"     } );
         fs.existsSync( DMSReguPath ) && Canvas.registerFont( DMSReguPath, { family: "DM Sans", weight: "regular"  } );
 
@@ -100,7 +101,7 @@ class Rank extends Command {
         const base = await Canvas.loadImage( "./Assets/rankCards/base.png" );
         ctx.drawImage( base, 0, 0, canvas.width, canvas.height );
 
-        // —— Draw the custom background if it exists
+        // —— Draw the custom background if it exists
         try {
 
             if ( fs.existsSync( `./Assets/rankCards/${message.guild.id}-${target.user.id}.png` ) ) {
@@ -123,8 +124,7 @@ class Rank extends Command {
             }
 
         } catch( err ) {
-
-            console.error( err )
+            console.error( err );
         }
 
         // —— clip the avatar area
@@ -134,11 +134,11 @@ class Rank extends Command {
         ctx.clip();
 
         const avatar = await Canvas.loadImage( target.user.displayAvatarURL( { format: "jpg", dynamic: true, size: 4096 } ) );
-	    ctx.drawImage( avatar, 126, 92, 317, 317 );
+        ctx.drawImage( avatar, 126, 92, 317, 317 );
 
         ctx.restore();
 
-        // —— Print username
+        // —— Print username
         ctx.font = "bold 57px 'DM Sans'";
         ctx.fillStyle = "#ffffff";
         ctx.fillText( target.user.username, 482, 92 + 57 );
@@ -163,7 +163,7 @@ class Rank extends Command {
 
         while ( user.bio[ curr ] ) {
 
-            if ( user.bio[ curr++ ] == " " ) {
+            if ( user.bio[ curr++ ] === " " ) {
                 clean.push( user.bio.substring( prev, curr ) );
                 prev = curr;
                 curr += 32;
@@ -201,7 +201,7 @@ class Rank extends Command {
 
         ctx.fillText( progression, 1369 - ctx.measureText( progression ).width, 356 + 33 );
 
-	    message.channel.send( new MessageAttachment( canvas.toBuffer(), "card.png" ) );
+        message.channel.send( new MessageAttachment( canvas.toBuffer(), "card.png" ) );
 
     }
 }

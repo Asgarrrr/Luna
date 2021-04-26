@@ -14,7 +14,7 @@ class Level extends Command {
 		super(client, {
 			name        : "level",
 			description : "Allows to change the amount of experience of a member, of all the members in possession of a role or of everyone. ",
-			usage       : `level user operation quantity`,
+			usage       : "level user operation quantity",
 			exemple     : ["@Asgarrrr + 100", "all = 2, @role / 2"],
 			args        : true,
 			category    : "Fun",
@@ -51,7 +51,7 @@ class Level extends Command {
                     members = this.message.guild.members.cache.filter( ( member ) => member._roles.includes( resolved.id ) ).map( ( member ) => member.user.id );
 
                 if ( resolved instanceof GuildMember )
-                    members = resolved.user.id
+                    members = resolved.user.id;
 
             }
 
@@ -107,5 +107,6 @@ class Level extends Command {
 
     }
 
-};
+}
+
 module.exports = Level;

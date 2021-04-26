@@ -42,7 +42,7 @@ class Setbackground extends Command {
             if ( !path.extname( url ).match( /^\.(png|jpeg|svg|gif)$/ ) )
                 return super.respond( this.language.notAllowed );
 
-            // —— Try to get the image
+            // —— Try to get the image
             let res = await fetch( url, { timeout : 3000 } );
 
             // —— Restriction on accepted files
@@ -59,10 +59,10 @@ class Setbackground extends Command {
                 , image = await loadImage( await res.buffer() );
 
             // —— Input parameters are strings, they must be converted
-            sx = parseInt(sx) || 0;
-            sy = parseInt(sy) || 0;
-            ex = parseInt(ex) || image.width;
-            ey = parseInt(ey) || image.height;
+            sx = parseInt(sx, 10) || 0;
+            sy = parseInt(sy, 10) || 0;
+            ex = parseInt(ex, 10) || image.width;
+            ey = parseInt(ey, 10) || image.height;
 
             // —— Scaling formula
             const scale = Math.max( canvas.width / ( image.width - sx ), canvas.height / image.width );
