@@ -46,8 +46,8 @@ class Rank extends Command {
         const user = users.find( ( user ) => user._ID === target.id )
             , rank = users.findIndex( ( user ) => user._ID === target.id ) + 1;
 
-        // if ( !user.experience || !user.level )
-        //     return super.respond( this.language. )
+        if ( !user.experience || !user.level || !user.bio )
+            return super.respond( this.language.missingInfo );
 
         // —— Creating a new canvas
         const canvas = Canvas.createCanvas( 1500, 500 )
