@@ -1,7 +1,7 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Import base command
-const Command = require( "../../../Structures/Command" )
+const Command = require( "../../../Structures/Command" );
 
 // ██████ | ███████████████████████████████████████████████████████████████████
 
@@ -12,7 +12,7 @@ class Setbio extends Command {
 		super(client, {
 			name        : "setbio",
 			description : "Defines your profile phrase on a server",
-			usage       : `setbio { message }`,
+			usage       : "setbio { message }",
 			exemple     : [ "@asgarrrr" ],
 			args        : true,
 			category    : "Fun",
@@ -27,7 +27,7 @@ class Setbio extends Command {
 
         try {
 
-            const cleanBio = bio.join(" ").substring( 0, 96 );
+            const cleanBio = bio.join( " " ).substring( 0, 96 );
 
             const { n, ok } = await this.client.db.Member.updateOne({
                 _ID         : message.author.id,
