@@ -10,7 +10,7 @@ module.exports = model( "Member", new Schema({
     // —— Levelling system
     experience  : { type: Number, default: 0 },
     level       : { type: Number, default: 1 },
-    bio         : String,
+    bio         : { type: String, default: "NoBioSet" },
 
     // —— Moderation register
 	mute        : {
