@@ -12,4 +12,4 @@ module.exports = {
         "critical"  : "It's the shit"
     })[ code ]
 
-}
+};
