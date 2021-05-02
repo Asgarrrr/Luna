@@ -47,7 +47,7 @@ class Rank extends Command {
             , rank = users.findIndex( ( user ) => user._ID === target.id ) + 1;
 
         if ( !user.experience || !user.level || !user.bio )
-            return super.respond( this.language.missingInfo );
+            return super.respond( this.language.missInfo );
 
         // —— Creating a new canvas
         const canvas = Canvas.createCanvas( 1500, 500 )
@@ -155,6 +155,9 @@ class Rank extends Command {
         ctx.globalAlpha = 1;
 
         ctx.font = "regular 31px 'DM Sans'";
+
+        if ( user.bio === "NoBioSet" )
+            user.bio = this.language.noBio( message.guild.prefix );
 
         // —— Each line is ~32 characters long
         let prev  = 0
