@@ -85,7 +85,7 @@ class Ping extends Command {
             embed.fields[2] = {
                 name : this.language.events,
                 value: `\`\`\`${this.language.state(status.status.indicator)}\`\`\``
-            }
+            };
 
             if ( status.incidents.length )
                 embed.fields[2].value += `\`\`\`${ status.incidents.join("\n") }\`\`\``;
