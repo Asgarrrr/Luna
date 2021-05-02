@@ -18,10 +18,9 @@ module.exports = {
     }; },
     "missPerm"  : "Je ne dispose pas des droits suffisants pour exécuter cette commande.",
     "youMiss"   : "Vous n'avez pas les privilèges nécessaires pour exécuter cette commande...",
-    lvlUp       : ( level, user ) => [
-        `Well done <@${ user._ID }>, you are now level ${ level }`,
-        `Incredible progress, <@${ user._ID }>, you just passed level ${ level }`
-
-    ][ ~~Math.random() * 3 ]
+    lvlUp : ( level, user ) => [
+        `Bien joué <@${ user._ID }>, vous êtes maintenant au niveau ${ level }`,
+        `Incroyable, <@${ user._ID }>, vous venez de passer le niveau ${ level }`
+    ][ ~~Math.random() * 2 ]
 
 };
