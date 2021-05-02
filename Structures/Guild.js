@@ -5,11 +5,11 @@ const { Structures } = require("discord.js");
 
 // ██████ | ███████████████████████████████████████████████████████████████████
 
-Structures.extend("Guild", (Guild) => class extends Guild {
+Structures.extend( "Guild", ( Guild ) => class extends Guild {
 
-    constructor(client, data) {
+    constructor( client, data ) {
 
-        super(client, data);
+        super( client, data );
 
         this.player = {
             _queue       : [],
@@ -31,7 +31,7 @@ Structures.extend("Guild", (Guild) => class extends Guild {
             new                 : true,
         }).exec().then( ( res ) => {
 
-            this.local              = res.language;
+            this.language           = res.language;
             this.plugins            = res.plugins;
             this.prefix             = res.prefix;
             this.disabledCommands   = res.disabled;
