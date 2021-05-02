@@ -1,7 +1,7 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— A powerful library for interacting with the Discord API.
-const { Permissions } = require("discord.js");
+const { Permissions } = require( "discord.js" );
 
 // ██████ | ███████████████████████████████████████████████████████████████████
 
@@ -44,7 +44,7 @@ class Command {
     setMessage( message ) {
 
         this.message    = message;
-        this.language   = this.client.language[ message.guild && message.guild.local || "EN" ][this.name];
+        this.language   = this.client.language[ message.guild && message.guild.language || "EN" ][this.name];
 
     }
 
