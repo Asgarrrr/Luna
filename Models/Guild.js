@@ -6,7 +6,7 @@ module.exports = model("Guild", new Schema({
     _ID         : String,
 
     prefix      : { type : String, default: "£" },
-    language    : { type : String, default: "English" },
+    language    : { type : String, default: "EN" },
 
     plugins     : { type: Object, default: {
 
