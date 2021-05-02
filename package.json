@@ -28,6 +28,7 @@
     "discord.js": "^12.5.1",
     "glob": "^7.1.6",
     "gradient-string": "^1.2.0",
-    "mongoose": "^5.11.19"
+    "mongoose": "^5.11.19",
+    "node-fetch": "^2.6.1"
   }
 }
