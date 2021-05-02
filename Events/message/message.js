@@ -13,8 +13,12 @@ class message extends Event {
 
     async run( message ) {
 
+        // —— Exclude messages from bot or system
+        if ( message.author.bot || message.system )
+            return;
+
         const client = this.client
-            , langue = client.language[ message.guild && message.guild.local || "EN" ].message;
+            , langue = client.language[ message.guild && message.guild.language || "EN" ].message;
 
         // —— If message.member is uncached, fetch it
         if ( message.guild && !message.member )
@@ -30,10 +34,6 @@ class message extends Event {
             attachments : message.attachments.size !== 0 && message.attachments.first().url,
             timestamp   : message.createdTimestamp,
         }).save().catch( ( err )  => console.error( err ) );
-
-        // —— Exclude messages from bot or system
-        if ( message.author.bot || message.system )
-            return;
 
         // —— Experience module
         if ( message.guild && message.guild.plugins.experience.enabled ) {
