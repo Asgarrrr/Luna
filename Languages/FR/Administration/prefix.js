@@ -6,4 +6,4 @@ module.exports = {
     notModified : "Le préfixe n'a pas été modifié",
     error       : "Il semble qu'une erreur se soit produite ..."
 
-} ;
+};
