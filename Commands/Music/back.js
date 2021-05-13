@@ -30,7 +30,7 @@ class Back extends Command {
         if ( this.client.utils.checkVoice( player, message, this.language ) !== 0 )
             return;
 
-        // —— Deletes the most recent old track and adds it to the list of tracks to play
+        // —— Deletes the most recent old track and adds it to the list of tracks to play
         player._queue.unshift( ...player._oldQueue.splice( 0, 2 ).reverse() );
         player._dispatcher.end();
 

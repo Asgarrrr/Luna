@@ -30,7 +30,7 @@ class Stop extends Command {
         if ( this.client.utils.checkVoice( player, message, this.language ) !== 0 )
             return;
 
-        // —— Clear and emit the end request.
+        // —— Clear and emit the end request.
         player._queue.length = 0;
         player._dispatcher.end();
 
