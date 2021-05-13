@@ -358,7 +358,7 @@ class Play extends Command {
 
                     }
 
-                } catch (error) { }
+                } catch ( error ) { error }
 
             }) ) {
 
@@ -615,7 +615,7 @@ class Play extends Command {
                         return true;
                     }
 
-                }
+                };
 
                 // —— Adds all control reactions
                 [ "⏮️", "⏹️", "⏯️", "⏭️", "🔁", "🔀", "❤️" ].forEach( ( e ) => this.player._embedMsg.react( e ).catch( ( err ) => err ) );
@@ -748,7 +748,7 @@ class Play extends Command {
 
             }
 
-        })
+        });
     }
 }
 
