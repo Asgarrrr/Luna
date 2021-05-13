@@ -29,5 +29,4 @@ module.exports = model("Guild", new Schema({
     // —— Commands disabled
     disabled    : { type: Array, default: [] },
 
-
 }));
