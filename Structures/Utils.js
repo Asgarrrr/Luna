@@ -59,4 +59,36 @@ module.exports = class Utils {
 
     }
 
+    /** Converts a certain number of seconds to formatted time hh:mm:ss
+     * @param {number} seconds // Name of second to convert
+     */
+    formatTime( seconds ) {
+        const h = Math.floor( seconds / 3600 )
+            , m = Math.floor( ( seconds % 3600) / 60 )
+            , s = Math.round( seconds % 60 );
+
+        return [
+            h,
+            m > 9 ? m : ( h ? "0" + m : m || "0" ),
+            s > 9 ? s : "0" + s,
+        ].filter( Boolean ).join( ":" );
+    }
+
+    checkVoice( player, message, lang ) {
+        // —— Verifies if the user is connected to a voice channel
+        if (!message.member.voice.channel)
+            return message.channel.send( lang.notInVoice );
+
+        // —— Check if Luna is connected to a voice channel
+        if ( !player._connection || !player._dispatcher )
+            return message.channel.send( lang.notHere );
+
+        // —— Check if the user and Luna are on the same voice channel
+        if ( !player._connection.voice.channel.members.has( message.author.id ) )
+            return message.channel.send( lang.notInSameRoom );
+
+        return 0;
+    }
+
+
 };
