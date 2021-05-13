@@ -2,13 +2,13 @@
 
 // —— Import base command
 const Command       = require( "../../Structures/Command" );
-// —— A ytdl-core wrapper focused on efficiency for use in Discord music bots
+// —— A ytdl-core wrapper focused on efficiency for use in Discord music bots
 const ytdl          = require( "ytdl-core-discord" )
-// —— Simple js only package to resolve YouTube Playlists
+// —— Simple js only package to resolve YouTube Playlists
     , ytpl          = require( "ytpl" )
 // —— Simple js only package to search for Youtube for Videos, Playlists and many more
     , ytsr          = require( "ytsr" )
-// —— Download Soundcloud tracks with Node.js
+// —— Download Soundcloud tracks with Node.js
     , scdl          = require( "soundcloud-downloader" ).default
 // —— Get metadata for a spotify url without spotify API access
     , { getPreview,
@@ -55,7 +55,7 @@ class Play extends Command {
 
         // —— Connecting to a voice channel
         try {
-            this.player._connection = await message.member.voice.channel.join()
+            this.player._connection = await message.member.voice.channel.join();
         } catch ( error ) {
             return super.respond( this.language.cantJoin );
         }
@@ -314,7 +314,7 @@ class Play extends Command {
                     name    : artist,
                     url     : null,
                 },
-                title       : title,
+                title,
                 description : this.language.embedDesc( this.message, this.client.utils.formatTime( trackDuration ) ),
                 url         : link,
                 color       : "0x7354f6",
@@ -340,10 +340,10 @@ class Play extends Command {
                 getPreview ( this.query )
             ]);
 
-            // —— 💩
+            // —— 💩
             for await ( const track of playlist.map( async ( track ) => {
 
-                // —— Try to find a similar item on YouTube using the artist's name and title
+                // —— Try to find a similar item on YouTube using the artist's name and title
                 try {
 
                     if ( !track.is_local || !track.name || !track.artists[0].name ) {
@@ -447,7 +447,7 @@ class Play extends Command {
 
                 selected = items[parseInt( selected ) - 1];
 
-                const trackDuration = !selected.isLive && selected.duration.split( ":" ).reduce( ( acc, time ) => ( 60 * acc ) + +time )
+                const trackDuration = !selected.isLive && selected.duration.split( ":" ).reduce( ( acc, time ) => ( 60 * acc ) + +time );
 
                 this.player._queue.push({
                     id      : selected.id,
@@ -508,7 +508,7 @@ class Play extends Command {
                     opusEncoded     : true,
                     dlChunkSize     : 0,
                     highWaterMark   : 1 << 25,
-                }
+                };
 
                 try {
 
@@ -554,17 +554,17 @@ class Play extends Command {
 
                 try {
 
-                    const trackData = await scdl.getInfo( this.player._queue[0].url )
+                    const trackData = await scdl.getInfo( this.player._queue[0].url );
 
                     if ( !trackData )
                         return super.respond( this.language.notFound );
 
                     const { transcodings } = trackData.media;
 
-                    // —— Look for the best encoding
+                    // —— Look for the best encoding
                     const best = transcodings
-                        .filter( x => x.format.protocol  === "hls" )
-                        .filter( x => x.format.mime_type === 'audio/ogg; codecs="opus"' )
+                        .filter( ( x ) => x.format.protocol  === "hls" )
+                        .filter( ( x ) => x.format.mime_type === "audio/ogg; codecs=\"opus\"" );
 
                     // —— Gets the audio from the given URL, returns a ReadableStream.
                     const stream = await scdl.downloadFormat( this.player._queue[0].url, best.length ? scdl.FORMATS.OPUS : scdl.FORMATS.MP3 );
@@ -601,8 +601,8 @@ class Play extends Command {
                     url         : this.player._queue[0].url,
                     description : `[${this.player._queue[0].author.name}](${this.player._queue[0].author.url})`,
                     thumbnail   : {
-		                url : this.player._queue[0].thumb,
-	                },
+                        url : this.player._queue[0].thumb,
+                    },
                 }
 
                 this.player._embedMsg = await super.respond({ embed: this.player._embed });
@@ -618,17 +618,17 @@ class Play extends Command {
                 }
 
                 // —— Adds all control reactions
-                [ "⏮️", "⏹️", "⏯️", "⏭️", "🔁", "🔀", "❤️" ].forEach( ( e ) => this.player._embedMsg.react( e ).catch( O_o => O_o ) );
+                [ "⏮️", "⏹️", "⏯️", "⏭️", "🔁", "🔀", "❤️" ].forEach( ( e ) => this.player._embedMsg.react( e ).catch( ( err ) => err ) );
 
-                // —— ⏮️ —— Return to the previous track
+                // —— ⏮️ —— Return to the previous track
                 this.player._embedMsg.createReactionCollector( ( r, u ) => r.emoji.name === "⏮️" && isInChannel( u.id ) ).on( "collect", ( r, u ) => {
 
                     // —— Suppresses the user's reaction
                     r.users.remove( u.id );
 
-                    // —— If the list of old tracks is not empty
+                    // —— If the list of old tracks is not empty
                     if ( this.player._oldQueue.length ) {
-                        // —— Deletes the most recent old track and adds it to the list of tracks to play
+                        // —— Deletes the most recent old track and adds it to the list of tracks to play
                         this.player._queue.unshift( this.player._oldQueue.shift() );
                         this.play();
 
@@ -636,16 +636,16 @@ class Play extends Command {
 
                 });
 
-                 // —— ⏹️ —— Empty the playlist
+                 // —— ⏹️ —— Empty the playlist
                 this.player._embedMsg.createReactionCollector( ( r, u ) => r.emoji.name === "⏹️" && isInChannel( u.id ) ).on( "collect", ( r, u ) => {
 
-                    // —— Clear and emit the end request.
+                    // —— Clear and emit the end request.
                     this.player._queue.length = 0;
                     this.player._dispatcher.end();
 
                 });
 
-                // —— ⏯️ —— Play / Resume
+                // —— ⏯️ —— Play / Resume
                 this.player._embedMsg.createReactionCollector( ( r, u ) => r.emoji.name === "⏯️" && isInChannel( u.id ) ).on( "collect", ( r, u ) => {
 
                     // —— Suppresses the user's reaction
@@ -661,7 +661,7 @@ class Play extends Command {
 
                 });
 
-                // —— ⏭️ —— Goes to the next track, does not take into consideration repeat mode
+                // —— ⏭️ —— Goes to the next track, does not take into consideration repeat mode
                 this.player._embedMsg.createReactionCollector( ( r, u ) => r.emoji.name === "⏭️" && isInChannel( u.id ) ).on( "collect", ( r, u ) => {
 
                     // —— Suppresses the user's reaction
@@ -673,7 +673,7 @@ class Play extends Command {
 
                 });
 
-                // —— 🔁 —— Repeat mode
+                // —— 🔁 —— Repeat mode
                 this.player._embedMsg.createReactionCollector( ( r, u ) => r.emoji.name === "🔁" && isInChannel( u.id ) ).on( "collect", ( r, u ) => {
 
                     // —— Suppresses the user's reaction
@@ -685,7 +685,7 @@ class Play extends Command {
                 });
 
 
-                // —— 🔀 —— Shuffle the reading list
+                // —— 🔀 —— Shuffle the reading list
                 this.player._embedMsg.createReactionCollector( ( r, u ) => r.emoji.name === "🔀" && isInChannel( u.id ) ).on( "collect", ( r, u ) => {
 
                     // —— Suppresses the user's reaction
@@ -721,9 +721,9 @@ class Play extends Command {
 
         this.player._dispatcher.on( "error", ( error ) => {
 
-            console.log( error )
+            console.log( error );
 
-        })
+        });
 
         this.player._dispatcher.on( "finish", ( ) => {
             // —— If there are still items to play at the end of the current item, and the repeat mode is not enabled, the item is removed from the queue and goes into the "queue history".
@@ -739,7 +739,7 @@ class Play extends Command {
                 this.player._embedMsg
                 && this.player._embedMsg.delete( );
 
-                // —— Reset the player
+                // —— Reset the player
                 this.player.reset();
 
                 // —— Leave the voice channel
