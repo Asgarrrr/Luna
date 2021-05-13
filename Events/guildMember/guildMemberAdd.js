@@ -14,7 +14,7 @@ class guildMemberAdd extends Event {
     async run( member ) {
 
         // —— Automatic role assignment
-        const { plugins: { autorole }} = await this.client.db.Guild.findOne( {_ID: member.guild.id}, "plugins.autorole" );
+        const { plugins: { autorole } } = await this.client.db.Guild.findOne( {_ID: member.guild.id}, "plugins.autorole" );
 
         const { enabled, roles } = autorole;
 
@@ -25,7 +25,6 @@ class guildMemberAdd extends Event {
             member.roles.add( toSet );
 
         }
-
 
     }
 
