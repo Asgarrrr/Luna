@@ -81,11 +81,11 @@ module.exports = class Utils {
 
         // —— Check if Luna is connected to a voice channel
         if ( !player._connection || !player._dispatcher )
-            return message.channel.send( lang.notHere );
+            return message.channel.send( lang.noConnected );
 
         // —— Check if the user and Luna are on the same voice channel
         if ( !player._connection.voice.channel.members.has( message.author.id ) )
-            return message.channel.send( lang.notInSameRoom );
+            return message.channel.send( lang.busy );
 
         return 0;
     }
