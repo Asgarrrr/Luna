@@ -12,6 +12,5 @@ module.exports = {
     cantGetPlst : "Unable to get this playlist.",
     emptyPlst   : "The playlist seems empty.",
     error       : "An error has occurred",
-    now         : "Now playing..."
-
+    now         : "Now playing...",
 };
