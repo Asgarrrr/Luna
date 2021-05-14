@@ -99,16 +99,18 @@ class Play extends Command {
 
             this.player._queue.push({
                 id      : videoDetails.videoId,
-                length  : videoDetails.lengthSeconds,
+                length  : !isNaN( videoDetails.lengthSeconds ) && parseInt( videoDetails.lengthSeconds ),
                 title   : videoDetails.title,
                 url     : videoDetails.video_url,
                 author  : {
                     name : videoDetails.author.name,
                     url  : videoDetails.author.user_url
                 },
-                live    : videoDetails.isLive,
+                live    : videoDetails.isLive || videoDetails.isLiveContent,
                 thumb   : videoDetails.thumbnails[0].url,
                 source  : "youtube",
+                // —— Only related to Youtube
+                //media   :
             });
 
             super.respond( { embed : {
@@ -603,101 +605,40 @@ class Play extends Command {
                     thumbnail   : {
                         url : this.player._queue[0].thumb,
                     },
+                    footer      : {
+                        text : this.player._loop ? this.language.loop : ""
+                    }
                 }
 
                 this.player._embedMsg = await super.respond({ embed: this.player._embed });
 
-                const isInChannel = ( userID ) => {
+                // —— Adds all control reactions
+                const react = [ "⏮️", "⏹️", "⏯️", "⏭️", "🔁", "🔀" ];
+                react.forEach( ( e ) => this.player._embedMsg.react( e ).catch( ( err ) => err ) );
 
-                    if ( this.player._connection
-                        && this.player._connection.channel.members.has( userID )
-                        && userID !== this.player._embedMsg.author.id ) {
-                        return true;
-                    }
+                // —— Only accept good reactions from users in the right channel
+                const filter = ( r, u ) => {
+
+                    if (this.player._connection
+                    && this.player._connection.channel.members.has( u.id )
+                    && u.id !== this.player._embedMsg.author.id
+                    && react.some( ( react ) => react === r.emoji.name ))
+                    return true;
 
                 };
 
-                // —— Adds all control reactions
-                [ "⏮️", "⏹️", "⏯️", "⏭️", "🔁", "🔀", "❤️" ].forEach( ( e ) => this.player._embedMsg.react( e ).catch( ( err ) => err ) );
-
-                // —— ⏮️ —— Return to the previous track
-                this.player._embedMsg.createReactionCollector( ( r, u ) => r.emoji.name === "⏮️" && isInChannel( u.id ) ).on( "collect", ( r, u ) => {
+                this.player._embedMsg.createReactionCollector( filter ).on( "collect", ( r, u ) => {
 
                     // —— Suppresses the user's reaction
                     r.users.remove( u.id );
-
-                    // —— If the list of old tracks is not empty
-                    if ( this.player._oldQueue.length ) {
-                        // —— Deletes the most recent old track and adds it to the list of tracks to play
-                        this.player._queue.unshift( this.player._oldQueue.shift() );
-                        this.play();
-
-                    }
-
-                });
-
-                 // —— ⏹️ —— Empty the playlist
-                this.player._embedMsg.createReactionCollector( ( r, u ) => r.emoji.name === "⏹️" && isInChannel( u.id ) ).on( "collect", ( r, u ) => {
-
-                    // —— Clear and emit the end request.
-                    this.player._queue.length = 0;
-                    this.player._dispatcher.end();
-
-                });
-
-                // —— ⏯️ —— Play / Resume
-                this.player._embedMsg.createReactionCollector( ( r, u ) => r.emoji.name === "⏯️" && isInChannel( u.id ) ).on( "collect", ( r, u ) => {
-
-                    // —— Suppresses the user's reaction
-                    r.users.remove( u.id );
-
-                    // —— Reverses in the player its reading state
-                    this.player._isPlaying = !this.player._isPlaying;
-
-                    // —— Switch between play and pause
-                    this.player._isPlaying === true
-                        ? this.player._dispatcher.pause( true )
-                        : this.player._dispatcher.resume();
-
-                });
-
-                // —— ⏭️ —— Goes to the next track, does not take into consideration repeat mode
-                this.player._embedMsg.createReactionCollector( ( r, u ) => r.emoji.name === "⏭️" && isInChannel( u.id ) ).on( "collect", ( r, u ) => {
-
-                    // —— Suppresses the user's reaction
-                    r.users.remove( u.id );
-
-                    // —— Switches the current track to the list of old tracks, and restarts playback.
-                    this.player._loop && this.player._oldQueue.unshift( this.player._queue.shift() );
-                    this.player._dispatcher.end();
-
-                });
-
-                // —— 🔁 —— Repeat mode
-                this.player._embedMsg.createReactionCollector( ( r, u ) => r.emoji.name === "🔁" && isInChannel( u.id ) ).on( "collect", ( r, u ) => {
-
-                    // —— Suppresses the user's reaction
-                    r.users.remove( u.id );
-
-                    // —— Reverses in the player its loop state
-                    this.player._loop = !this.player._loop;
-
-                });
-
-
-                // —— 🔀 —— Shuffle the reading list
-                this.player._embedMsg.createReactionCollector( ( r, u ) => r.emoji.name === "🔀" && isInChannel( u.id ) ).on( "collect", ( r, u ) => {
-
-                    // —— Suppresses the user's reaction
-                    r.users.remove( u.id );
-
-                    // —— Fisher-Yates algorith
-                    for ( let i = this.player._queue.length - 1; i > 0; i-- ) {
-                        const j = ~~( Math.random() * ( i + 1 ) )
-                            , temp = this.player._queue[i];
-                        this.player._queue[i] = this.player._queue[j];
-                        this.player._queue[j] = temp;
-                    }
+                    // —— Get the related command
+                    const cname = ["back", "stop", "pause", "skip", "loop", "shuffle"][ react.indexOf( r.emoji.name )]
+                    // —— Get the command
+                        , command = this.client.commands.get( cname );
+                    // —— Set message and local
+                    command.setMessage( this.message );
+                    // —— Run the command
+                    command.run( this.message );
 
                 });
 
@@ -713,6 +654,9 @@ class Play extends Command {
                     thumbnail   : {
                         url : this.player._queue[0].thumb,
                     },
+                    footer      : {
+                        text : this.player._loop ? this.language.loop : ""
+                    }
                 }});
 
             }
@@ -750,6 +694,7 @@ class Play extends Command {
 
         });
     }
+
 }
 
 module.exports = Play;
