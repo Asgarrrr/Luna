@@ -61,7 +61,7 @@ class Back extends Command {
                 confirm.embeds[0].footer.text = `${ ++votes } / ${ getHalf() }`;
                 confirm.edit( confirm.embeds[0] );
 
-                if ( votes == getHalf() ) {
+                if ( votes === getHalf() ) {
 
                     // —— Deletes the most recent old track and adds it to the list of tracks to play
                     player._queue.unshift( ...player._oldQueue.splice( 0, 1 + amount ).reverse() );
@@ -86,7 +86,7 @@ class Back extends Command {
                 confirm.reactions.removeAll();
 
                 confirm.embeds[0].footer.text = "";
-                confirm.embeds[0].description = reason == true
+                confirm.embeds[0].description = reason === true
                     ? this.language.majVoted
                     : this.language.majNotVoted;
 
