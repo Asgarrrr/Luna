@@ -28,7 +28,7 @@ class subYoutube extends Command {
     async run( message, [ url ] ) {
 
         // —— Checks that the url is conform to the url of a youtube channel
-        const validURL = url.match( /^(https?:\/\/)?(www\.)?youtu((\.be)|(be\..{2,5}))\/((user)|(c)|(channel))\//gm );
+        const validURL = url.match( /((?:http(?:s)?)|(?:www)?)?youtu(?:(?:\.be)|(?:be\..{2,3}))\/(?:(?:user)|(?:channel)|c\/)/ );
 
         if ( !validURL )
             return super.respond( this.language.invalid );
@@ -36,7 +36,7 @@ class subYoutube extends Command {
         try {
 
             // —— Retrieve the code of the web page
-            const body      = await fetch( url ).then( res => res.text() )
+            const body      = await fetch( url ).then( ( res ) => res.text() )
             // —— Loading HTML document
                 , $         =  cheerio.load( body )
             // —— Get the url of the channel, the name, the profile picture url, and the channel ID
@@ -60,12 +60,12 @@ class subYoutube extends Command {
                 setDefaultsOnInsert: true
             });
 
-            // —— Delete the base message
+            // —— Delete the base message
             message.delete().catch ( ( err ) => err );
 
             super.respond( { embed : {
                 author: {
-                    name : name,
+                    name,
                     icon_url : avatar
                 },
                 title   : this.language.done,
