@@ -2,6 +2,10 @@
 
 // —— Terminal string styling done right
 const chalk  = require( "chalk" )
+// —— Glob implementation in JavaScript.
+    , glob                   = require( "glob" )
+// —— Provides utilities for working with file and directory paths.
+    , path                   = require( "path" )
 // —— Base structure
     ,  Event = require( "../Structures/Event" );
 
@@ -17,10 +21,19 @@ class ready extends Event {
 
     async run() {
 
+        for ( const modules of glob.sync(`./Modules/**/*.js`)) {
+
+            console.log(modules);
+
+            delete require.cache[ modules ];
+            require( path.resolve( modules ) )( this.client );
+
+        }
+
         // —— A long sentence eh ...
         console.log( chalk.green( `\n ——— ${this.client.user.tag} : READY !` ) );
 
-        if (this.client.config.Presence) {
+        if ( this.client.config.Presence ) {
 
             const { status, games, interval } = this.client.config.Presence;
 
@@ -50,6 +63,8 @@ class ready extends Event {
             }
 
         }
+
+
 
     }
 
