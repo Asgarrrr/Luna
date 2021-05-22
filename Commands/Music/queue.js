@@ -95,7 +95,7 @@ class Queue extends Command {
                 const demand = await super.respond( this.language.page );
 
                 message.channel.createMessageCollector(
-                    ( m ) => m.author.id == u.id && parseInt( m.content ) > 0 && parseInt(m.content) < Object.keys( pages ).length + 1,
+                    ( m ) => m.author.id === u.id && parseInt( m.content ) > 0 && parseInt(m.content) < Object.keys( pages ).length + 1,
                     { time: 15000, max: 1, errors: ["time"] },
                 ).on( "collect", ( m ) => {
 
