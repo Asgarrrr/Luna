@@ -58,7 +58,7 @@ class Skip extends Command {
                 confirm.embeds[0].footer.text = `${ ++votes } / ${ getHalf() }`;
                 confirm.edit( confirm.embeds[0] );
 
-                if ( votes == getHalf() ) {
+                if ( votes === getHalf() ) {
 
                     // —— Switches the current track to the list of old tracks, and restarts playback.
                     player.loop && player._oldQueue.unshift( ...player._queue.splice( 0, amount ) );
@@ -83,7 +83,7 @@ class Skip extends Command {
                 confirm.reactions.removeAll();
 
                 confirm.embeds[0].footer.text = "";
-                confirm.embeds[0].description = reason == true
+                confirm.embeds[0].description = reason === true
                     ? this.language.majVoted
                     : this.language.majNotVoted;
 
