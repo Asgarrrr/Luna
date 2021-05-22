@@ -27,10 +27,6 @@ class nowplaying extends Command {
 
         const player = message.guild.player;
 
-        // —— Checks that the user meets the conditions for executing the command
-        if ( this.client.utils.checkVoice( player, message, this.language ) )
-            return;
-
         // —— Check that the playlist is not empty
         if ( !player._queue.length )
             return super.respond( this.language.nothing );
