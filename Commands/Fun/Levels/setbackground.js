@@ -6,12 +6,9 @@ const Command          = require( "../../../Structures/Command" )
     , fetch            = require( "node-fetch" )
 // —— File system
     , { promises: fs } = require( "fs" )
-// —— Provides utilities for working with file and directory paths
-    , path             = require( "path" )
 // —— Canvas graphics API backed by Cairo
     , { createCanvas,
         loadImage }    = require( "canvas" );
-
 
 // ██████ | ███████████████████████████████████████████████████████████████████
 
@@ -38,15 +35,11 @@ class Setbackground extends Command {
 
         try {
 
-            // —— Filter the url
-            if ( !path.extname( url ).match( /^\.(png|jpeg|svg|gif)$/ ) )
-                return super.respond( this.language.notAllowed );
-
             // —— Try to get the image
             let res = await fetch( url, { timeout : 3000 } );
 
             // —— Restriction on accepted files
-            if ( !res.headers.get( "content-type" ).match( /^image\/(png|jpeg|svg|gif)$/ ) )
+            if ( !res.headers.get( "content-type" ).match( /^image\/(png|jpeg|svg|gif|jpg)$/ ) )
                 return super.respond( this.language.notAllowed );
 
             // —— Checks if the directory where the image will be saved exists
