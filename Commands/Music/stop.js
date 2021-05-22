@@ -34,7 +34,6 @@ class Stop extends Command {
         player._queue.length = 0;
         player._dispatcher.end();
 
-
     }
 
 }
