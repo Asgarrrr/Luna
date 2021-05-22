@@ -432,7 +432,7 @@ class Play extends Command {
 
             });
 
-            resultList.push("");
+            resultList.push("exit");
 
             const select = await this.message.channel.send("```" + resultList.join("\n") + "```");
 
@@ -445,7 +445,7 @@ class Play extends Command {
                 let selected = collected.first().content;
 
                 if ( selected === "exit" )
-                    return select.delete();
+                    return select.delete().catch( ( err ) => err );;
 
                 selected = items[parseInt( selected ) - 1];
 
@@ -476,11 +476,12 @@ class Play extends Command {
                     color       : "0x7354f6",
                 }});
 
-                collected.first().delete();
+                collected.first().delete().catch( ( err ) => err );
+                select.delete().catch( ( err ) => err );
 
             } catch ( error ) {
 
-                select.delete();
+                select.delete().catch( ( err ) => err );
 
             }
 
@@ -681,7 +682,7 @@ class Play extends Command {
 
                 // —— Suppresses the indicative embed
                 this.player._embedMsg
-                && this.player._embedMsg.delete( );
+                && this.player._embedMsg.delete( ).catch( ( err ) => err );;
 
                 // —— Reset the player
                 this.player.reset();
