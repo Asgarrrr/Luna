@@ -99,7 +99,7 @@ class Play extends Command {
 
             this.player._queue.push({
                 id      : videoDetails.videoId,
-                length  : !isNaN( videoDetails.lengthSeconds ) && parseInt( videoDetails.lengthSeconds ),
+                length  : !isNaN( videoDetails.lengthSeconds ) && parseInt( videoDetails.lengthSeconds, 10 ),
                 title   : videoDetails.title,
                 url     : videoDetails.video_url,
                 author  : {
@@ -360,7 +360,7 @@ class Play extends Command {
 
                     }
 
-                } catch ( error ) { error };
+                } catch ( error ) { error; }
 
             }) ) {
 
@@ -445,7 +445,7 @@ class Play extends Command {
                 let selected = collected.first().content;
 
                 if ( selected === "exit" )
-                    return select.delete().catch( ( err ) => err );;
+                    return select.delete().catch( ( err ) => err );
 
                 selected = items[parseInt( selected, 10 ) - 1];
 
