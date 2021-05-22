@@ -360,7 +360,7 @@ class Play extends Command {
 
                     }
 
-                } catch ( error ) { error; };
+                } catch ( error ) { error };
 
             }) ) {
 
@@ -682,7 +682,7 @@ class Play extends Command {
 
                 // —— Suppresses the indicative embed
                 this.player._embedMsg
-                && this.player._embedMsg.delete( ).catch( ( err ) => err );;
+                && this.player._embedMsg.delete( ).catch( ( err ) => err );
 
                 // —— Reset the player
                 this.player.reset();
