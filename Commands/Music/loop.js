@@ -38,7 +38,7 @@ class Loop extends Command {
 
             // —— Display or not the new state
             player._embedMsg.embeds[0].footer = {
-                text : player._loop ? language.loop : ""
+                text : player._loop ? this.language.loop : ""
             };
 
             // —— Modifies the original message
