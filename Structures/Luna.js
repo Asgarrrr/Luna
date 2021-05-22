@@ -172,7 +172,7 @@ class Luna extends Client {
         await this.loadDatabase();
         this.loadLanguages();
         this.loadCommands();
-        this.loadEvents()
+        this.loadEvents();
         this.login();
 
     }
