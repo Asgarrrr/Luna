@@ -8,7 +8,8 @@ const Parser = require( "rss-parser" )
 
 module.exports = async ( client ) => {
 
-    void async function update () {
+    // —— IIFE
+    ( async function update () {
 
         try {
 
@@ -34,7 +35,7 @@ module.exports = async ( client ) => {
 
                     /* —— Get an array of new videos, then reverse ( because the first one
                      *    is the most recent, but we want to send the oldest one first ) */
-                    const toSend = channel.items.slice( 0, channel.items.indexOf( newElements ) ).reverse();
+                    const toSend = channel.items.slice( 0, channel.items.indexOf( newElements ) ).reverse();
 
                     // —— For each subscribed guild
                     channels[ i ].guild.forEach( ( x ) => {
@@ -44,14 +45,15 @@ module.exports = async ( client ) => {
 
                             // —— Sending the message and the video in each guild to the corresponding channel
                             const guild     = client.guilds.cache.get( x._ID )
-                                , local     = client.language[ guild.language || "EN" ].Modules.youtube
-                                , channel   = guild.channels.cache.get( x._channelID );
+                                , local     = client.language[ guild.language || "EN" ].youtube;
 
-                            channel.send( local.newVideo( channel.title ) );
+                            guild.channels.cache
+                                .get( x._channelID )
+                                .send( `${ local.newVideo( channel.title ) }\n${ video.link }` );
 
                         });
 
-                    })
+                    });
 
                     // —— Save in the database the id and date of the last video
                     await client.db.Notification.findOneAndUpdate( {
@@ -68,18 +70,18 @@ module.exports = async ( client ) => {
 
         } catch ( error ) {
 
-            console.log( error )
+            console.log( error );
 
             // —— Do nothing in case of errors for the moment
 
         } finally {
 
-            // —— Repeat the check every minute
+            // —— Repeat the check every minute
             await new Promise( ( r ) => setTimeout( r, 60000 ) );
             update();
 
         }
 
-    }();
+    } )();
 
-}
+};
