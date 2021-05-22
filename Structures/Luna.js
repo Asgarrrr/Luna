@@ -109,7 +109,6 @@ class Luna extends Client {
 
         }
 
-
     }
 
     /* ██████ Handler █████████████████████████████████████████████████████████
@@ -158,17 +157,6 @@ class Luna extends Client {
 
     }
 
-    loadModules() {
-
-        for ( const modules of glob.sync(`${this.directory}/Modules/**/*.js`)) {
-
-            delete require.cache[ modules ];
-            new require( path.resolve( modules ) )( this );
-
-        }
-
-    }
-
     login() {
 
         if ( !this.config.Token )
@@ -182,14 +170,9 @@ class Luna extends Client {
     async start() {
 
         await this.loadDatabase();
-
-        await Promise.all([
-            this.loadLanguages(),
-            this.loadCommands(),
-            this.loadEvents(),
-            this.loadModules(),
-        ]);
-
+        this.loadLanguages();
+        this.loadCommands();
+        this.loadEvents()
         this.login();
 
     }
