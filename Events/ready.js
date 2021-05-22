@@ -9,8 +9,8 @@ const chalk  = require( "chalk" )
 
 class ready extends Event {
 
-    constructor(client) {
-        super(client, {
+    constructor( client ) {
+        super( client, {
             listener : true,
         });
     }
