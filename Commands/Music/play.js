@@ -106,7 +106,7 @@ class Play extends Command {
                     name : videoDetails.author.name,
                     url  : videoDetails.author.user_url
                 },
-                live    : videoDetails.isLive || videoDetails.isLiveContent,
+                live    : videoDetails.isLive || videoDetails.isLiveContent,
                 thumb   : videoDetails.thumbnails[0].url,
                 source  : "youtube",
                 // —— Only related to Youtube
@@ -360,7 +360,7 @@ class Play extends Command {
 
                     }
 
-                } catch ( error ) { error }
+                } catch ( error ) { error; };
 
             }) ) {
 
@@ -447,7 +447,7 @@ class Play extends Command {
                 if ( selected === "exit" )
                     return select.delete().catch( ( err ) => err );;
 
-                selected = items[parseInt( selected ) - 1];
+                selected = items[parseInt( selected, 10 ) - 1];
 
                 const trackDuration = !selected.isLive && selected.duration.split( ":" ).reduce( ( acc, time ) => ( 60 * acc ) + +time );
 
@@ -609,7 +609,7 @@ class Play extends Command {
                     footer      : {
                         text : this.player._loop ? this.language.loop : ""
                     }
-                }
+                };
 
                 this.player._embedMsg = await super.respond({ embed: this.player._embed });
 
@@ -617,7 +617,7 @@ class Play extends Command {
                 const react = [ "⏮️", "⏹️", "⏯️", "⏭️", "🔁", "🔀" ];
                 react.forEach( ( e ) => this.player._embedMsg.react( e ).catch( ( err ) => err ) );
 
-                // —— Only accept good reactions from users in the right channel
+                // —— Only accept good reactions from users in the right channel
                 const filter = ( r, u ) => {
 
                     if (this.player._connection

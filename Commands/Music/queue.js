@@ -45,7 +45,7 @@ class Queue extends Command {
 
         const { chunks, formatTime } = this.client.utils;
 
-        // —— Cut the queue 10 by 10
+        // —— Cut the queue 10 by 10
         [ ...chunks( player._queue, 10 ) ].forEach( ( group, page, all ) => {
 
             // —— Calculation of the maximum length of the character string

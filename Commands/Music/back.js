@@ -82,7 +82,7 @@ class Back extends Command {
 
             collector.on( "end", ( collected, reason ) => {
 
-                // —— Removes all reactions
+                // —— Removes all reactions
                 confirm.reactions.removeAll();
 
                 confirm.embeds[0].footer.text = "";

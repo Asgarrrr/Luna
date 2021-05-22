@@ -41,7 +41,7 @@ class Loop extends Command {
                 text : player._loop ? this.language.loop : ""
             };
 
-            // —— Modifies the original message
+            // —— Modifies the original message
             player._embedMsg.edit( player._embedMsg.embeds[0] );
 
         } else super.respond( player._loop ? this.language.enabled : this.language.disabled );

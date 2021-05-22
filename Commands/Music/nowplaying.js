@@ -37,14 +37,14 @@ class nowplaying extends Command {
             , currentTime  = ( player._dispatcher.totalStreamTime - player._dispatcher.pausedTime ) / 1000
         // —— Creation of a array filled with "-".
             , bar          = new Array( 50 - ( currentTime.toString().length +  nowP.length.toString().length ) ).fill( "—" )
-        // —— Normalization to hh:mm:ss format
+        // —— Normalization to hh:mm:ss format
             , fCurrentTime = this.client.utils.formatTime( currentTime )
             , fTotalTime   = this.client.utils.formatTime( nowP.length );
 
-        // —— Places a character at the current playback position
+        // —— Places a character at the current playback position
         bar[ ( currentTime / nowP.length * bar.length ).toFixed( 0 ) ] = "o";
 
-        // —— Creation of the indicative embed
+        // —— Creation of the indicative embed
         const embed = {
             title       : nowP.title,
             url         : nowP.url,
@@ -78,7 +78,7 @@ class nowplaying extends Command {
 
         }
 
-        // —— Sending the embed
+        // —— Sending the embed
         super.respond( { embed } );
 
     }
