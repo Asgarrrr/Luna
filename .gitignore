@@ -1,13 +1,6 @@
 .DS_Store
-.env
 .vscode
-.eslintrc.js
-log.log
 package-lock.json
-node_modules
-Database/*
-!Database/.keep
-setup.js
 config.js
-.stylelintrc.json
-.eslintrc.json
+node_modules
+Assets/rankCards/

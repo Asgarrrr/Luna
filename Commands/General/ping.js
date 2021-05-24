@@ -1,27 +1,12 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Import base command
-const Command = require("../../Structures/Command")
+const Command = require( "../../Structures/Command" )
 // —— A light-weight module that brings window.fetch to node.js
     , fetch   = require("node-fetch");
 
-// —— Discord status page API URL
-const url = "https://srhpyqt94yxb.statuspage.io/api/v2/summary.json";
-
-// —— List of components to check
-const components = [
-    [ "CloudFlare"  ], [ "Voice"                   ],
-    [ "API"         ], [ "Tax Calculation Service" ],
-    [ "Gateway"     ], [ "Push Notifications"      ],
-    [ "Media Proxy" ], [ "Third-party"             ],
-    [ "EU West"     ], [ "US West"                 ],
-    [ "EU Central"  ], [ "Brazil"                  ],
-    [ "Singapore"   ], [ "Hong Kong"               ],
-    [ "Sydney"      ], [ "Russia"                  ],
-    [ "US Central"  ], [ "Japan"                   ],
-    [ "US East"     ], [ "South Africa"            ],
-    [ "US South"    ],
-];
+// —————— | ————————————————————————————————————————————————————————————————————
+const pingPongTable = [ "(｡･ω･)ρ┳┷┳ﾟσ(･ω･*)" , "ヽ(^o^)ρ┳┻┳°σ(^o^)/" , " ( ^o)ρ┳┻┳°σ(o^ )" ];
 
 // ██████ | ███████████████████████████████████████████████████████████ | ██████
 
@@ -45,70 +30,75 @@ class Ping extends Command {
 
     async run(message) {
 
-        const client = this.client;
+        const embed = { title : this.language.ping }
+            , ping  = await super.respond( { embed } )
+            , pong  = ( ping.createdTimestamp - message.createdTimestamp ) - this.client.ws.ping;
 
-        // —— Retrieve the language information for this command
-        const lang = client.language.get(message.guild.local).ping(Date.now(), message);
-
-        // —— Generates the embed containing the basic results
-        const dataEmbed = {
-            title : "P O N G !",
-            color : "0x7354f6",
-            fields : [{
-                name  : "— ヽ( •_•)O´¯\\`°.¸.·´¯\\`Q(^o^ )\\`",
-                value : [
-                    "```",
-                    lang[0],
-                    lang[1],
-                    "```",
-                ].join("\n"),
-            }],
-        };
+        embed.title = pingPongTable[ ~~( Math.random() * pingPongTable.length ) ];
+        embed.url   = "https://srhpyqt94yxb.statuspage.io/";
+        embed.color = "0x7354f6";
+        embed.description = [
+            "\`\`\`",
+            `${ this.language.latency.padStart( 11, " " ) } │ ${ pong }ms`,
+            `${ "Websocket".padStart( 11, " " ) } │ ${ this.client.ws.ping }ms`,
+            "\`\`\`"
+        ].join("\n");
 
         // —— Try to add the information provided by the status discord api
         try {
 
-            const data = await (await fetch(url)).json();
+            const reqStatus = await fetch( "https://srhpyqt94yxb.statuspage.io/api/v2/summary.json", { timeout: 2000 })
+                , status    = await reqStatus.json()
+                , compoList = {};
 
-            components.forEach((c, i) => {
-                const res = data.components.find((x) => x.name === c[0]);
-
-                components[parseInt(i, 10)][1] = res ? res.status === "operational" ? "✔" : "✗" : "?";
+            status.components.forEach( ( component ) => {
+                compoList[component.name] = component.status === "operational" ? "✔" : "✗";
             });
 
-            // —— Adds component information to the embed if available
-            dataEmbed.fields.push({
-                name  : lang[2],
-                value : [
-                    "```",
-                    `CloudFlare │ ${[components[0][1]]} : ${[components[1][1]]} │ Voice`,
-                    `       API │ ${[components[2][1]]} : ${[components[3][1]]} │ Tax Calc`,
-                    `   Gateway │ ${[components[4][1]]} : ${[components[5][1]]} │ Push Notif`,
-                    `Med. Proxy │ ${[components[6][1]]} : ${[components[7][1]]} │ Third-party`,
-                    "```",
-                ].join("\n"),
-            }, {
-                name  : lang[3],
-                value : [
-                    "```",
-                    `   EU West │ ${[components[ 8][1]]} : ${[components[ 9][1]]} │ US West`,
-                    `EU Central │ ${[components[10][1]]} : ${[components[11][1]]} │ Brazil`,
-                    ` Singapore │ ${[components[12][1]]} : ${[components[13][1]]} │ Hong Kong`,
-                    `    Sydney │ ${[components[14][1]]} : ${[components[15][1]]} │ Russia`,
-                    `US Central │ ${[components[16][1]]} : ${[components[17][1]]} │ Japan`,
-                    `   US East │ ${[components[18][1]]} : ${[components[19][1]]} │ South Afr`,
-                    `  US South │ ${[components[20][1]]} :   │ `,
-                    "```",
-                ].join("\n"),
-            }, {
-                name  : lang[4],
-                value : `\`\`\`${data.incidents ? "ok" : data.incidents}\`\`\``,
-            });
+            embed.fields = [];
 
-        } catch (error) {error;}
+            embed.fields[0] = {
+                name : this.language.components,
+                value: [ "```",
+                    ` CloudFlare │ ${compoList["CloudFlare"]} : ${compoList["Third-party"]} │ Third-party`,
+                    `        API │ ${compoList["API"]} : ${compoList["Tax Calculation Service"]} │ Tax Calc`,
+                    `      Voice │ ${compoList["Voice"]} : ${compoList["Push Notifications"]} │ Push Notif`,
+                    ` Med. Proxy │ ${compoList["Media Proxy"]} : ${compoList["Search"]} │ Search`,
+                    "```"
+                ].join("\n")
+            };
+
+            embed.fields[1] = {
+                name : this.language.servers,
+                value: [ "```",
+                    `     Europe │ ${compoList["Europe"]} : ${compoList["Brazil"]} │ Brazil`,
+                    `      India │ ${compoList["India"]} : ${compoList["South Africa"]} │ South Africa`,
+                    `  Singapore │ ${compoList["Singapore"]} : ${compoList["Hong Kong"]} │ Hong Kong`,
+                    `      Japan │ ${compoList["Japan"]} : ${compoList["South Korea"]} │ South Korea`,
+                    `     Sydney │ ${compoList["Sydney"]} : ${compoList["US West"]} │ US West`,
+                    `     Sydney │ ${compoList["Sydney"]} : ${compoList["US Central"]} │ US Central`,
+                    `    US East │ ${compoList["US East"]} : ${compoList["US South"]} │ US South`,
+                    "```"
+                ].join("\n")
+            };
+
+            embed.fields[2] = {
+                name : this.language.events,
+                value: `\`\`\`${this.language.state(status.status.indicator)}\`\`\``
+            };
+
+            if ( status.incidents.length )
+                embed.fields[2].value += `\`\`\`${ status.incidents.join("\n") }\`\`\``;
+
+            if ( status.scheduled_maintenances.length )
+                embed.fields[2].value += `\`\`\`${status.scheduled_maintenances.join("\n") }\`\`\``;
+
+        } catch ( error ) {
+            console.log( error );
+        }
 
         // —— Send the embed
-        message.channel.send({ embed: dataEmbed });
+        ping.edit( { embed } );
 
     }
 }

@@ -1,74 +1,60 @@
+// ██████ Integrations █████████████████████████████████████████████████████████
+
 // —— Import base command
-const Command = require("../../Structures/Command");
+const Command = require( "../../Structures/Command" );
 
-const { resolveUser } = require ("../../Structures/Util");
+// ██████ | ███████████████████████████████████████████████████████████████████
 
+// —— Create & export a class for the command that extends the base command
 class Ban extends Command {
 
-    constructor(client) {
-        super(client, {
+    constructor( client ) {
+        super( client, {
             name        : "ban",
             description : "Ban a user",
-            usage       : "ban @user [reason]",
+            usage       : "ban @mention { Reason } ",
+            exemple     : ["@Asgarrrr", "Luna"],
             args        : true,
             category    : "Moderation",
-            cooldown    : 5000,
-            permLevel   : 9,
+            cooldown    : 1000,
             userPerms   : "BAN_MEMBERS",
-            allowDMs    : false,
-        });
+            guildOnly   : true,
+        } );
     }
 
-    async run(message, [user, ...reason]) {
+    async run( message, [ mention, ...reason ] ) {
 
-        const client = this.client,
-              lang   = client.language.get(message.guild.local).ban();
+        // —— Try to retrieve an ID against a mention, or an ID.
+        const target = await this.client.utils.resolveMention( parseInt( mention ) ? `<@${mention}>` : mention , message.guild, 1 );
 
-        // —— Try to retrieve an ID against a mention, a username or an ID
-        const target = await resolveUser(user, message.guild);
+        if( !target )
+            return super.respond( this.language.noTarget );
 
-        if(!target)
-            return super.respond(lang[0]);
+        if ( target.id === message.author.id )
+            return super.respond( this.language.yourself );
 
-        if (target.id === message.author.id)
-            return super.respond(lang[1]);
+        if ( target.id === this.client.user.id )
+            return super.respond( this.language.notMe );
 
-        if (target.id === this.client.user.id)
-            return super.respond(lang[2]);
+        if ( message.member.ownerID !== message.author.id
+            && target.roles.highest.position >= message.member.roles.highest.position )
+            return super.respond( this.language.higher );
 
-        if (message.member.ownerID !== message.author.id
-            && target.roles.highest.position >= message.member.roles.highest.position)
-            return super.respond(lang[3]);
+        if ( !target.bannable )
+            return super.respond( this.language.notBannable );
 
-        if (!target.bannable)
-            return super.respond(lang[4]);
+        try {
 
-        reason = reason.length ? reason.join(" ") : null;
+            // —— Banning the user, including the reason
+            message.guild.members.ban( target, {
+                reason : `${reason.length ? reason.join( " " ) : null }\n> — <@${message.author.id}>`
+            } );
 
-        message.guild.members.ban(target, { reason })
-        .then((data) => {
+        } catch ( error ) {
 
-            (message.guild.logChan
-                ? message.guild.channels.cache.get(message.guild.logChan)
-                : message.channel).send({
-                "embed": {
-                    color: 15158332,
-                    title: `${data.user.username}#${data.user.discriminator} \`${data.id}\``,
-                    author: {
-                        name: lang[5],
-                    },
-                    fields: [{
-                        name: lang[6],
-                        value: reason || lang[7],
-                    }, {
-                        name: lang[8],
-                        value: `${message.author.username}#${message.author.discriminator} \`${message.author.id}\``,
-                    }],
-                },
-            });
+            super.respond( this.language.error );
 
-        })
-        .catch(() => super.respond(lang[9]));
+        }
 
     }
 }
