@@ -94,7 +94,7 @@ class Ranking extends Command {
                 if ( fs.existsSync( path ) )
                     return true;
 
-            } catch { }
+            } catch ( err ) { ( err ) => err };
 
         });
 
@@ -144,7 +144,7 @@ class Ranking extends Command {
             if ( fs.existsSync( path ) ) {
 
                 const banner = await Canvas.loadImage( `./Assets/rankCards/${firstWithBanner._guildID}-${firstWithBanner._ID}.png` );
-                ctx.globalAlpha = 0.08
+                ctx.globalAlpha = 0.08;
                 ctx.drawImage( banner, 102 , init - ( banner.height / 2), 1207 , banner.height );
                 ctx.globalAlpha = 1;
 
