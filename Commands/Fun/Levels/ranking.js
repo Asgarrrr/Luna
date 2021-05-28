@@ -94,7 +94,7 @@ class Ranking extends Command {
                 if ( fs.existsSync( path ) )
                     return true;
 
-            } catch ( err ) { ( err ) => err };
+            } catch ( err ) { ( err ) => err; }
 
         });
 
