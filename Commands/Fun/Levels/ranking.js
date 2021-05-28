@@ -30,12 +30,12 @@ class Ranking extends Command {
 
 	async run( message ) {
 
-        // —— Collect the 10 members with the most experience, and organize them in descending order
+        // —— Collect the 10 members with the most experience, and organize them in descending order
         const ranking = await this.client.db.Member.find({
             _guildID: message.guild.id
         }).sort({ experience: "-1" }).limit( 10 );
 
-        // —— If there are no members in the database
+        // —— If there are no members in the database
         if ( !ranking )
             return super.respond( this.language.null );
 
@@ -77,14 +77,14 @@ class Ranking extends Command {
         fs.existsSync( DMSBoldPath ) && Canvas.registerFont( DMSBoldPath, { family: "DM Sans", weight: "bold"     } );
         fs.existsSync( DMSReguPath ) && Canvas.registerFont( DMSReguPath, { family: "DM Sans", weight: "regular"  } );
 
-        // —— Drawing of the main rect
+        // —— Drawing of the main rect
         ctx.fillStyle = "#202225";
         ctx.beginPath();
-        ctx.roundRect( 0, 0, canvas.width, canvas.height, { upperLeft: 32.5, upperRight: 32.5, lowerLeft: 32.5, lowerRight: 32.5 } , true )
+        ctx.roundRect( 0, 0, canvas.width, canvas.height, { upperLeft: 32.5, upperRight: 32.5, lowerLeft: 32.5, lowerRight: 32.5 } , true );
         ctx.closePath();
         ctx.clip();
 
-        // —— Looking for the first member with a banner
+        // —— Looking for the first member with a banner
         const firstWithBanner = ranking.find( ( member ) => {
 
             const path = `./Assets/rankCards/${member._guildID}-${member._ID}.png`;
@@ -98,12 +98,12 @@ class Ranking extends Command {
 
         });
 
-        // —— if a banner has been found, it will be used as a presentation
+        // —— if a banner has been found, it will be used as a presentation
         if ( firstWithBanner ) {
 
-            // —— Loading and drawing the image
+            // —— Loading and drawing the image
             const banner = await Canvas.loadImage( `./Assets/rankCards/${firstWithBanner._guildID}-${firstWithBanner._ID}.png` );
-            ctx.globalAlpha = 0.08
+            ctx.globalAlpha = 0.08;
             ctx.drawImage( banner, 0, 0, canvas.width , banner.height - 12 );
             ctx.globalAlpha = 1;
 
@@ -115,12 +115,12 @@ class Ranking extends Command {
         ctx.fillStyle = grd;
         ctx.fillRect(0, 470, 1410, 16);
 
-        const trophy = await Canvas.loadImage( `./Assets/trophy.svg` );
+        const trophy = await Canvas.loadImage( "./Assets/trophy.svg" );
         ctx.drawImage( trophy, 102, 134, 203 , 203 );
 
         ctx.font = "bold 80px 'DM Sans'";
         ctx.fillStyle = "#ffffff";
-        ctx.fillText( `BTSSN`, 368, 238 );
+        ctx.fillText( message.guild.name, 368, 238 );
 
         ctx.font = "regular 54px 'DM Sans'";
         ctx.fillStyle = "#838485";
@@ -128,7 +128,7 @@ class Ranking extends Command {
 
         let init = 571;
 
-        // —— Iteration through the members
+        // —— Iteration through the members
         for ( const member of ranking ) {
 
             ctx.fillStyle = "#161616";
