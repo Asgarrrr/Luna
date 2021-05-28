@@ -14,9 +14,10 @@ const { Client, Collection } = require( "discord.js" )
     , chalk                  = require( "chalk" );
 
 // —— Includes structures
-const Command = require( "./Command.js" )
-    , Event   = require( "./Event.js" )
-    , Guild   = require( "./Guild" );
+const Command       = require( "./Command.js" )
+    , Event         = require( "./Event.js" )
+    , Interaction   = require( "./Interaction" )
+    , Guild         = require( "./Guild" );
 
 // ██████ | ███████████████████████████████████████████████████████████████████
 
@@ -31,12 +32,16 @@ class Luna extends Client {
         this.config    = require( "../config.js" );
         // —— Collection of all commands
         this.commands  = new Collection();
+        // —— Collection of all slash commands
+        this.slash     = new Collection();
         // —— Collection of all command aliases
         this.aliases   = new Collection();
         // —— Loads the language dictionary
         this.language  = new Collection();
         // —— Import custom function ( avoid duplicated block )
         this.utils     = new ( require( "../Structures/Utils" ) )( this );
+
+        this.disbut = require('discord-buttons')( this );
 
         // —— Cleaning the console 💨
         console.clear();
@@ -136,6 +141,22 @@ class Luna extends Client {
 
     }
 
+    loadInteractions() {
+
+        for (const interactions of glob.sync( `${this.directory}/Interactions/*.js` )) {
+
+            delete require.cache[ interactions ];
+            const file = new ( require( path.resolve( interactions ) ) )( this );
+
+            if ( !( file instanceof Interaction ) )
+                return;
+
+            this.ws[ file.listener ]( file.name, ( ...args )  => file.run( ...args ) );
+
+        }
+
+    }
+
     // –– Commands Handler ––––––––––––––––––––––––––––––––––––––––––––––––––––
 
     loadCommands() {
@@ -171,6 +192,7 @@ class Luna extends Client {
 
         await this.loadDatabase();
         this.loadLanguages();
+        this.loadInteractions();
         this.loadCommands();
         this.loadEvents();
         this.login();
