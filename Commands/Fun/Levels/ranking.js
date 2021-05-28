@@ -143,9 +143,9 @@ class Ranking extends Command {
 
             if ( fs.existsSync( path ) ) {
 
-                const banner = await Canvas.loadImage( `./Assets/rankCards/${firstWithBanner._guildID}-${firstWithBanner._ID}.png` );
+                const banner = await Canvas.loadImage( path );
                 ctx.globalAlpha = 0.08;
-                ctx.drawImage( banner, 102 , init - ( banner.height / 2), 1207 , banner.height );
+                ctx.drawImage( banner, 102 , init, 1207 , banner.height );
                 ctx.globalAlpha = 1;
 
             }
@@ -174,7 +174,7 @@ class Ranking extends Command {
 
             ctx.font = "bold 50px 'DM Sans'";
             ctx.fillStyle = "#ffffff";
-            ctx.fillText( userData.nickname || userData.user.username , 313, init + 70 );
+            ctx.fillText( userData.nickname || userData.user.username , 313, init + 80 );
 
             ctx.font = "bold 35px 'DM Sans'";
             ctx.fillStyle = "#808080";
@@ -182,7 +182,7 @@ class Ranking extends Command {
 
             ctx.font = "bold 80px 'DM Sans'";
             ctx.fillStyle = "#6446F2";
-            ctx.fillText( ranking.indexOf( member ) + 1, 1219, init + 120 );
+            ctx.fillText( ranking.indexOf( member ) + 1, 1219 - ctx.measureText( ranking.indexOf( member ) + 1 ).width , init + 120 );
 
             init = init + 183 + 25;
 
