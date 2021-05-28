@@ -7,7 +7,7 @@ const chalk  = require( "chalk" )
 // —— Provides utilities for working with file and directory paths.
     , path   = require( "path" )
 // —— Base structure
-    ,  Event = require( "../Structures/Event" );
+    , Event = require( "../Structures/Event" );
 
 // ██████ | █████████████████████████████████████████████████████████████████████
 
@@ -20,6 +20,22 @@ class ready extends Event {
     }
 
     async run() {
+
+        // —— Load avalable Slash command
+        for (const slash of glob.sync(`./Interactions/Slash/Create/*.js`)) {
+            delete require.cache[ slash ];
+            require ( path.resolve( slash ) )( this.client );
+        }
+
+        // —— List the answers
+        for (const slash of glob.sync(`./Interactions/Slash/Effect/*.js`)) {
+            delete require.cache[ slash ];
+            const file = new ( require( path.resolve( slash ) ) )( this.client );
+
+            this.client.slash.set( file.name, file );
+
+        }
+
 
         for ( const modules of glob.sync( "./Modules/**/*.js" ) ) {
 
@@ -61,8 +77,6 @@ class ready extends Event {
             }
 
         }
-
-
 
     }
 
