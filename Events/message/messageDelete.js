@@ -15,7 +15,7 @@ class messageDelete extends Event {
 
         await this.client.db.Message.findOneAndUpdate({
             _ID     : message.id,
-            _guildID: message.guild.id,
+            _guildID: message.guild && message.guild.id || "mp",
         }, {
             deleted : true
         }, {

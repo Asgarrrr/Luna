@@ -15,7 +15,7 @@ class messageUpdate extends Event {
 
         await this.client.db.Message.findOneAndUpdate({
             _ID     : oldMessage.id,
-            _guildID: oldMessage.guild.id,
+            _guildID: oldMessage.guild && oldMessage.guild.id || "mp",
         },
         {
             $push: {
