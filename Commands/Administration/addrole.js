@@ -44,6 +44,8 @@ class Addrole extends Command {
 
             try {
 
+                const resolved = await resolveMention( role, message.guild, 2 );
+
                 if ( !resolved || resolved.comparePositionTo( member.roles.highest ) > 0 )
                     continue;
 
