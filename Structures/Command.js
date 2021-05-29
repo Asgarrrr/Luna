@@ -36,9 +36,9 @@ class Command {
 
     startCooldown( user ) {
 
-        this.cmdCooldown.set( user, new Date( Date.now() + this.cooldown ) );
+        this.cmdCooldown.set( `${ this.message.guild ? this.message.guild.id : "mp" }-${ user }` , new Date( Date.now() + this.cooldown ) );
 
-        setTimeout( () => this.cmdCooldown.delete( user ), this.cooldown );
+        setTimeout( () => this.cmdCooldown.delete( `${ this.message.guild ? this.message.guild.id : "mp" }-${ user }` ), this.cooldown );
     }
 
     setMessage( message ) {

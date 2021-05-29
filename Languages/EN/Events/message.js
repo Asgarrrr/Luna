@@ -3,7 +3,7 @@ module.exports = {
     owner       : "Sorry, this command can only be used by the bot owners.",
     server      : "Sorry, this command can only be used in a discord server.",
     nsfw        : "Sorry, this command can only be ran in a NSFW marked channel.",
-    cooldown    : ( command, message ) => `Please wait ${( ( command.cmdCooldown.get( message.author.id ) - Date.now() ) / 1000 ).toFixed( 1 ) } second(s) to reuse the ${command.name} command.`,
+    cooldown    : ( command, message ) => `Please wait ${( ( command.cmdCooldown.get( `${ message.guild ? message.guild.id : "mp" }-${ message.author.id }` ) - Date.now() ) / 1000 ).toFixed( 1 ) } second(s) to reuse the ${command.name} command.`,
     args        : ( message ) => `You didn't provide any arguments, ${message.author} !`,
     helpEmbed   : ( cmd, message ) => { return {
         title       : `${cmd.name.replace(/\b\w/g, (l) => l.toUpperCase())}`,
