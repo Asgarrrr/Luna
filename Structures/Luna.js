@@ -1,7 +1,7 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— A powerful library for interacting with the Discord API.
-const { Client, Collection } = require( "discord.js" )
+const { Client, Collection, Intents } = require( "discord.js" )
 // —— A MongoDB object modeling tool designed to work in an asynchronous environment.
     , mongoose               = require( "mongoose" )
 // —— Provides utilities for working with file and directory paths.
@@ -26,7 +26,13 @@ class Luna extends Client {
     constructor( options = {} ) {
 
         // —— Initialise discord.js client
-        super(options);
+        super( {
+            ...options,
+            intents: [
+                Intents.ALL,
+            ],
+            ws: { intents: Intents.ALL }
+        });
 
         // —— Import of the parameters required for operation
         this.config    = require( "../config.js" );
