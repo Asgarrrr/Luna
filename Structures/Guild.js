@@ -23,6 +23,9 @@ Structures.extend( "Guild", ( Guild ) => class extends Guild {
             _loop        : false,
             _ttl         : [0, 0],
             reset        : () => {
+
+                this.player._embedMsg.delete().catch( ( err ) => err );
+
                 this.player._queue      = [];
                 this.player._oldQueue   = [];
                 this.player._connection = null;
