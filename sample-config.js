@@ -9,6 +9,7 @@ module.exports = {
     Secret: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     // — URL of your MongoDB database ( see the appropriate section for more details )
     mongodb: "mongodb://xxxxxxxxxxxxxxxxx...",
+
 // —— Activity configuration
     Presence: {
         status: "Online",
@@ -26,4 +27,4 @@ module.exports = {
         // — Status will change every 15 seconds
         interval: 15
     },
-}
+};

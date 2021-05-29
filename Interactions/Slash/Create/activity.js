@@ -4,15 +4,15 @@ module.exports = ( client ) => {
         name        : "activity",
         description : "Starts an activity on the server",
         options     : [{
-		    name        : "channel",
-			type        : 7,
-			description : "Where to start the activity ",
-			required    : true,
-		}, {
+            name        : "channel",
+            type        : 7,
+            description : "Where to start the activity ",
+            required    : true,
+        }, {
             name        : "activity",
-			type        : 3,
-			description : "The activity",
-			required    : true,
+            type        : 3,
+            description : "The activity",
+            required    : true,
             choices     : [
                 {
                     "name": "Betrayal.io",
@@ -35,4 +35,4 @@ module.exports = ( client ) => {
 
     }});
 
-}
+};

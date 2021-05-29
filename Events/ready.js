@@ -21,14 +21,14 @@ class ready extends Event {
 
     async run() {
 
-        // —— Load avalable Slash command
-        for (const slash of glob.sync(`./Interactions/Slash/Create/*.js`)) {
+        // —— Load avalable Slash command
+        for (const slash of glob.sync( "./Interactions/Slash/Create/*.js" )) {
             delete require.cache[ slash ];
             require ( path.resolve( slash ) )( this.client );
         }
 
         // —— List the answers
-        for (const slash of glob.sync(`./Interactions/Slash/Effect/*.js`)) {
+        for (const slash of glob.sync( "./Interactions/Slash/Effect/*.js" )) {
             delete require.cache[ slash ];
             const file = new ( require( path.resolve( slash ) ) )( this.client );
 
