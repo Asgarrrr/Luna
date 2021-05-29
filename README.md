@@ -2,9 +2,7 @@
 
   <img src="https://lunadoc.vercel.app/_next/image?url=%2FLuna.png&w=1200&q=75" width="600px">
 
-  <h4> An adorable Discord bot. Free, Open Source and Cross Platform </h4>
-
-  <i><small> Attention ! Luna is an ongoing project, and is still under development at the moment. Although on the master branch, everything (should) work! Thanks </small></i>
+</small></i>
 
   [![Codacy Badge](https://img.shields.io/codacy/grade/1770b308454b4ea5915d6b9fe1c631f3?color=2714E0&style=flat-square)](https://www.codacy.com/gh/Asgarrrr/Luna/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Asgarrrr/Luna&amp;utm_campaign=Badge_Grade)
   [![Dependencies](https://img.shields.io/david/Asgarrrrr/Luna?color=4F36EC&style=flat-square)](https://david-dm.org/Asgarrrrr/Luna)
