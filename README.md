@@ -11,7 +11,7 @@
 </div>
 
 **Luna** is an adorable open source discord bot fully customizable created in javascript, using [Discord.js](https://discord.js.org) and [mongoDB](https://www.mongodb.com/) that is constantly growing !
-You can invite her ( and don't hesitate to send me your feedback ) [here]() or join the ["official"](https://discord.gg/EtRcCEHqCK) server.
+You can invite her ( and don't hesitate to send me your feedback ) [here](https://discord.com/api/oauth2/authorize?client_id=662331369392832512&permissions=8&scope=bot%20applications.commands) or join the ["official"](https://discord.gg/EtRcCEHqCK) server.
 
 <small>
   Attention ! Luna is an ongoing project, and is still under development at the moment. Although on the master branch, everything ~should~ work! Thanks
