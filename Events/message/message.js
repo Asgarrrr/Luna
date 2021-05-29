@@ -116,7 +116,7 @@ class message extends Event {
             return message.reply( langue.nsfw );
 
         // —— Checks if the command for this user is under cooldown
-        if ( command.cmdCooldown.has( message.author.id ) )
+        if ( command.cmdCooldown.has(`${ message.guild ? message.guild.id : "mp" }-${ message.author.id }` ) )
             return message.delete({ timeout: 10000 })
                 && message.reply( langue.cooldown( command, message ) )
                    .then( ( msg ) => msg.delete({ timeout: 10000 }) );
