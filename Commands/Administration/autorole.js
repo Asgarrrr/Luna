@@ -103,8 +103,8 @@ class Autorole extends Command {
                 );
 
                 const confirmation = { embed: {
-                    title       : this.language.assigned,
-                    description : ` ${req.plugins.autorole.roles.map( ( role ) => `<@&${role}>` ).join( " " ) }`
+                    title       : this.language.assigned( req.plugins.autorole.roles.length ),
+                    description : `${ req.plugins.autorole.roles.map( ( role ) => `<@&${role}>` ).join( " " ) }`
                 } };
 
                 if ( req.plugins.autorole.enabled === false )
@@ -129,8 +129,8 @@ class Autorole extends Command {
             }, "plugins.autorole.roles");
 
             super.respond({ embed: {
-                title: this.language.assigned,
-                description: roles.map( ( role ) => `<@&${role}>`).join(", ")
+                title       : this.language.assigned( roles.length ),
+                description : roles.map( ( role ) => `<@&${role}>`).join(", ")
             }});
 
         }
