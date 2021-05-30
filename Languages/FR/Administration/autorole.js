@@ -10,6 +10,6 @@ module.exports = {
     nothingToAdd    : "Il n'y a aucun rôle à ajouter",
     error           : "Impossible de faire cela, une erreur s'est produite ...",
     missPerms       : "Les rôles suivants ne peuvent pas être ajoutés",
-    assigned        : "Les rôles définis sont",
+    assigned        : ( length ) => length ? "Les rôles définis sont" : "Il n'y a pas de rôle à attribuer ;(",
 
 };
