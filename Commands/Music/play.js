@@ -1,18 +1,20 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Import base command
-const Command       = require( "../../Structures/Command" );
+const Command           = require( "../../Structures/Command" );
 // —— A ytdl-core wrapper focused on efficiency for use in Discord music bots
-const ytdl          = require( "ytdl-core-discord" )
+const ytdl              = require( "ytdl-core-discord" )
 // —— Simple js only package to resolve YouTube Playlists
-    , ytpl          = require( "ytpl" )
+    , ytpl              = require( "ytpl" )
 // —— Simple js only package to search for Youtube for Videos, Playlists and many more
-    , ytsr          = require( "ytsr" )
+    , ytsr              = require( "ytsr" )
 // —— Download Soundcloud tracks with Node.js
-    , scdl          = require( "soundcloud-downloader" ).default
+    , scdl              = require( "soundcloud-downloader" ).default
 // —— Get metadata for a spotify url without spotify API access
     , { getPreview,
-        getTracks } = require( "spotify-url-info" );
+        getTracks }     = require( "spotify-url-info" )
+// —— A fast and easy API to create a buttons in discord using discord.js
+    , { MessageButton } = require( "discord-buttons" );
 
 // ██████ | ███████████████████████████████████████████████████████████████████
 
@@ -80,6 +82,9 @@ class Play extends Command {
                 : this.spotify() );
 
         } else await this.search();
+
+        if ( !this.player._embed )
+            await this.embedPlayer( );
 
         // —— If a dispatcher has not been created and an element is available in the queue, create it
         if ( !this.player._dispatcher && this.player._queue.length > 0 )
@@ -594,79 +599,15 @@ class Play extends Command {
 
         this.player._dispatcher.on( "start", async ( ) => {
 
-            if ( !this.player._embed ) {
-
-                this.player._embed = {
-                    author      : {
-                        name : this.language.now,
-                    },
-                    title       : this.player._queue[0].title,
-                    url         : this.player._queue[0].url,
-                    description : `[${this.player._queue[0].author.name}](${this.player._queue[0].author.url})`,
-                    thumbnail   : {
-                        url : this.player._queue[0].thumb,
-                    },
-                    footer      : {
-                        text : this.player._loop ? this.language.loop : ""
-                    }
-                };
-
-                this.player._embedMsg = await super.respond({ embed: this.player._embed });
-
-                // —— Adds all control reactions
-                const react = [ "⏮️", "⏹️", "⏯️", "⏭️", "🔁", "🔀" ];
-                react.forEach( ( e ) => this.player._embedMsg.react( e ).catch( ( err ) => err ) );
-
-                // —— Only accept good reactions from users in the right channel
-                const filter = ( r, u ) => {
-
-                    if (this.player._connection
-                    && this.player._connection.channel.members.has( u.id )
-                    && u.id !== this.player._embedMsg.author.id
-                    && react.some( ( react ) => react === r.emoji.name ))
-                    return true;
-
-                };
-
-                this.player._embedMsg.createReactionCollector( filter ).on( "collect", ( r, u ) => {
-
-                    // —— Suppresses the user's reaction
-                    r.users.remove( u.id );
-                    // —— Get the related command
-                    const cname = ["back", "stop", "pause", "skip", "loop", "shuffle"][ react.indexOf( r.emoji.name )]
-                    // —— Get the command
-                        , command = this.client.commands.get( cname );
-                    // —— Set message and local
-                    command.setMessage( this.message );
-                    // —— Run the command
-                    command.run( this.message );
-
-                });
-
-            } else {
-
-                this.player._embedMsg.edit( { embed: {
-                    author      : {
-                        name : this.language.now,
-                    },
-                    title       : this.player._queue[0].title,
-                    url         : this.player._queue[0].url,
-                    description : `[${this.player._queue[0].author.name}](${this.player._queue[0].author.url})`,
-                    thumbnail   : {
-                        url : this.player._queue[0].thumb,
-                    },
-                    footer      : {
-                        text : this.player._loop ? this.language.loop : ""
-                    }
-                }});
-
-            }
+            this.player._isPlaying = true;
+            await this.embedPlayer( );
 
         });
 
         this.player._dispatcher.on( "error", ( error ) => {
 
-            console.log( error );
+            this.player._dispatcher.end();
+            this.message.channel.send( this.language.error )
 
         });
 
@@ -680,10 +621,6 @@ class Play extends Command {
 
             } else {
 
-                // —— Suppresses the indicative embed
-                this.player._embedMsg
-                && this.player._embedMsg.delete( ).catch( ( err ) => err );
-
                 // —— Reset the player
                 this.player.reset();
 
@@ -694,6 +631,94 @@ class Play extends Command {
             }
 
         });
+    }
+
+    async embedPlayer( ) {
+
+        if ( !this.player._embed ) {
+
+            // —— Create interaction buttons
+            const emoji = [ "⏮️", "⏹️", "⏯️", "⏭️", "🔁" ];
+            const buttons = emoji.map( ( e ) => new MessageButton().setStyle( "gray" ).setLabel(" ").setID( e ).setEmoji( e ) );
+
+            // —— Since the media is playing, the emoji should be the one to pause
+            buttons[2].setEmoji("⏸️");
+            buttons[4]
+                .setEmoji( this.player._loop ? "🔁" : "🔂" )
+                .setStyle( this.player._loop ? "blurple" : "gray" );
+
+            this.player._embed = {
+                author      : {
+                    name : this.language.now,
+                },
+                title       : this.player._queue[0].title,
+                url         : this.player._queue[0].url,
+                description : `[${this.player._queue[0].author.name}](${this.player._queue[0].author.url})`,
+                thumbnail   : {
+                    url : this.player._queue[0].thumb,
+                },
+                footer      : {
+                    text : this.player._loop ? this.language.loop : ""
+                }
+            };
+
+            this.player._embedMsg = await super.respond({ embed: this.player._embed , buttons });
+
+            this.player._embedMsg.createButtonCollector(
+                ( button ) => {
+                    if (this.player._connection
+                        && this.player._connection.channel.members.has( button.clicker.user.id )
+                        && button.clicker.user.id !== this.player._embedMsg.author.id
+                        && emoji.some( ( react ) => react === button.id ))
+                        return true;
+                }, { time: 10800000 }
+
+            ).on( "collect", async ( button ) => {
+
+                // —— Get the related command
+                const cname = [ "back", "stop", "pause", "skip", "loop" ][ emoji.indexOf( button.id ) ]
+                // —— Get the command
+                    , command = this.client.commands.get( cname );
+                // —— Set message and local
+                command.setMessage( this.message );
+                // —— Run the command
+                command.run( this.message );
+
+                buttons[2].setEmoji( this.player._isPlaying ? "⏸️" : "▶️" );
+                buttons[4]
+                    .setEmoji( this.player._loop ? "🔁" : "🔂" )
+                    .setStyle( this.player._loop ? "blurple" : "gray" );
+
+                await this.player._embedMsg.edit({ buttons });
+                await button.defer();
+
+            }).on( "end", ( collected ) => {
+
+                this.player._embedMsg.delete().catch( ( err ) => err );
+                this.player._embedMsg = null;
+                this.player._embed    = null;
+
+            });
+
+        } else {
+
+            this.player._embedMsg.edit( { embed: {
+                author      : {
+                    name : this.language.now,
+                },
+                title       : this.player._queue[0].title,
+                url         : this.player._queue[0].url,
+                description : `[${this.player._queue[0].author.name}](${this.player._queue[0].author.url})`,
+                thumbnail   : {
+                    url : this.player._queue[0].thumb,
+                },
+                footer      : {
+                    text : this.player._loop ? this.language.loop : ""
+                }
+            }});
+
+        }
+
     }
 
 }
