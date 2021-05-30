@@ -31,13 +31,13 @@ class Pause extends Command {
         if ( this.client.utils.checkVoice( player, message, this.language ) !== 0 )
             return;
 
-        // —— Reverses in the player its reading state
-        player._isPlaying = !player._isPlaying;
-
         // —— Switch between play and pause
         player._isPlaying === true
             ? player._dispatcher.pause( true )
             : player._dispatcher.resume();
+
+        // —— Reverses in the player its reading state
+        player._isPlaying = !player._isPlaying;
 
     }
 
