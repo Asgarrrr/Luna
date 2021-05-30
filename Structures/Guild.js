@@ -24,7 +24,9 @@ Structures.extend( "Guild", ( Guild ) => class extends Guild {
             _ttl         : [0, 0],
             reset        : () => {
 
-                this.player._embedMsg.delete().catch( ( err ) => err );
+                // —— Suppresses the indicative embed
+                this.player._embedMsg
+                && this.player._embedMsg.delete( ).catch( ( err ) => err );
 
                 this.player._queue      = [];
                 this.player._oldQueue   = [];
