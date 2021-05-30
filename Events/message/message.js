@@ -25,7 +25,7 @@ class message extends Event {
             message.member = await message.guild.members.fetch( message.author );
 
         // —— Message log in the database
-        client.config.logger && new client.db.Message({
+        message.guild.plugins.logger.enabled && new client.db.Message({
             _ID         : message.id,
             _userID     : message.author.id,
             _guildID    : message.guild && message.guild.id || "DM",
