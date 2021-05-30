@@ -1,7 +1,9 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Import base command
-const Command = require( "../../Structures/Command" );
+const Command           = require( "../../Structures/Command" )
+// —— A fast and easy API to create a buttons in discord using discord.js
+    , { MessageButton } = require( "discord-buttons" );
 
 // ██████ | ███████████████████████████████████████████████████████████████████
 
@@ -29,9 +31,9 @@ class Queue extends Command {
         if ( !player._queue.length )
             return super.respond( { embed : {
 
-                title : this.language.empty,
+                title       : this.language.empty,
                 description : this.language.emptyDesc( message.guild.prefix ),
-                thumbnail : {
+                thumbnail   : {
                     url : "https://media.tenor.com/images/3470a1094fcb299e2b4caba0668fc660/tenor.gif",
                 }
 
@@ -74,40 +76,65 @@ class Queue extends Command {
 
         });
 
-        const pagination = await super.respond( { embed : pages[0] } )
-            , reactions  = [ "⬆️", "⬇️", "🔍" ];
+        const buttons = [ "⬆️", "⬇️", "🔍" ].map( ( i ) => new MessageButton().setLabel( "" ).setID( i ).setStyle( "gray" ).setEmoji( i ) );
 
-        reactions.forEach( ( r ) => pagination.react( r ) );
+        const position = () => {
+            buttons[0].disabled = counter === 0 ? true : false;
+            buttons[1].disabled = counter === Object.keys( pages ).length - 1 ?  true : false;
+        };
 
-        pagination.createReactionCollector(
-            ( r, u ) => reactions.includes( r.emoji.name ) && u.id !== pagination.author.id,
-            { time: 600000 }
-        ).on( "collect", async ( r, u ) => {
+        position();
 
-            if ( r.emoji.name === "⬆️" && counter > 0 )
-                pagination.edit( { embed : pages[ --counter ] } );
+        const pagination = await super.respond( { embed : pages[0], buttons } );
 
-            if ( r.emoji.name === "⬇️" && counter < Object.keys( pages ).length - 1 )
-                pagination.edit( { embed : pages[ ++counter ] } );
+        pagination.createButtonCollector(
+            () => true , { time: 100 }
+        ).on( "collect", async ( b ) => {
 
-            if ( r.emoji.name === "🔍" ) {
+            if ( b.id === "🔍" ) {
 
                 const demand = await super.respond( this.language.page );
 
+                buttons[2].disabled = true;
+
                 message.channel.createMessageCollector(
-                    ( m ) => m.author.id === u.id && parseInt( m.content ) > 0 && parseInt(m.content) < Object.keys( pages ).length + 1,
-                    { time: 15000, max: 1, errors: ["time"] },
-                ).on( "collect", ( m ) => {
+                    ( m ) => m.author.id === b.clicker.user.id && parseInt( m.content ) > 0 && parseInt( m.content ) < Object.keys( pages ).length + 1,
+                    { time: 15000, max: 1, errors: [ "time" ] },
+                ).on( "collect", async ( m ) => {
 
-                    m.delete();
-                    pagination.edit( { embed : pages[ counter = parseInt( m.content ) - 1 ] } );
+                    await m.delete();
+                    counter = ( parseInt( m.content ) - 1 );
+                    position();
+                    await pagination.edit( { embed : pages[ counter ], buttons } );
 
-                }).on( "end", () => demand.delete().catch( ( err ) => err ) );
+                }).on( "end", () => {
+
+                    demand.delete().catch( ( err ) => err );
+                    buttons[2].disabled = false;
+                    pagination.edit( { embed : pages[ counter ], buttons } );
+
+                });
 
             }
 
-            // —— Delete the reaction just added by the user
-            r.users.remove( u.id );
+            if ( b.id === "⬆️" && counter > 0 )
+                --counter;
+
+            if ( b.id === "⬇️"  && counter < Object.keys( pages ).length - 1 )
+                ++counter;
+
+            position();
+
+            await pagination.edit( { embed : pages[ counter ], buttons } );
+            // —— Confirms the interaction
+            await b.defer();
+
+        }).on( "end", () => {
+
+            // —— Disable all buttons
+            buttons.map( ( b ) => b.disabled = true );
+
+            pagination.edit( { embed : pages[ counter ], buttons } );
 
         });
 
