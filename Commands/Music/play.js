@@ -26,7 +26,7 @@ class Play extends Command {
 			name        : "play",
 			description : "If you are in a vocal channel, call Luna to play music from a supported url ( Youtube, Soundcloud, Spotify ).",
 			usage       : "play [ url ] OR [ Something to search on YouTube ]",
-			exemple     : ["play https://www.youtube.com/watch?v=5qap5aO4i9A", "play lofi mix", "play https://open.spotify.com/playlist/0vvXsWCC9xrXsKd4FyS8kM?si=c7b5911fb9ab45bc"],
+			example     : ["play https://www.youtube.com/watch?v=5qap5aO4i9A", "play lofi mix", "play https://open.spotify.com/playlist/0vvXsWCC9xrXsKd4FyS8kM?si=c7b5911fb9ab45bc"],
 			args        : true,
 			category    : "Music",
 			cooldown    : 1000,

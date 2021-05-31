@@ -13,7 +13,7 @@ class Setbio extends Command {
 			name        : "setbio",
 			description : "Defines your profile phrase on a server",
 			usage       : "setbio { message }",
-			exemple     : [ "@asgarrrr" ],
+			example     : [ "@asgarrrr" ],
 			args        : true,
 			category    : "Fun",
 			cooldown    : 5,

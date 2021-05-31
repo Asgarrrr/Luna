@@ -15,7 +15,7 @@ class Level extends Command {
 			name        : "level",
 			description : "Allows to change the amount of experience of a member, of all the members in possession of a role or of everyone. ",
 			usage       : "level user operation quantity",
-			exemple     : ["@Asgarrrr + 100", "all = 2, @role / 2"],
+			example     : ["@Asgarrrr + 100", "all = 2, @role / 2"],
 			args        : true,
 			category    : "Fun",
 			cooldown    : 3,

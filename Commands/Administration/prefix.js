@@ -13,7 +13,7 @@ class Prefix extends Command {
 			name        : "prefix",
 			description : "Change the prefix used by Luna in the guild",
 			usage       : "prefix [prefix]",
-			exemple     : ["_"],
+			example     : ["_"],
 			args        : true,
 			category    : "Administration",
 			cooldown    : 10000,

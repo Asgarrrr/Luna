@@ -15,7 +15,7 @@ class Avatar extends Command {
             name        : "avatar",
             description : "Returns the profile image of a player. Targeting by mention, username, or ID",
             usage       : "avatar {@mention || username || ID}",
-            exemple     : ["662331369392832512", "@Luna", "Luna"],
+            example     : ["662331369392832512", "@Luna", "Luna"],
             args        : false,
             category    : "General",
             cooldown    : 1000,

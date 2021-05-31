@@ -13,7 +13,7 @@ class Addrole extends Command {
 			name        : "addrole",
 			description : "Lets you assign a role to a member.",
 			usage       : "addrole { user mention / user ID } { role mention / role ID }",
-			exemple     : ["@asgarrrr @moderator" ],
+			example     : ["@asgarrrr @moderator" ],
 			args        : true,
 			category    : "Administration",
 			cooldown    : 100,
