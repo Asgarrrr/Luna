@@ -12,8 +12,8 @@ module.exports = {
             name    : "Syntaxe",
             value   :`\`\`\`${cmd.usage}\`\`\``,
         }, {
-            name    : "examples",
-            value   :`\`\`\`${cmd.example && cmd.example.map( ( x ) => `${message.guild.prefix}${cmd.name} ${x}` ).join( "\n" ) || "Aucun example fourni"}\`\`\``,
+            name    : "Exemples",
+            value   :`\`\`\`${cmd.example && cmd.example.map( ( x ) => `${message.guild.prefix}${cmd.name} ${x}` ).join( "\n" ) || "Aucun exemple fourni"}\`\`\``,
         }],
     }; },
     "missPerm"  : "Je ne dispose pas des droits suffisants pour exécuter cette commande.",
