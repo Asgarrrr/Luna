@@ -20,7 +20,7 @@ class Setbackground extends Command {
 			name        : "setbackground",
 			description : "Defines your profile background on a server",
 			usage       : "setbackground { image url } [ sx sy ex ey ]",
-			exemple     : [ "file attachement" ],
+			example     : [ "file attachement" ],
 			args        : true,
 			category    : "Fun",
             aliases     : ["setbg"],

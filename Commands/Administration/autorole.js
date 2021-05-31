@@ -13,7 +13,7 @@ class Autorole extends Command {
 			name        : "autorole",
 			description : "Defines the roles assigned automatically when a new member joins",
 			usage       : "autorole [operation] [role]",
-			exemple     : ["on", "add @moderator", "remove @moderator", "v", "off"],
+			example     : ["on", "add @moderator", "remove @moderator", "v", "off"],
 			args        : true,
 			category    : "Administration",
 			cooldown    : 100,

@@ -13,7 +13,7 @@ module.exports = {
             value   :`\`\`\`${cmd.usage}\`\`\``,
         }, {
             name    : "Examples use",
-            value   :`\`\`\`${cmd.exemple && cmd.exemple.map( ( x ) => `${message.guild.prefix}${cmd.name} ${x}`).join( "\n" ) || "No examples provided"}\`\`\``,
+            value   :`\`\`\`${cmd.example && cmd.example.map( ( x ) => `${message.guild.prefix}${cmd.name} ${x}`).join( "\n" ) || "No examples provided"}\`\`\``,
         }],
     }; },
     "missPerm"  : "I do not have sufficient rights to execute this command.",

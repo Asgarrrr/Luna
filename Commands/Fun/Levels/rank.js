@@ -19,7 +19,7 @@ class Rank extends Command {
 			name        : "rank",
 			description : "Generates a custom card with progress, rank and biography",
 			usage       : "rank { user }",
-			exemple     : [ "@asgarrrr" ],
+			example     : [ "@asgarrrr" ],
 			args        : false,
 			category    : "Fun",
 			cooldown    : 5,

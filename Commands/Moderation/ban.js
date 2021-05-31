@@ -13,7 +13,7 @@ class Ban extends Command {
             name        : "ban",
             description : "Ban a user",
             usage       : "ban @mention { Reason } ",
-            exemple     : ["@Asgarrrr", "Luna"],
+            example     : ["@Asgarrrr", "Luna"],
             args        : true,
             category    : "Moderation",
             cooldown    : 1000,

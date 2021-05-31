@@ -13,7 +13,7 @@ class Language extends Command {
 			name        : "language",
 			description : "Change the language used by Luna in the guild",
 			usage       : "language [language]",
-			exemple     : ["FR"],
+			example     : ["FR"],
 			args        : false,
 			category    : "Administration",
 			cooldown    : 10000,
