@@ -12,7 +12,7 @@ class Prune extends Command {
         super( client, {
             name        : "prune",
             description : "Delete a quantity of messages in a channel sent by a member, all members with a role, bots, pinned messages, files or only yours",
-            usage       : "prune { number } [ @user | @role | Keyword ( me | bots | uploads | pins) ]",
+            usage       : "prune { number } [ @user | @role | Keyword ( me | bots  | uploads | pins ) ]",
             example     : ["prune 100 @Asgarrrr", "prune 50 @moderator", "prune 10", "prune 100 bots"],
             args        : true,
             category    : "Moderation",
