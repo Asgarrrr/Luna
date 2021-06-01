@@ -21,7 +21,7 @@ class Setbackground extends Command {
 			description : "Defines your profile background on a server",
 			usage       : "setbackground { image url } [ sx sy ex ey ]",
 			example     : [ "file attachement" ],
-			args        : true,
+			args        : false,
 			category    : "Fun",
             aliases     : ["setbg"],
 			cooldown    : 30,
@@ -34,6 +34,21 @@ class Setbackground extends Command {
 	async run( message, [ url, sx, sy, ex, ey ] ) {
 
         try {
+
+            // —— Only if the user has joined a file
+            if ( message.attachments.size ) {
+
+                if ( message.attachments.size && url )  {
+                    ey = ex;
+                    ex = sy;
+                    sy = sx;
+                    sx = url;
+                }
+
+                url = message.attachments.first().proxyURL;
+
+            } else if ( !url )
+                return super.respond( this.language.needURL );
 
             // —— Try to get the image
             let res = await fetch( url, { timeout : 3000 } );
@@ -52,10 +67,10 @@ class Setbackground extends Command {
                 , image = await loadImage( await res.buffer() );
 
             // —— Input parameters are strings, they must be converted
-            sx = parseInt(sx, 10) || 0;
-            sy = parseInt(sy, 10) || 0;
-            ex = parseInt(ex, 10) || image.width;
-            ey = parseInt(ey, 10) || image.height;
+            sx = parseInt( sx, 10) || 0;
+            sy = parseInt( sy, 10) || 0;
+            ex = parseInt( ex, 10) || image.width;
+            ey = parseInt( ey, 10) || image.height;
 
             // —— Scaling formula
             const scale = Math.max( canvas.width / ( image.width - sx ), canvas.height / image.width );
