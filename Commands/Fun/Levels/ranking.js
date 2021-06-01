@@ -4,6 +4,8 @@
 const Command               = require( "../../../Structures/Command" )
 // —— A powerful library for interacting with the Discord API
     , { MessageAttachment } = require( "discord.js" )
+    // —— Identifying emoji entities within a string in order to render them as Twemoji
+    , { parse }             = require( "twemoji-parser" )
 // —— node-canvas is a Cairo-backed Canvas implementation for Node.js.
     , Canvas                = require( "canvas" )
 // —— FileSystem
@@ -104,7 +106,7 @@ class Ranking extends Command {
             // —— Loading and drawing the image
             const banner = await Canvas.loadImage( `./Assets/rankCards/${firstWithBanner._guildID}-${firstWithBanner._ID}.png` );
             ctx.globalAlpha = 0.08;
-            ctx.drawImage( banner, 0, 0, canvas.width , banner.height - 12 );
+            ctx.drawImage( banner, 0, 0, canvas.width , banner.height - 20 );
             ctx.globalAlpha = 1;
 
         }
@@ -113,7 +115,7 @@ class Ranking extends Command {
         grd.addColorStop( 0, "#3621E4" );
         grd.addColorStop( 1, "#6F50F5" );
         ctx.fillStyle = grd;
-        ctx.fillRect(0, 470, 1410, 16);
+        ctx.fillRect( 0, 470, 1410, 16 );
 
         const trophy = await Canvas.loadImage( "./Assets/trophy.svg" );
         ctx.drawImage( trophy, 102, 134, 203 , 203 );
@@ -160,7 +162,8 @@ class Ranking extends Command {
             ctx.closePath();
             ctx.clip();
 
-            const userData = message.guild.members.cache.get( member._ID );
+            const userData = message.guild.members.cache.get( member._ID )
+            || { user: await this.client.users.fetch( member._ID ) };
 
             const avatar = await Canvas.loadImage( userData.user.displayAvatarURL( { format: "jpg", dynamic: true, size: 4096 } ) );
             ctx.drawImage( avatar, 131, init + 21, 141, 141 );
@@ -174,11 +177,42 @@ class Ranking extends Command {
 
             ctx.font = "bold 50px 'DM Sans'";
             ctx.fillStyle = "#ffffff";
-            ctx.fillText( userData.nickname || userData.user.username , 313, init + 80 );
+
+            let fontSize = 50;
+
+            // —— Recalculate the font size so that the text does not exceed max size
+            while ( ctx.measureText( userData.nickname || userData.user.username ).width > 830 )
+                ctx.font = `bold ${ fontSize-- }px 'DM Sans'`;
+
+            let currWidth = 0;
+
+            // —— For each letter of the nickname
+            for ( const character of userData.nickname || userData.user.username ) {
+
+                // —— Determine if it is an emoji or a "classic" character
+                // —— Get the information, including a link to the emoji in svg
+                const parseEmoji = parse( character );
+
+                if ( parseEmoji.length ) {
+
+                    const img = await Canvas.loadImage( parseEmoji[0].url );
+
+                    ctx.drawImage( img, 313 + currWidth, init + 80 - fontSize + 10, fontSize - 3, fontSize - 3 );
+
+                    currWidth += fontSize;
+
+                } else {
+
+                    ctx.fillText( character, 313 + currWidth, init + 80 );
+                    currWidth += ctx.measureText( character ).width;
+
+                };
+
+            }
 
             ctx.font = "bold 35px 'DM Sans'";
             ctx.fillStyle = "#808080";
-            ctx.fillText( `${ nbr } messages`  , 313, init + 130 );
+            ctx.fillText( `Level ${ String( member.level ).padEnd( 6, " ") }${ nbr } messages`  , 313, init + 130 );
 
             ctx.font = "bold 80px 'DM Sans'";
             ctx.fillStyle = "#6446F2";
@@ -188,7 +222,7 @@ class Ranking extends Command {
 
         }
 
-       message.channel.send( new MessageAttachment( canvas.toBuffer(), "card.png" ) );
+       super.respond( new MessageAttachment( canvas.toBuffer(), "card.png" ) );
 
     }
 }
