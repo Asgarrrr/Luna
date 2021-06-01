@@ -41,7 +41,6 @@ class Setbio extends Command {
         } catch ( error ) {
 
             super.respond( this.language.error );
-            console.log( error );
 
         }
 
