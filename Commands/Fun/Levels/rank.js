@@ -4,6 +4,8 @@
 const Command               = require( "../../../Structures/Command" )
 // —— A powerful library for interacting with the Discord API
     , { MessageAttachment } = require( "discord.js" )
+// —— Identifying emoji entities within a string in order to render them as Twemoji
+    , { parse }             = require( "twemoji-parser" )
 // —— node-canvas is a Cairo-backed Canvas implementation for Node.js.
     , Canvas                = require( "canvas" )
 // —— FileSystem
@@ -36,17 +38,27 @@ class Rank extends Command {
         if ( !target )
             return super.respond( this.language.notFound );
 
-        const users = await this.client.db.Member.find({
+        // —— Search or create member
+        const user = await this.client.db.Member.findOneAndUpdate({
+            _ID     : message.author.id,
             _guildID: message.guild.id,
-        }).sort({ experience: "-1" });
+        }, {}, {
+            setDefaultsOnInsert : true,
+            upsert              : true,
+            new                 : true,
+        });
 
-        if ( !users )
-            return super.respond( this.language.noCard );
+        if ( !user )
+            return super.respond( this.language.missInfo );
 
-        const user = users.find( ( user ) => user._ID === target.id )
-            , rank = users.findIndex( ( user ) => user._ID === target.id ) + 1;
+        // —— Get the top 10 members of the ranking, sorted by experience
+        const ranking = await this.client.db.Member.find({
+            _guildID: message.guild.id,
+        }).sort({ experience: "-1" }).limit( 10 );
 
-        if ( !user.experience || !user.level || !user.bio )
+        const rank = ranking.findIndex( ( user ) => user._ID === target.id ) + 1;
+
+        if ( isNaN( user.experience ) || !user.level || !user.bio )
             return super.respond( this.language.missInfo );
 
         // —— Creating a new canvas
@@ -138,13 +150,44 @@ class Rank extends Command {
 
         ctx.restore();
 
+        let currWidth = 0;
+
         // —— Print username
         ctx.font = "bold 57px 'DM Sans'";
         ctx.fillStyle = "#ffffff";
-        ctx.fillText( target.user.username, 482, 92 + 57 );
+
+        let fontSize = 57;
+
+        const name = ( target.nickname || target.user.username );
+
+        // —— Recalculate the font size so that the text does not exceed max size
+        while ( ctx.measureText( name ).width > 700 )
+            ctx.font = `bold ${ fontSize-- }px 'DM Sans'`;
+
+        for ( const character of name ) {
+
+            const parseEmoji = parse( character );
+
+            if ( parseEmoji.length ) {
+
+                const img = await Canvas.loadImage( parseEmoji[0].url );
+
+                ctx.drawImage( img, 482 + currWidth, 149 - fontSize + 10, fontSize - 3, fontSize - 3 );
+
+                currWidth += fontSize;
+
+            } else {
+
+                ctx.fillText( character, 482 + currWidth, 149 );
+                currWidth += ctx.measureText( character ).width;
+
+            };
+
+        }
 
         // —— Print rank
         ctx.fillStyle = "#593EEF";
+        ctx.font = "bold 57px 'DM Sans'";
         ctx.fillText( rank, 1369 - ctx.measureText( rank ).width , 92 + 57 );
 
         ctx.fillStyle = "#ffffff";
@@ -156,10 +199,12 @@ class Rank extends Command {
 
         ctx.font = "regular 31px 'DM Sans'";
 
-        if ( user.bio === "NoBioSet" )
-            user.bio = this.language.noBio( message.guild.prefix );
+        let bio = user.bio;
 
-        // —— Each line is ~32 characters long
+        if ( bio === "NoBioSet" )
+            bio = this.language.noBio( message.guild.prefix );
+
+        // —— Each line is ~32 characters long — Max 40, force split
         let prev  = 0
           , curr  = 32
           , clean = [];
@@ -167,16 +212,49 @@ class Rank extends Command {
         while ( user.bio[ curr ] ) {
 
             if ( user.bio[ curr++ ] === " " ) {
+
                 clean.push( user.bio.substring( prev, curr ) );
                 prev = curr;
                 curr += 32;
+
+            } else if( curr - prev >= 39 ) {
+
+                clean.push( user.bio.substring( prev, curr ) + "-"  );
+                prev = curr;
+                curr += 40;
+
             }
 
         }
 
         clean.push( user.bio.substr( prev ));
 
-        clean.forEach( ( line, i ) => ctx.fillText( line, 482, 167 + 31 + ( i * 41 ) ) );
+        for ( let [ i , line ] of clean.entries() ) {
+
+            currWidth = 0;
+
+            for ( const character of line ) {
+
+                const parseEmoji = parse( character );
+
+                if ( parseEmoji.length && parseEmoji[0].url ) {
+
+                    const img = await Canvas.loadImage( parseEmoji[0].url );
+
+                    ctx.drawImage( img, 482 + currWidth, 175 + ( i * 41 ), 28, 28 );
+
+                    currWidth += 28;
+
+                } else {
+
+                    ctx.fillText( character, 482 + currWidth, 167 + 31 + ( i * 41 ) );
+                    currWidth += ctx.measureText( character ).width;
+
+                }
+
+            }
+
+        }
 
         // —— Creation of the experience progress bar
         const grd = ctx.createLinearGradient( 482, 349, 907, 59 );
