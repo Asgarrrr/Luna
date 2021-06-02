@@ -1,9 +1,9 @@
 module.exports = {
 
-    notInVoice  : "Vous devez être un channel vocal",
-    noConnected : "Il n'y a rien en cours de lecture",
-    busy        : "Luna est déjà occupée avec d'autres auditeurs, rejoignez-les",
-    disabled    : "Le lecteur est en pause.",
-    enabled     : "Le lecteur est en lecture."
+    notInVoice  : "You must be a voice channel",
+    noConnected : "There is nothing playing",
+    busy        : "Luna is already busy with other listeners, join them",
+    pause       : "The player is now paused.",
+    resume      : "The player is now playing."
 
 };

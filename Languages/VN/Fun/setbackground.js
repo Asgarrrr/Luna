@@ -1,8 +1,8 @@
 module.exports = {
 
-    needURL    : "Si vous ne joignez pas de fichier, vous devez fournir l'URL d'une image.",
-    notAllowed : "Seules les images en png, jpeg ou svg peuvent être utilisées.",
-    newBG      : ( userID ) => `<@${userID}>, l'image a été appliquée à votre carte de rang !`,
-    error      : "Une erreur s'est produite...",
+    needURL    : "If you dont attach a file, you must provide the url of an image",
+    notAllowed : "Only png, jpeg or svg images can be used",
+    newBG      : ( userID ) => `<@${userID}>, the image has been applied to your rank card !`,
+    error      : "An error has occurred...",
 
 };

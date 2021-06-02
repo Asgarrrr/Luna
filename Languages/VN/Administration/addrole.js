@@ -1,8 +1,8 @@
 module.exports = {
 
-    noTarget    : "Vous devez choisir un membre",
-    noRole      : "Vous devez choisir un ou plusieurs rôles",
-    added       : ( added ) => added.length > 1 ? `Les rôles ${ added.join( ", " ) } ont été ajoutés` : `Le rôle ${ added.join( ", " ) } a été ajouté`,
-    nothing     : "Rien n'a été ajouté..."
+    noTarget    : "You must choose a member",
+    noRole      : "You must choose one or more roles",
+    added       : ( added ) => added.length > 1 ? `The roles ${ added.join( ", " ) } have been added` : `The role ${ added.join( ", " ) } has been added`,
+    nothing     : "Nothing has been added..."
 
 };

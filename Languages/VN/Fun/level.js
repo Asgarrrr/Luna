@@ -1,11 +1,13 @@
 module.exports = {
 
-    notFound    : "Aucun utilisateur trouvé",
-    noOperator  : "Vous devez fournir un opérateur. `+`, `-`, `*`, `/` ou `=`",
-    noQuantity  : "Vous devez entrer un montant valide",
-    noChange    : "Aucune modification n'a été effectuée",
-    updated     : "Mise à jours des niveaux",
-    updatedData : ( updated, target ) => `Les niveaux de ${ updated > 1 ? `${ updated } membres` : `<@${ target[0]._ID }>` } ont été mis à jours`,
-    error       : "Une erreurs est survenue",
+    notFound    : "No user found",
+    noOperator  : "You must provide an operator. `+`, `-`, `*`, `/` or `=`",
+    noQuantity  : "You must enter a valid amount",
+    noChange    : "No change has been made",
+    updated     : "Levels have been updated",
+    updatedData : ( updated, target ) => `The levels of ${ updated > 1 ? `${ updated } members` : `<@${ target[0]._ID }>` } have been updated`,
+    error       : "An error has occurred",
+
+
 
 };

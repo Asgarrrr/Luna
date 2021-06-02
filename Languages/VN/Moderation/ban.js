@@ -1,11 +1,11 @@
 module.exports = {
 
-    noTarget    : "Vous devez choisir un utilisateur valide",
-    "yourself"  : "Vous ne pouvez pas vous bannir vous-même",
-    "notMe"     : "Vous ne pouvez pas me bannir ;3",
-    higher      : "Le membre cible est plus haut dans la hiérarchie des rôles que vous",
-    notBannable : "Oww, il est trop puissant, je ne peux pas le bannir",
-    duration    : "La durée doit être un nombre, supérieur à 0",
-    error       : "Une erreurs est survenue dans la demande de bannissement"
+    noTarget    : "You must choose a valid user",
+    yourself    : "You can't ban yourself",
+    notMe       : "You can't ban me ;3",
+    higher      : "The target member is higher in the role hierarchy than you",
+    notBannable : "Oww, he is too powerful, I can't ban him",
+    duration    : "The duration must be a number, greater than 0",
+    error       : "An error occurred in the ban request"
 
 };

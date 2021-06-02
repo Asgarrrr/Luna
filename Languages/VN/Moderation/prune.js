@@ -1,11 +1,11 @@
 module.exports = {
 
-    invalidLimit    : "Veuillez fournir une valeur numérique pour la limite.",
-    invalidRange    : "La limite doit être comprise entre 1 et 100",
-    noMessage       : "Il semble qu'une erreur se soit produite lors de la récupération des messages.",
-    invalidTarget   : "La cible n'est pas valide.",
-    error           : ( size ) => `Incapable de supprimer ${ size } messages.`,
-    deleted         : ( size, target ) => `${ size } messages ${ ( target && `de ${ target === "me" ? "you" : target }`) || "" } ont été supprimé`,
-    notDeleted      : "Vous ne pouvez pas supprimer les messages de plus de 14 jours, vous pouvez également supprimer les messages d'un utilisateur, d'un rôle ou utiliser les mots-clés `me`, `bots`, `uploads` ou `pins`."
+    invalidLimit    : "Please provide a numeric value for limit.",
+    invalidRange    : "The limit must be between 1 and 100.",
+    noMessage       : "It seems an error occurred in the messages fetching",
+    invalidTarget   : "The target is not valid.",
+    error           : ( size ) => `Unable to remove ${ size } messages.`,
+    deleted         : ( size, target ) => `${ size } message ${ ( target && `from ${ target === "me" ? "you" : target }`) || ""} has been removed`,
+    notDeleted      : "You cannot delete messages older than 14 days, also, you can delete messages from a user, role, or use keywords `me`, `bots`, `uploads` or `pins`"
 
 };

@@ -1,15 +1,15 @@
 module.exports = {
 
-    ping        : "envoie de la balle ...",
-    latency     : "Latence",
+    ping        : "Sending the ball ...",
+    latency     : "Latency",
     components  : "Services",
-    servers     : "État des serveurs",
-    events      : "Évènements",
+    servers     : "Servers status",
+    events      : "Events",
     state       : ( code ) => ({
-        "none"      : "Tous les systèmes sont opérationnels.",
-        "minor"     : "Panne partielle du service.",
-        "major"     : "Panne majeure du service.",
-        "critical"  : "C'est la merde"
+        "none"      : "All Systems Operational.",
+        "minor"     : "Partial System Outage.",
+        "major"     : "Major Service Outage.",
+        "critical"  : "It's the shit"
     })[ code ]
 
 };

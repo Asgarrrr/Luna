@@ -1,9 +1,9 @@
 module.exports = {
 
-    title       : "A propos de Luna",
-    description : "Luna est un adorable bot discord open source entièrement personnalisable créé en javascript, utilisant Discord.js et mongoDB qui est en constante croissance !",
-    footer      : "Créé par un déchet, merci à toutes les personnes qui ont pu m'apporter leur soutien",
-    refresh     : "Rafraîchir",
-    doc         : "Ouvrir la doc'"
+    title       : "About Luna",
+    description : "Luna is an adorable open source discord bot fully customizable created in javascript, using Discord.js and mongoDB that is constantly growing !",
+    footer      : "Created by a garbage, thanks to all the people who could bring me their support",
+    refresh     : "Refresh",
+    doc         : "Open the doc"
 
 };

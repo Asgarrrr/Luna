@@ -1,8 +1,8 @@
 module.exports = {
 
-    invalid     : "Cette url ne semble pas être une url de chaîne valide !",
-    done        : "Abonnement effectué ",
-    information : ( name ) => `Lorsque ${ name } publie de nouvelles vidéos, elles vous seront envoyées ici !`,
-    error       : "Une erreur s'est produite",
+    invalid     : "This url does not seem to be a valid channel url !",
+    done        : "Subscription done",
+    information : ( name ) => `Once ${ name } publishes new videos, they will be sent to you here !`,
+    error       : "An error has occurred",
 
 };

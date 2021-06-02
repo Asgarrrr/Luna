@@ -1,26 +1,26 @@
 module.exports = {
 
-    owner       : "Désolé, cette commande ne peut être utilisée que par le propriétaires.",
-    server      : "Désolé, cette commande ne peut être utilisée que sur un serveur",
-    nsfw        : "Désolé, cette commande ne peut être exécutée que dans un salon NSFW..",
-    cooldown    : ( command, message ) => `Veuillez attendre ${( ( command.cmdCooldown.get( `${ message.guild ? message.guild.id : "mp" }-${ message.author.id }` ) - Date.now() ) / 1000 ).toFixed( 1 ) } seconde(s) pour réutiliser la commande ${command.name}.`,
-    args        : ( message ) => `Vous n'avez fourni aucun argument, ${message.author} !`,
+    owner       : "Sorry, this command can only be used by the bot owners.",
+    server      : "Sorry, this command can only be used in a discord server.",
+    nsfw        : "Sorry, this command can only be ran in a NSFW marked channel.",
+    cooldown    : ( command, message ) => `Please wait ${( ( command.cmdCooldown.get( `${ message.guild ? message.guild.id : "mp" }-${ message.author.id }` ) - Date.now() ) / 1000 ).toFixed( 1 ) } second(s) to reuse the ${command.name} command.`,
+    args        : ( message ) => `You didn't provide any arguments, ${message.author} !`,
     helpEmbed   : ( cmd, message ) => { return {
         title       : `${cmd.name.replace(/\b\w/g, (l) => l.toUpperCase())}`,
         description : `> *${cmd.description}*`,
         fields      : [{
-            name    : "Syntaxe",
+            name    : "Syntax",
             value   :`\`\`\`${cmd.usage}\`\`\``,
         }, {
-            name    : "Exemples",
-            value   :`\`\`\`${cmd.example && cmd.example.map( ( x ) => `${message.guild.prefix}${cmd.name} ${x}` ).join( "\n" ) || "Aucun exemple fourni"}\`\`\``,
+            name    : "Examples use",
+            value   :`\`\`\`${cmd.example && cmd.example.map( ( x ) => `${message.guild.prefix}${cmd.name} ${x}`).join( "\n" ) || "No examples provided"}\`\`\``,
         }],
     }; },
-    "missPerm"  : "Je ne dispose pas des droits suffisants pour exécuter cette commande.",
-    "youMiss"   : "Vous n'avez pas les privilèges nécessaires pour exécuter cette commande...",
-    lvlUp : ( level, user ) => [
-        `Bien joué <@${ user._ID }>, vous êtes maintenant au niveau ${ level }`,
-        `Incroyable, <@${ user._ID }>, vous venez de passer le niveau ${ level }`
+    "missPerm"  : "I do not have sufficient rights to execute this command.",
+    "youMiss"   : "You lack the required privileges to execute this command...",
+    lvlUp       : ( level, user ) => [
+        `Well done <@${ user._ID }>, you are now level ${ level }`,
+        `Incredible progress, <@${ user._ID }>, you just passed level ${ level }`
     ][ ~~Math.random() * 2 ]
 
 };

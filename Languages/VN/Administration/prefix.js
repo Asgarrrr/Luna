@@ -1,9 +1,9 @@
 module.exports = {
 
-    alreadyUse  : "Vous utilisez déjà ce préfixe",
-    changed     : "Le préfixe a été modifié",
-    newPrefix   : ( prefix ) => `Vous pouvez maintenant utiliser \`${prefix}\` pour exécuter des commandes`,
-    notModified : "Le préfixe n'a pas été modifié",
-    error       : "Il semble qu'une erreur se soit produite ..."
+    alreadyUse  : "You already use this prefix",
+    changed     : "The prefix has been changed",
+    newPrefix   : ( prefix ) => `You can now use \`${prefix}\` to run commands`,
+    notModified : "The prefix has not been modified",
+    error       : "It seems that an error occurred ..."
 
 };

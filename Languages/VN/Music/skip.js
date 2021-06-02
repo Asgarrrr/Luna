@@ -1,10 +1,10 @@
 module.exports = {
 
-    notInVoice  : "Vous devez être un channel vocal",
-    noConnected : "Il n'y a rien en cours de lecture",
-    busy        : "Luna est déjà occupée avec d'autres auditeurs, rejoignez-les",
-    wantSkip    : ( author ) => `${ author } veut sauter cette musique, accepter ?`,
-    majVoted    : "La majorité a voté, le titre a été passé",
-    majNotVoted : "Le titre n'a pas été passé",
+    notInVoice      : "You must be a voice channel",
+    noConnected     : "There is nothing playing",
+    busy            : "Luna is already busy with other listeners, join them",
+    wantSkip        : ( author ) => `${ author } want to skip this music, accept ?`,
+    majVoted        : "The majority voted, the track was passed",
+    majNotVoted     : "The track has not been passed"
 
 };

@@ -1,9 +1,9 @@
 module.exports = {
 
-    choose      : "Les langues disponibles sont le suivantes :",
-    howUse      : "Entrez le code de la langue que vous souhaitez utiliser",
-    timeEnd     : "Le temps est écoulé ...",
-    done        : "La langue a bien été modifiée",
-    new         : "Je vais maintenant parler en français"
+    choose      : "The available languages are the following",
+    howUse      : "Enter the language code you want to use",
+    timeEnd     : "The time is up, use the command again",
+    done        : "The language has been changed",
+    new         : "I will now speak in English"
 
 };

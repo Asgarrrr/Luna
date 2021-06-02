@@ -1,7 +1,7 @@
 module.exports = {
 
-    unchanged: "Votre phrase de profil n'a pas été changé",
-    ok       : "Votre phrase de profil à été changé ",
-    error    : "Une erreurs est survenue...",
+    unchanged: "Your profile phrase has not been changed",
+    ok       : "Your profile phrase has been changed",
+    error    : "An error has occurred...",
 
 };
