@@ -77,7 +77,6 @@ class Botinfos extends Command {
             .setLabel( this.language.refresh )
             .setID( "refresh" );
 
-
         // —— Button for github
         const github = new MessageButton()
             .setStyle( "url" )
@@ -116,7 +115,12 @@ class Botinfos extends Command {
             await msg.edit({ embed: embed(), component: actions });
             await b.defer();
 
-        }).on( "end", async ( ) => await msg.edit() );
+        }).on( "end", async ( ) => {
+
+            actions.components[0].setDisabled();
+            await msg.edit( { embed: embed(), component: actions } );
+
+        } );
 
     }
 
