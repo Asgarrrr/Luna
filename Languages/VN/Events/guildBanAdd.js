@@ -1,7 +1,7 @@
 module.exports = {
 
-    details     : ( banned ) => `<@${banned.target.id}> has been banned for the following reason(s):\n\n> ${banned.reason ? banned.reason : "No reason provided" }\nThe sentence was handed down by <@${banned.executor.id}>`,
-    missDetails : ( user   ) => `<@${user.id}> was banned, but I don't know why or by whom ...`,
-    error       : "A ban happened, but it seems that an error occurred"
+    details     : ( banned ) => `<@${banned.target.id}> đã bị cấm vì các lý do sau:\n\n> ${banned.reason ? banned.reason : "Không cung cấp lý do" }\nCâu nói được lưu truyền bởi <@${banned.executor.id}>`,
+    missDetails : ( user   ) => `<@${user.id}> đã bị cấm, nhưng tôi không biết tại sao hoặc bởi ai ...`,
+    error       : "Một lệnh cấm đã xảy ra, nhưng có vẻ như đã xảy ra lỗi"
 
 };

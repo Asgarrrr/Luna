@@ -1,11 +1,11 @@
 module.exports = {
 
-    invalidLimit    : "Please provide a numeric value for limit.",
-    invalidRange    : "The limit must be between 1 and 100.",
-    noMessage       : "It seems an error occurred in the messages fetching",
-    invalidTarget   : "The target is not valid.",
-    error           : ( size ) => `Unable to remove ${ size } messages.`,
-    deleted         : ( size, target ) => `${ size } message ${ ( target && `from ${ target === "me" ? "you" : target }`) || ""} has been removed`,
-    notDeleted      : "You cannot delete messages older than 14 days, also, you can delete messages from a user, role, or use keywords `me`, `bots`, `uploads` or `pins`"
+    invalidLimit    : "Vui lòng cung cấp giá trị số cho giới hạn.",
+    invalidRange    : "Giới hạn phải từ 1 đến 100.",
+    noMessage       : "Có vẻ như đã xảy ra lỗi khi tìm nạp thư",
+    invalidTarget   : "Mục tiêu không hợp lệ.",
+    error           : ( size ) => `Không thể loại bỏ ${ size } tin nhắn.`,
+    deleted         : ( size, target ) => `${ size } message ${ ( target && `từ ${ target === "đến" ? "bạn" : target }`) || ""} đã được xoá`,
+    notDeleted      : "Bạn không thể xóa tin nhắn cũ hơn 14 ngày, ngoài ra, bạn có thể xóa tin nhắn từ người dùng, vai trò hoặc sử dụng các từ khóa` tôi`, `bot`,` tải lên` hoặc `ghim`"
 
 };

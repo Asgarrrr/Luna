@@ -1,10 +1,10 @@
 module.exports = {
 
-    owner       : "Sorry, this command can only be used by the bot owners.",
-    server      : "Sorry, this command can only be used in a discord server.",
-    nsfw        : "Sorry, this command can only be ran in a NSFW marked channel.",
-    cooldown    : ( command, message ) => `Please wait ${( ( command.cmdCooldown.get( `${ message.guild ? message.guild.id : "mp" }-${ message.author.id }` ) - Date.now() ) / 1000 ).toFixed( 1 ) } second(s) to reuse the ${command.name} command.`,
-    args        : ( message ) => `You didn't provide any arguments, ${message.author} !`,
+    owner       : "Xin lỗi, chỉ chủ sở hữu bot mới có thể sử dụng lệnh này.",
+    server      : "Xin lỗi, lệnh này chỉ có thể được sử dụng trong máy chủ bất hòa.",
+    nsfw        : "Rất tiếc, lệnh này chỉ có thể chạy trong kênh được đánh dấu NSFW.",
+    cooldown    : ( command, message ) => `Vui lòng đợi ${( ( command.cmdCooldown.get( `${ message.guild ? message.guild.id : "mp" }-${ message.author.id }` ) - Date.now() ) / 1000 ).toFixed( 1 ) } second(s) to reuse the ${command.name} command.`,
+    args        : ( message ) => `Bạn không cung cấp bất kỳ đối số nào, ${message.author} !`,
     helpEmbed   : ( cmd, message ) => { return {
         title       : `${cmd.name.replace(/\b\w/g, (l) => l.toUpperCase())}`,
         description : `> *${cmd.description}*`,
@@ -13,14 +13,14 @@ module.exports = {
             value   :`\`\`\`${cmd.usage}\`\`\``,
         }, {
             name    : "Examples use",
-            value   :`\`\`\`${cmd.example && cmd.example.map( ( x ) => `${message.guild.prefix}${cmd.name} ${x}`).join( "\n" ) || "No examples provided"}\`\`\``,
+            value   :`\`\`\`${cmd.example && cmd.example.map( ( x ) => `${message.guild.prefix}${cmd.name} ${x}`).join( "\n" ) || "Không có ví dụ nào được cung cấp"}\`\`\``,
         }],
     }; },
-    "missPerm"  : "I do not have sufficient rights to execute this command.",
-    "youMiss"   : "You lack the required privileges to execute this command...",
+    "missPerm"  : "Tôi không có đủ quyền để thực hiện lệnh này.",
+    "youMiss"   : "Bạn thiếu các đặc quyền cần thiết để thực hiện lệnh này ...",
     lvlUp       : ( level, user ) => [
-        `Well done <@${ user._ID }>, you are now level ${ level }`,
-        `Incredible progress, <@${ user._ID }>, you just passed level ${ level }`
+        `Làm tốt <@${ user._ID }>, bạn bây giờ là cấp ${ level }`,
+        `Tiến bộ đáng kinh ngạc, <@${ user._ID }>, bạn vừa vượt qua cấp độ ${ level }`
     ][ ~~Math.random() * 2 ]
 
 };

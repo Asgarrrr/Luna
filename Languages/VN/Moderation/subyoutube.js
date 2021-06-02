@@ -1,8 +1,8 @@
 module.exports = {
 
-    invalid     : "This url does not seem to be a valid channel url !",
-    done        : "Subscription done",
-    information : ( name ) => `Once ${ name } publishes new videos, they will be sent to you here !`,
-    error       : "An error has occurred",
+    invalid     : "Url này có vẻ không phải là url kênh hợp lệ!",
+    done        : "Đăng ký xong",
+    information : ( name ) => `Once ${ name } xuất bản video mới, chúng sẽ được gửi cho bạn ở đây!`,
+    error       : "Một lỗi đã xảy ra",
 
 };

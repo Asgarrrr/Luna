@@ -1,8 +1,8 @@
 module.exports = {
 
-    noUserInformation   : "Unable to retrieve user information",
-    thisIs              : "**This is",
-    userIsAuthor        : ( user ) => `your avatar, <@${user.id}>**`,
-    userAvatar          : ( user ) => `the profile picture of <@${user.id}>**`,
+    noUserInformation   : "Không thể truy xuất thông tin người dùng",
+    thisIs              : "**Đây nè!",
+    userIsAuthor        : ( user ) => `Hình đại diện của bạn, <@${user.id}>**`,
+    userAvatar          : ( user ) => `ảnh hồ sơ của <@${user.id}>**`,
 
 };

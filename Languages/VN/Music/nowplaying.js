@@ -1,10 +1,10 @@
 module.exports = {
 
-    notInVoice  : "You must be a voice channel",
-    noConnected : "There is nothing playing",
-    busy        : "Luna is already busy with other listeners, join them",
-    nowPlaying  : "Now playing...",
-    nothing     : "There is nothing playing",
-    nextTracks  : "Next tracks",
+    notInVoice  : "Bạn phải là một kênh thoại",
+    noConnected : "Không có gì đang phát",
+    busy        : "Shark đã bận với những thính giả khác, hãy tham gia cùng họ",
+    nowPlaying  : "Đang chơi ...",
+    nothing     : "Không có gì đang phát",
+    nextTracks  : "Bản nhạc tiếp theo",
 
 };

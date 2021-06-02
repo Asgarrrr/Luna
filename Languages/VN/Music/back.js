@@ -1,11 +1,11 @@
 module.exports = {
 
-    notInVoice      : "You must be a voice channel",
-    noConnected     : "There is nothing playing",
-    busy            : "Luna is already busy with other listeners, join them",
-    nothingBack     : "There is nothing before",
-    wantSkip        : ( author ) => `${ author } wants to go back to the previous track ?`,
-    majVoted        : "The majority voted, the previous track will be played again",
-    majNotVoted     : "The previous track will not be replayed"
+    notInVoice      : "Bạn phải là một kênh thoại",
+    noConnected     : "Không có gì đang phát",
+    busy            : "Shark đã bận với những thính giả khác, hãy tham gia cùng họ",
+    nothingBack     : "Không có gì trước đây",
+    wantSkip        : (author) => `${author} muốn quay lại bài hát trước?`,
+    majVoted        : "Đa số đã bình chọn, bài hát trước đó sẽ được phát lại",
+    majNotVoted     : "Bản nhạc trước đó sẽ không được phát lại"
 
 };

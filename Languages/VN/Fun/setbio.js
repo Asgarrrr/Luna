@@ -1,7 +1,7 @@
 module.exports = {
 
-    unchanged: "Your profile phrase has not been changed",
-    ok       : "Your profile phrase has been changed",
-    error    : "An error has occurred...",
+    unchanged: "Cụm từ tiểu sử của bạn chưa được thay đổi",
+    ok       : "Cụm từ tiểu sử của bạn đã được thay đổi",
+    error    : "Một lỗi đã xảy ra...",
 
 };

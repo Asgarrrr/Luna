@@ -1,9 +1,9 @@
 module.exports = {
 
-    alreadyUse  : "You already use this prefix",
-    changed     : "The prefix has been changed",
-    newPrefix   : ( prefix ) => `You can now use \`${prefix}\` to run commands`,
-    notModified : "The prefix has not been modified",
-    error       : "It seems that an error occurred ..."
-
+    alreadyUse  : "Bạn đã sử dụng prefix tố này",
+    changed     : "Bạn đã sử dụng prefix này",
+    newPrefix   : ( prefix ) => `Bây giờ bạn có thể sử dụng \`${prefix}\` để chạy lệnh`,
+    notModified : "Prefix chưa được sửa đổi",
+    error       : "Có vẻ như đã xảy ra lỗi..."
+    
 };

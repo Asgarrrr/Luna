@@ -1,3 +1,3 @@
 module.exports = {
-    newVideo    :   ( author ) => `New video from ${ author } !`
+    newVideo    :   ( author ) => `Video mới từ ${ author } !`
 };

@@ -1,15 +1,15 @@
 module.exports = {
 
-    enabled         : "Automatic role assignment has been enabled!",
-    notEnabled      : "Automatic role assignment is however disabled",
-    currentRoles    : ( currentRoles ) => `Roles ${ currentRoles.map( ( x ) => `<@&${x}>` ).join( ", ") } will be automatically assigned to newcomers.`,
-    disabled        : "Automatic role assignment has been disabled!",
-    cantAdd         : ( roles ) => `Roles ${ roles.join( ", " ) } cannot be added. Their privileges are above mine, I can't give them`,
-    noRole          : "You must specify one or more roles to add / remove",
-    noChanges       : ( operation ) => `No change, automatic assignment was already ${ operation ? "enabled" : "disabled" } `,
-    nothingToAdd    : "There are no roles to add",
-    error           : "Impossible to do this, an error has occurred ...",
-    missPerms       : "The following roles cannot be added",
-    assigned        : ( length ) => length ? "The defined roles are" : "There is no role to assign ;(",
+    enabled         : "Chỉ định vai trò tự động đã được bật!",
+    notEnabled      : "Tuy nhiên, chỉ định vai trò tự động bị vô hiệu hóa",
+    currentRoles    : ( currentRoles ) => `Roles ${ currentRoles.map( ( x ) => `<@&${x}>` ).join( ", ") } sẽ tự động được chỉ định cho những người mới đến.`,
+    disabled        : "Chỉ định vai trò tự động đã bị tắt!",
+    cantAdd         : ( roles ) => `Roles ${ roles.join( ", " ) } không thể được thêm vào. Đặc quyền của họ là trên của tôi, tôi không thể cho họ `,
+    noRole          : "Bạn phải chỉ định một hoặc nhiều vai trò để thêm / bớt",
+    noChanges       : ( operation ) => `Không có thay đổi, chỉ định tự động đã được ${ operation ? "enabled" : "disabled" } `,
+    nothingToAdd    : "Không có vai trò nào để thêm",
+    error           : "Không thể làm được điều này, đã xảy ra lỗi ...",
+    missPerms       : "Không thể thêm các vai trò sau",
+    assigned        : ( length ) => length ? "Các vai trò được xác định là": "Không có vai trò nào để chỉ định; (",
 
 };

@@ -1,10 +1,10 @@
 module.exports = {
 
-    notInVoice      : "You must be a voice channel",
-    noConnected     : "There is nothing playing",
-    busy            : "Luna is already busy with other listeners, join them",
-    wantSkip        : ( author ) => `${ author } want to skip this music, accept ?`,
-    majVoted        : "The majority voted, the track was passed",
-    majNotVoted     : "The track has not been passed"
+    notInVoice      : "Bạn phải là một kênh thoại",
+    noConnected     : "Không có gì chơi",
+    busy            : "Shark đã bận rộn với những thính giả khác, hãy tham gia cùng họ",
+    wantSkip        : ( author ) => `${ author } muốn bỏ qua bản nhạc này, chấp nhận?`,
+    majVoted        : "Đa số bình chọn, ca khúc đã được thông qua",
+    majNotVoted     : "Đường đua chưa được vượt qua"
 
 };

@@ -1,15 +1,15 @@
 module.exports = {
 
-    ping        : "Sending the ball ...",
-    latency     : "Latency",
-    components  : "Services",
-    servers     : "Servers status",
-    events      : "Events",
+    ping        : "Đang tải dữ liệu",
+    latency     : "Độ trễ",
+    components  : "Dịch vụ",
+    servers     : "Trạng thái máy chủ",
+    events      : "Sự kiện",
     state       : ( code ) => ({
-        "none"      : "All Systems Operational.",
-        "minor"     : "Partial System Outage.",
-        "major"     : "Major Service Outage.",
-        "critical"  : "It's the shit"
+        "none"      : "Tất cả Hệ thống Hoạt động.",
+        "minor"     : "Hệ thống ngừng hoạt động một phần.",
+        "major"     : "Ngừng dịch vụ lớn.",
+        "critical"  : "Đó là cái chết tiệt"
     })[ code ]
 
 };

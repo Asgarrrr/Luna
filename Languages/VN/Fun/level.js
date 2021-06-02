@@ -1,13 +1,11 @@
 module.exports = {
 
-    notFound    : "No user found",
-    noOperator  : "You must provide an operator. `+`, `-`, `*`, `/` or `=`",
-    noQuantity  : "You must enter a valid amount",
-    noChange    : "No change has been made",
-    updated     : "Levels have been updated",
-    updatedData : ( updated, target ) => `The levels of ${ updated > 1 ? `${ updated } members` : `<@${ target[0]._ID }>` } have been updated`,
-    error       : "An error has occurred",
-
-
+    notFound    : "Không tìm thấy người dùng",
+    noOperator  : "Bạn phải cung cấp một nhà điều hành. `+`, `-`, `*`, `/` hoặc `=`",
+    noQuantity  : "Bạn phải nhập một số tiền hợp lệ ",
+    noChange    : "Không có thay đổi nào được thực hiện ",
+    updated     : "Các cấp độ đã được cập nhật",
+    updatedData : ( updated, target ) => `Các cấp độ của ${ updated > 1 ? `${ updated } các thành viên` : `<@${ target[0]._ID }>` } đã được cập nhật`,
+    error       : "một lỗi đã xảy ra",
 
 };
