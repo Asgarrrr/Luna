@@ -5,5 +5,5 @@ module.exports = {
     timeEnd     : "Hết giờ, sử dụng lại lệnh",
     done        : "Ngôn ngữ đã được thay đổi",
     new         : "Bây giờ tôi sẽ nói bằng tiếng Việt"
-    
+
 };

@@ -11,6 +11,29 @@ const Command               = require( "../../../Structures/Command" )
 // —— FileSystem
     , fs                    = require( "fs" );
 
+/* —— | ———————————————————————————————————————————————————————————————————————
+    Loading fonts - Why these specifically? I don't know, the host on which
+    I host Luna doesn't have a default font, for the nicknames with special characters,
+    I had to use these ones, depending on the problems I encountered */
+
+    const DMSBoldPath  = "./Assets/Fonts/DMSans-Bold.ttf"
+        , DMSReguPath  = "./Assets/Fonts/DMSans-Regular.ttf"
+        , STIXGeneral  = "./Assets/Fonts/STIXGeneral.ttf"
+        , AppleSymbol  = "./Assets/Fonts/AppleSymbol.ttf"
+        , Arial        = "./Assets/Fonts/Arial.ttf"
+        , ArialUnicode = "./Assets/Fonts/ArialUnicode.ttf";
+
+    // —— Import the fonts to use
+    fs.existsSync( DMSBoldPath  ) && Canvas.registerFont( DMSBoldPath , { family: "DM Sans", weight: "bold" } );
+    fs.existsSync( DMSReguPath  ) && Canvas.registerFont( DMSReguPath , { family: "DM Sans", weight: "regular" } );
+    fs.existsSync( STIXGeneral  ) && Canvas.registerFont( STIXGeneral , { family: "STIXGeneral" } );
+    fs.existsSync( AppleSymbol  ) && Canvas.registerFont( AppleSymbol , { family: "AppleSymbol" } );
+    fs.existsSync( Arial        ) && Canvas.registerFont( Arial       , { family: "Arial" } );
+    fs.existsSync( ArialUnicode ) && Canvas.registerFont( ArialUnicode, { family: "ArielUnicode" } );
+
+    const Fonts = "'DM Sans', STIXGeneral, AppleSymbol, Arial, ArialUnicode"
+
+
 // ██████ | ███████████████████████████████████████████████████████████████████
 
 // —— Create & export a class for the command that extends the base command
@@ -95,13 +118,6 @@ class Rank extends Command {
         // —— Save the canvas context
         ctx.save();
 
-        const DMSBoldPath = "./Assets/DMSans/DMSans-Bold.ttf"
-            , DMSReguPath = "./Assets/DMSans/DMSans-Regular.ttf";
-
-        // —— Import the fonts to use
-        fs.existsSync( DMSBoldPath ) && Canvas.registerFont( DMSBoldPath, { family: "DM Sans", weight: "bold"     } );
-        fs.existsSync( DMSReguPath ) && Canvas.registerFont( DMSReguPath, { family: "DM Sans", weight: "regular"  } );
-
         if ( !fs.existsSync( "./Assets/rankCards/base.png" ) ) {
 
             console.log( "The base image is missing, check that the path is present, otherwise, refer to the Github" );
@@ -153,7 +169,7 @@ class Rank extends Command {
         let currWidth = 0;
 
         // —— Print username
-        ctx.font = "bold 57px 'DM Sans'";
+        ctx.font = `bold 57px ${Fonts}`;
         ctx.fillStyle = "#ffffff";
 
         let fontSize = 57;
@@ -162,7 +178,7 @@ class Rank extends Command {
 
         // —— Recalculate the font size so that the text does not exceed max size
         while ( ctx.measureText( name ).width > 700 )
-            ctx.font = `bold ${ fontSize-- }px 'DM Sans'`;
+            ctx.font = `bold ${ fontSize-- }px ${Fonts}`;
 
         for ( const character of name ) {
 
@@ -187,17 +203,17 @@ class Rank extends Command {
 
         // —— Print rank
         ctx.fillStyle = "#593EEF";
-        ctx.font = "bold 57px 'DM Sans'";
+        ctx.font = `bold 57px ${Fonts}`;
         ctx.fillText( rank, 1369 - ctx.measureText( rank ).width , 92 + 57 );
 
         ctx.fillStyle = "#ffffff";
-        ctx.font = "bold 38px 'DM Sans'";
+        ctx.font = `bold 38px ${Fonts}`;
 
         ctx.globalAlpha = 0.2;
         ctx.fillText( "Rank" , 1345 - ctx.measureText( rank ).width - ctx.measureText( "Rank" ).width , 92 + 57 );
         ctx.globalAlpha = 1;
 
-        ctx.font = "regular 31px 'DM Sans'";
+        ctx.font = `regular 31px ${Fonts}`;
 
         let bio = user.bio;
 
@@ -272,11 +288,11 @@ class Rank extends Command {
         ctx.roundRect( 482, 349, 907, 59, { upperLeft: 32.5, upperRight: 32.5, lowerLeft: 32.5, lowerRight: 32.5 }, false, true );
         ctx.roundRect( 482, 349, 907 * ( 0.1 * Math.sqrt( user.experience ) - user.level ) , 59, { upperLeft: 32.5, upperRight: 32.5, lowerLeft: 32.5, lowerRight: 32.5 }, true, false );
 
-        ctx.font = "regular 38px 'DM Sans'";
+        ctx.font = `regular 38px ${Fonts}`;
         ctx.fillStyle = "#ffffff";
         ctx.fillText( `Lvl. ${ user.level }`, 505, 355 + 36 );
 
-        ctx.font = "regular 31px 'DM Sans'";
+        ctx.font = `regular 31px ${Fonts}`;
 
         const progression = ` ${user.experience} / ${Math.pow( ( user.level + 1 ) / 0.1, 2 )}`;
 

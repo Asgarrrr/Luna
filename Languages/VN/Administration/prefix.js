@@ -5,5 +5,5 @@ module.exports = {
     newPrefix   : ( prefix ) => `Bây giờ bạn có thể sử dụng \`${prefix}\` để chạy lệnh`,
     notModified : "Prefix chưa được sửa đổi",
     error       : "Có vẻ như đã xảy ra lỗi..."
-    
+
 };

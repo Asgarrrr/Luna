@@ -1,9 +1,10 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Import base command
-const Command           = require( "../../Structures/Command" )
-// —— A fast and easy API to create a buttons in discord using discord.js
-    , { MessageButton } = require( "discord-buttons" );
+const Command             = require( "../../Structures/Command" )
+// ——  A fast and easy API to create a buttons in discord using discord.js
+    , { MessageButton,
+        MessageActionRow} = require( "discord-buttons" );
 
 // ██████ | ███████████████████████████████████████████████████████████████████
 
@@ -13,6 +14,7 @@ class Queue extends Command {
 	constructor( client ) {
 		super( client, {
 			name        : "queue",
+            aliases     : ["q"],
 			description : "Indicates the content of the queue",
 			usage       : "queue",
 			args        : false,
@@ -76,42 +78,46 @@ class Queue extends Command {
 
         });
 
-        const buttons = [ "⬆️", "⬇️", "🔍" ].map( ( i ) => new MessageButton().setLabel( "" ).setID( i ).setStyle( "gray" ).setEmoji( i ) );
+        const buttons = [ "⬆️", "⬇️", "🔍" ].map( ( i ) => new MessageButton().setLabel( "" ).setID( i ).setStyle( "gray" ).setEmoji( i ) )
+            , actions = new MessageActionRow().addComponents( buttons );
+
+        console.log(actions);
+
 
         const position = () => {
-            buttons[0].disabled = counter === 0 ? true : false;
-            buttons[1].disabled = counter === Object.keys( pages ).length - 1 ?  true : false;
+            actions.components[0].disabled = counter === 0 ? true : false;
+            actions.components[1].disabled = counter === Object.keys( pages ).length - 1 ?  true : false;
         };
 
         position();
 
-        const pagination = await super.respond( { embed : pages[0], buttons } );
+        const pagination = await super.respond( { embed : pages[0], component: actions } );
 
         pagination.createButtonCollector(
-            () => true , { time: 100 }
+            () => true , { time: 300000 }
         ).on( "collect", async ( b ) => {
 
             if ( b.id === "🔍" ) {
 
                 const demand = await super.respond( this.language.page );
 
-                buttons[2].disabled = true;
+                actions.components[2].disabled = true;
 
                 message.channel.createMessageCollector(
                     ( m ) => m.author.id === b.clicker.user.id && parseInt( m.content ) > 0 && parseInt( m.content ) < Object.keys( pages ).length + 1,
-                    { time: 15000, max: 1, errors: [ "time" ] },
+                    { time: 120000, max: 1, errors: [ "time" ] },
                 ).on( "collect", async ( m ) => {
 
                     await m.delete();
                     counter = ( parseInt( m.content ) - 1 );
                     position();
-                    await pagination.edit( { embed : pages[ counter ], buttons } );
+                    await pagination.edit( { embed : pages[ counter ], component: actions } );
 
                 }).on( "end", () => {
 
                     demand.delete().catch( ( err ) => err );
-                    buttons[2].disabled = false;
-                    pagination.edit( { embed : pages[ counter ], buttons } );
+                    actions.components[2].disabled = false;
+                    pagination.edit( { embed : pages[ counter ], component: actions } );
 
                 });
 
@@ -125,7 +131,7 @@ class Queue extends Command {
 
             position();
 
-            await pagination.edit( { embed : pages[ counter ], buttons } );
+            await pagination.edit( { embed : pages[ counter ], component: actions } );
             // —— Confirms the interaction
             await b.defer();
 
@@ -134,7 +140,7 @@ class Queue extends Command {
             // —— Disable all buttons
             buttons.map( ( b ) => b.disabled = true );
 
-            pagination.edit( { embed : pages[ counter ], buttons } );
+            pagination.edit( { embed : pages[ counter ], component: actions } );
 
         });
 

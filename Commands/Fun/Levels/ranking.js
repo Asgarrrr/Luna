@@ -11,6 +11,31 @@ const Command               = require( "../../../Structures/Command" )
 // —— FileSystem
     , fs                    = require( "fs" );
 
+/* —— | ———————————————————————————————————————————————————————————————————————
+    Loading fonts - Why these specifically? I don't know, the host on which
+    I host Luna doesn't have a default font, for the nicknames with special characters,
+    I had to use these ones, depending on the problems I encountered */
+
+    const DMSBoldPath  = "./Assets/Fonts/DMSans-Bold.ttf"
+        , DMSReguPath  = "./Assets/Fonts/DMSans-Regular.ttf"
+        , STIXGeneral  = "./Assets/Fonts/STIXGeneral.ttf"
+        , AppleSymbol  = "./Assets/Fonts/AppleSymbol.ttf"
+        , Arial        = "./Assets/Fonts/Arial.ttf"
+        , ArialUnicode = "./Assets/Fonts/ArialUnicode.ttf";
+
+    // —— Import the fonts to use
+    fs.existsSync( DMSBoldPath  ) && Canvas.registerFont( DMSBoldPath , { family: "DM Sans", weight: "bold" } );
+    fs.existsSync( DMSReguPath  ) && Canvas.registerFont( DMSReguPath , { family: "DM Sans", weight: "regular" } );
+    fs.existsSync( STIXGeneral  ) && Canvas.registerFont( STIXGeneral , { family: "STIXGeneral" } );
+    fs.existsSync( AppleSymbol  ) && Canvas.registerFont( AppleSymbol , { family: "AppleSymbol" } );
+    fs.existsSync( Arial        ) && Canvas.registerFont( Arial       , { family: "Arial" } );
+    fs.existsSync( ArialUnicode ) && Canvas.registerFont( ArialUnicode, { family: "ArielUnicode" } );
+
+    const Fonts = "'DM Sans', STIXGeneral, AppleSymbol, Arial, ArialUnicode"
+
+
+// ██████ | ███████████████████████████████████████████████████████████████████
+
 // ██████ | ███████████████████████████████████████████████████████████████████
 
 // —— Create & export a class for the command that extends the base command
@@ -72,13 +97,6 @@ class Ranking extends Command {
             fill    && this.fill();
         };
 
-        const DMSBoldPath = "./Assets/DMSans/DMSans-Bold.ttf"
-            , DMSReguPath = "./Assets/DMSans/DMSans-Regular.ttf";
-
-        // —— Import the fonts to use
-        fs.existsSync( DMSBoldPath ) && Canvas.registerFont( DMSBoldPath, { family: "DM Sans", weight: "bold"     } );
-        fs.existsSync( DMSReguPath ) && Canvas.registerFont( DMSReguPath, { family: "DM Sans", weight: "regular"  } );
-
         // —— Drawing of the main rect
         ctx.fillStyle = "#202225";
         ctx.beginPath();
@@ -120,11 +138,11 @@ class Ranking extends Command {
         const trophy = await Canvas.loadImage( "./Assets/trophy.svg" );
         ctx.drawImage( trophy, 102, 134, 203 , 203 );
 
-        ctx.font = "bold 80px 'DM Sans'";
+        ctx.font = `bold 80px ${Fonts}`;
         ctx.fillStyle = "#ffffff";
         ctx.fillText( message.guild.name, 368, 238 );
 
-        ctx.font = "regular 54px 'DM Sans'";
+        ctx.font = `regular 54px ${Fonts}`;
         ctx.fillStyle = "#838485";
         ctx.fillText( "LEADERBOARD", 368, 312 );
 
@@ -175,14 +193,14 @@ class Ranking extends Command {
                 _guildID    : message.guild.id
             });
 
-            ctx.font = "bold 50px 'DM Sans'";
+            ctx.font = `bold 50px ${Fonts}`;
             ctx.fillStyle = "#ffffff";
 
             let fontSize = 50;
 
             // —— Recalculate the font size so that the text does not exceed max size
             while ( ctx.measureText( userData.nickname || userData.user.username ).width > 830 )
-                ctx.font = `bold ${ fontSize-- }px 'DM Sans'`;
+                ctx.font = `bold ${ fontSize-- }px ${Fonts}`;
 
             let currWidth = 0;
 
@@ -210,11 +228,11 @@ class Ranking extends Command {
 
             }
 
-            ctx.font = "bold 35px 'DM Sans'";
+            ctx.font = `bold 35px ${Fonts}`;
             ctx.fillStyle = "#808080";
             ctx.fillText( `Level ${ String( member.level ).padEnd( 6, " ") }${ nbr } messages`  , 313, init + 130 );
 
-            ctx.font = "bold 80px 'DM Sans'";
+            ctx.font = `bold 80px ${Fonts}`;
             ctx.fillStyle = "#6446F2";
             ctx.fillText( ranking.indexOf( member ) + 1, 1219 - ctx.measureText( ranking.indexOf( member ) + 1 ).width , init + 120 );
 
