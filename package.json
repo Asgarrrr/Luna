@@ -4,7 +4,8 @@
     "description": "An adorable Discord.js bot. Free, Open Source and Cross Platform.",
     "main": "Luna.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "start": "node Luna.js",
+        "watch": "nodemon Luna.js"
     },
     "repository": {
         "type": "git",
@@ -40,9 +41,13 @@
         "libsodium-wrappers": "^0.7.9",
         "mongoose": "^5.12.12",
         "node-fetch": "^2.6.1",
+        "node-gyp": "^8.1.0",
+        "os-utils": "0.0.14",
+        "rebuild": "^0.1.2",
         "rss-parser": "^3.12.0",
         "soundcloud-downloader": "^1.0.0",
         "spotify-url-info": "^2.2.3",
+        "twemoji-parser": "^13.1.0",
         "utf-8-validate": "^5.0.5",
         "ytdl-core": "^4.8.2",
         "ytdl-core-discord": "^1.3.0",

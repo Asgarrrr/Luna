@@ -4,5 +4,6 @@ module.exports = {
     howUse      : "Nhập mã ngôn ngữ bạn muốn sử dụng",
     timeEnd     : "Hết giờ, sử dụng lại lệnh",
     done        : "Ngôn ngữ đã được thay đổi",
-    new         : "Bây giờ tôi sẽ nói bằng tiếng Anh"
+    new         : "Bây giờ tôi sẽ nói bằng tiếng Việt"
+
 };

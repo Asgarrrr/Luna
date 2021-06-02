@@ -1,5 +1,7 @@
 module.exports = {
-    name    : "Vietnamese",
+
+    name    : "Tiếng Việt",
     ISO     : "VN",
-    flag    : "🇻🇳",
+    flag    : "🇻🇳"
+
 };

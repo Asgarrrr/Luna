@@ -1,7 +1,7 @@
 module.exports = {
 
     notInVoice  : "Bạn cần phải là một kênh thoại.",
-    busy        : "Shark đã bận rộn với những thính giả khác, hãy tham gia cùng cô ấy!",
+    busy        : "LUNA đã bận rộn với những thính giả khác, hãy tham gia cùng cô ấy!",
     cantJoin    : "Không thể tham gia kênh thoại.",
     notFound    : "Không tìm thấy phần tử này.",
     cantPlay    : "Không thể phát bản nhạc này",
