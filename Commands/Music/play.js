@@ -81,7 +81,12 @@ class Play extends Command {
                 ? this.spotifyPlaylist()
                 : this.spotify() );
 
-        } else await this.search();
+        } else {
+
+            if ( await this.search() === "exit" )
+                return;
+
+        }
 
         if ( !this.player._embed )
             await this.embedPlayer( );
@@ -450,7 +455,7 @@ class Play extends Command {
                 let selected = collected.first().content;
 
                 if ( selected === "exit" )
-                    return select.delete().catch( ( err ) => err );
+                    return select.delete().catch( ( err ) => err ) && "exit";
 
                 selected = items[parseInt( selected, 10 ) - 1];
 
@@ -694,7 +699,7 @@ class Play extends Command {
 
             }).on( "end", ( collected ) => {
 
-                this.player._embedMsg.delete().catch( ( err ) => err );
+                this.player._embedMsg && this.player._embedMsg.delete().catch( ( err ) => err );
                 this.player._embedMsg = null;
                 this.player._embed    = null;
 
