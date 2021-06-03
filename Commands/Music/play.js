@@ -1,20 +1,21 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Import base command
-const Command           = require( "../../Structures/Command" );
+const Command              = require( "../../Structures/Command" );
 // —— A ytdl-core wrapper focused on efficiency for use in Discord music bots
-const ytdl              = require( "ytdl-core-discord" )
+const ytdl                 = require( "ytdl-core-discord" )
 // —— Simple js only package to resolve YouTube Playlists
-    , ytpl              = require( "ytpl" )
+    , ytpl                 = require( "ytpl" )
 // —— Simple js only package to search for Youtube for Videos, Playlists and many more
-    , ytsr              = require( "ytsr" )
+    , ytsr                 = require( "ytsr" )
 // —— Download Soundcloud tracks with Node.js
-    , scdl              = require( "soundcloud-downloader" ).default
+    , scdl                 = require( "soundcloud-downloader" ).default
 // —— Get metadata for a spotify url without spotify API access
     , { getPreview,
-        getTracks }     = require( "spotify-url-info" )
+        getTracks }        = require( "spotify-url-info" )
 // —— A fast and easy API to create a buttons in discord using discord.js
-    , { MessageButton } = require( "discord-buttons" );
+    , { MessageButton,
+        MessageActionRow } = require( "discord-buttons" );
 
 // ██████ | ███████████████████████████████████████████████████████████████████
 
@@ -638,21 +639,22 @@ class Play extends Command {
         });
     }
 
-    async embedPlayer( ) {
+    async embedPlayer( recreate ) {
 
-        if ( !this.player._embed ) {
+        if ( recreate || !this.player._embed && !this.player._embedMsg ) {
 
             // —— Create interaction buttons
-            const emoji = [ "⏮️", "⏹️", "⏯️", "⏭️", "🔁" ];
-            const buttons = emoji.map( ( e ) => new MessageButton().setStyle( "gray" ).setLabel(" ").setID( e ).setEmoji( e ) );
+            const emoji = [ "⏮️", "⏹️", "⏯️", "⏭️", "🔁" ]
+                , buttons = emoji.map( ( e ) => new MessageButton().setStyle( "gray" ).setLabel(" ").setID( e ).setEmoji( e ) )
+                , actions = new MessageActionRow().addComponents( buttons );
 
             // —— Since the media is playing, the emoji should be the one to pause
-            buttons[2].setEmoji("⏸️");
-            buttons[4]
+            actions.components[2].setEmoji("⏸️");
+            actions.components[4]
                 .setEmoji( this.player._loop ? "🔁" : "🔂" )
                 .setStyle( this.player._loop ? "blurple" : "gray" );
 
-            this.player._embed = {
+            this.player._embed = () => ({
                 author      : {
                     name : this.language.now,
                 },
@@ -665,9 +667,9 @@ class Play extends Command {
                 footer      : {
                     text : this.player._loop ? this.language.loop : ""
                 }
-            };
+            });
 
-            this.player._embedMsg = await super.respond({ embed: this.player._embed , buttons });
+            this.player._embedMsg = await this.message.channel.send({ embed: this.player._embed() , component: actions });
 
             this.player._embedMsg.createButtonCollector(
                 ( button ) => {
@@ -689,12 +691,6 @@ class Play extends Command {
                 // —— Run the command
                 command.run( this.message );
 
-                buttons[2].setEmoji( this.player._isPlaying ? "⏸️" : "▶️" );
-                buttons[4]
-                    .setEmoji( this.player._loop ? "🔁" : "🔂" )
-                    .setStyle( this.player._loop ? "blurple" : "gray" );
-
-                await this.player._embedMsg.edit({ buttons });
                 await button.defer();
 
             }).on( "end", ( collected ) => {
@@ -707,20 +703,11 @@ class Play extends Command {
 
         } else {
 
-            this.player._embedMsg.edit( { embed: {
-                author      : {
-                    name : this.language.now,
-                },
-                title       : this.player._queue[0].title,
-                url         : this.player._queue[0].url,
-                description : `[${this.player._queue[0].author.name}](${this.player._queue[0].author.url})`,
-                thumbnail   : {
-                    url : this.player._queue[0].thumb,
-                },
-                footer      : {
-                    text : this.player._loop ? this.language.loop : ""
-                }
-            }});
+            try {
+                await this.player._embedMsg.edit( { embed: this.player._embed(), component: this.player._embedMsg.components[0] });
+            } catch (error) {
+                this.embedPlayer( true );
+            }
 
         }
 
