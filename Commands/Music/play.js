@@ -40,8 +40,8 @@ class Play extends Command {
 
     async run( message, [ ...source ] ) {
 
-        this.query  = source.join( " " );
-        this.player = message.guild.player;
+        const query  = source.join( " " )
+            , player = message.guild.player;
 
         // —— Check if the user is connected to a voice channel
         if ( !message.member.voice.channel )
@@ -49,7 +49,7 @@ class Play extends Command {
 
         // —— Checks if Luna and the user are in the same channel
         if (
-            this.player._connection
+            player._connection
             && message.guild.me.voice.channel
             && !message.guild.me.voice.channel.members.has( message.author.id )
             && message.guild.me.voice.channel.members.size > 1
@@ -58,57 +58,59 @@ class Play extends Command {
 
         // —— Connecting to a voice channel
         try {
-            this.player._connection = await message.member.voice.channel.join();
+            player._connection = await message.member.voice.channel.join();
         } catch ( error ) {
             return super.respond( this.language.cantJoin );
         }
 
         // —— If the url matches that of YouTube ...
-        if ( this.query.match( /^(http|https)?(:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/?(?:|embed\/|v\/|playlist\?|watch\?v=|watch\?.+(?:&|&#38;);v=)/ ) ) {
+        if ( query.match( /^(http|https)?(:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/?(?:|embed\/|v\/|playlist\?|watch\?v=|watch\?.+(?:&|&#38;);v=)/ ) ) {
 
-            await ( this.query.includes( "list=" )
-                ? this.youtubePlaylist()
-                : this.youtube() );
+            await ( query.includes( "list=" )
+                ? this.youtubePlaylist( message, query )
+                : this.youtube( message, query ) );
 
-        } else if ( this.query.match( /^(http|https)?:\/\/(soundcloud\.com|snd\.sc)\/(.*)\// ) ) {
+        } else if ( query.match( /^(http|https)?:\/\/(soundcloud\.com|snd\.sc)\/(.*)\// ) ) {
 
-            await ( this.query.includes( "/sets/" )
-                ? this.soundCloudPlaylist()
-                : this.soundCloud() );
+            await ( query.includes( "/sets/" )
+                ? this.soundCloudPlaylist( message, query )
+                : this.soundCloud( message, query ) );
 
-        } else if ( this.query.match( /^(?:spotify:|(?:https?:\/\/(?:open|play)\.spotify\.com\/))(?:embed)?\/?(album|track|playlist)(?::|\/)((?:[0-9a-zA-Z]){22})/ ) ) {
+        } else if ( query.match( /^(?:spotify:|(?:https?:\/\/(?:open|play)\.spotify\.com\/))(?:embed)?\/?(album|track|playlist)(?::|\/)((?:[0-9a-zA-Z]){22})/ ) ) {
 
-            await ( !this.query.includes( "track" )
-                ? this.spotifyPlaylist()
-                : this.spotify() );
+            await ( !query.includes( "track" )
+                ? this.spotifyPlaylist( message, query )
+                : this.spotify( message, query ) );
 
         } else {
 
-            if ( await this.search() === "exit" )
+            if ( await this.search( message, query ) === "exit" )
                 return;
 
         }
 
-        if ( !this.player._embed )
-            await this.embedPlayer( );
+        if ( !player._embed )
+            await this.embedPlayer( message );
 
         // —— If a dispatcher has not been created and an element is available in the queue, create it
-        if ( !this.player._dispatcher && this.player._queue.length > 0 )
-            await this.play();
+        if ( !player._dispatcher && player._queue.length > 0 )
+            await this.play( message );
 
     }
 
-    async youtube( ) {
+    async youtube( message, query ) {
+
+        const player = message.guild.player;
 
         try {
 
             // —— Get metainfo from a video
-            const { videoDetails } = await ytdl.getBasicInfo( this.query );
+            const { videoDetails } = await ytdl.getBasicInfo( query );
 
             if ( !videoDetails )
                 return super.respond( this.language.notFound );
 
-            this.player._queue.push({
+            player._queue.push({
                 id      : videoDetails.videoId,
                 length  : !isNaN( videoDetails.lengthSeconds ) && parseInt( videoDetails.lengthSeconds, 10 ),
                 title   : videoDetails.title,
@@ -120,8 +122,6 @@ class Play extends Command {
                 live    : videoDetails.isLive || videoDetails.isLiveContent,
                 thumb   : videoDetails.thumbnails[0].url,
                 source  : "youtube",
-                // —— Only related to Youtube
-                //media   :
             });
 
             super.respond( { embed : {
@@ -130,7 +130,7 @@ class Play extends Command {
                     url     : videoDetails.author.channel_url,
                 },
                 title       : videoDetails.title,
-                description : this.language.embedDesc( this.message, this.client.utils.formatTime( videoDetails.lengthSeconds ) ),
+                description : this.language.embedDesc( message, this.client.utils.formatTime( videoDetails.lengthSeconds ) ),
                 url         : videoDetails.video_url,
                 color       : "0x7354f6",
             }} );
@@ -143,10 +143,12 @@ class Play extends Command {
 
     }
 
-    async youtubePlaylist( ) {
+    async youtubePlaylist( message, query ) {
+
+        const player = message.guild.player;
 
         // —— Get the X videos of the playlist
-        const playlist = await ytpl( this.query, { limit: Infinity } ).catch( ( err ) => err );
+        const playlist = await ytpl( query, { limit: Infinity } ).catch( ( err ) => err );
 
         // —— If the playlist is not valid ( or if it's a mix )
         if ( playlist instanceof Error )
@@ -157,7 +159,7 @@ class Play extends Command {
 
         for ( const video of playlist.items ) {
 
-            this.player._queue.push({
+            player._queue.push({
                 id      : video.id,
                 length  : video.durationSec,
                 title   : video.title,
@@ -181,23 +183,25 @@ class Play extends Command {
                 url     : playlist.author && playlist.author.url,
             },
             title       : playlist.title,
-            description : this.language.embedDescPl( this.message, playlist.items.length, this.client.utils.formatTime( playlistTime.video ), playlistTime.live ),
+            description : this.language.embedDescPl( message, playlist.items.length, this.client.utils.formatTime( playlistTime.video ), playlistTime.live ),
             url         : playlist.url,
             color       : "0x7354f6",
         }});
 
     }
 
-    async soundCloud( ) {
+    async soundCloud( message, query ) {
+
+        const player = message.guild.player;
 
         try {
             // —— Get metainfo from a sound
-            const track = await scdl.getInfo( this.query );
+            const track = await scdl.getInfo( query );
 
             if ( !track || track.streamable === false )
                 return super.respond( this.language.cantPlay );
 
-            this.player._queue.push({
+            player._queue.push({
                 id      : track.id,
                 length  : track.duration / 1000,
                 title   : track.title,
@@ -217,7 +221,7 @@ class Play extends Command {
                     url     : track.user.permalink_url,
                 },
                 title       : track.title,
-                description : this.language.embedDesc( this.message, this.client.utils.formatTime( track.duration / 1000 ) ),
+                description : this.language.embedDesc( message, this.client.utils.formatTime( track.duration / 1000 ) ),
                 url         : track.permalink_url,
                 color       : "0x7354f6",
             }} );
@@ -230,12 +234,14 @@ class Play extends Command {
 
     }
 
-    async soundCloudPlaylist( ) {
+    async soundCloudPlaylist( message, query ) {
+
+        const player = message.guild.player;
 
         try {
 
             // —— Returns info about the given playlist
-            const playlist = await scdl.getSetInfo( this.query );
+            const playlist = await scdl.getSetInfo( query );
 
             if ( !playlist.tracks.length )
                 return super.respond( this.language.emptyPlst );
@@ -247,7 +253,7 @@ class Play extends Command {
                 if ( track.streamable === false )
                     continue;
 
-                this.player._queue.push({
+                player._queue.push({
                     id      : track.id,
                     length  : track.duration / 1000,
                     title   : track.title,
@@ -272,7 +278,7 @@ class Play extends Command {
                     url     : playlist.user.permalink_url,
                 },
                 title       : playlist.title,
-                description : this.language.embedDescPl( this.message, added.element, this.client.utils.formatTime( added.time ) ),
+                description : this.language.embedDescPl( message, added.element, this.client.utils.formatTime( added.time ) ),
                 url         : playlist.permalink_url,
                 color       : "0x7354f6",
             }});
@@ -285,19 +291,21 @@ class Play extends Command {
 
     }
 
-    async spotify( ) {
+    async spotify( message, query ) {
+
+        const player = message.guild.player;
 
         try {
 
             // —— Return preview sound informations
-            const { title, artist, link } = await getPreview( this.query );
+            const { title, artist, link } = await getPreview( query );
 
             if ( !( title && artist ) )
                 return super.respond( this.language.notFound );
 
             // —— Try to find a similar item on YouTube using the artist's name and title
-            const query = await ytsr.getFilters( `${title} ${artist}` )
-                , type  = query.get( "Type" ).get( "Video" );
+            const ybQuery = await ytsr.getFilters( `${title} ${artist}` )
+                , type    = ybQuery.get( "Type" ).get( "Video" );
 
             const { items } = await ytsr( type.url, { limit: 1 } );
 
@@ -308,7 +316,7 @@ class Play extends Command {
 
             const trackDuration = item.duration.split( ":" ).reduce( ( acc, time ) => ( 60 * acc ) + +time );
 
-            this.player._queue.push({
+            player._queue.push({
                 id      : item.id,
                 length  : trackDuration,
                 title   : item.title,
@@ -328,7 +336,7 @@ class Play extends Command {
                     url     : null,
                 },
                 title,
-                description : this.language.embedDesc( this.message, this.client.utils.formatTime( trackDuration ) ),
+                description : this.language.embedDesc( message, this.client.utils.formatTime( trackDuration ) ),
                 url         : link,
                 color       : "0x7354f6",
             }});
@@ -341,7 +349,9 @@ class Play extends Command {
 
     }
 
-    async spotifyPlaylist( ) {
+    async spotifyPlaylist( message, query ) {
+
+        const player = message.guild.player;
 
         try {
 
@@ -349,8 +359,8 @@ class Play extends Command {
 
             // —— Get preview sound informations and raw data we can scrape from spotify
             const [ playlist, data ] = await Promise.all([
-                getTracks  ( this.query ),
-                getPreview ( this.query )
+                getTracks  ( query ),
+                getPreview ( query )
             ]);
 
             // —— 💩
@@ -380,7 +390,7 @@ class Play extends Command {
 
                 const trackDuration = track.duration.split( ":" ).reduce( ( acc, time ) => ( 60 * acc ) + +time );
 
-                this.player._queue.push({
+                player._queue.push({
                     id      : track.id,
                     length  : trackDuration,
                     title   : track.title,
@@ -405,7 +415,7 @@ class Play extends Command {
                     url     : track.author.url,
                 },
                 title       : data.title,
-                description : this.language.embedDescPl( this.message, added.element, this.client.utils.formatTime( added.time ) ),
+                description : this.language.embedDescPl( message, added.element, this.client.utils.formatTime( added.time ) ),
                 url         : data.link,
                 color       : "0x7354f6",
             }});
@@ -419,12 +429,14 @@ class Play extends Command {
 
     }
 
-    async search( ) {
+    async search( message, query ) {
+
+        const player = message.guild.player;
 
         try {
 
             // —— Searches for the given string
-            const search    = await ytsr.getFilters( this.query )
+            const search    = await ytsr.getFilters( query )
             // —— Search only for videos or live
                 , filter1   = search.get( "Type" ).get( "Video" )
 
@@ -445,12 +457,12 @@ class Play extends Command {
 
             resultList.push("exit");
 
-            const select = await this.message.channel.send("```" + resultList.join("\n") + "```");
+            const select = await message.channel.send("```" + resultList.join("\n") + "```");
 
             try {
 
-                const collected = await this.message.channel.awaitMessages(
-                    ( msg ) => ( msg.content > 0 && msg.content < resultList.length || msg.content === "exit" ) && msg.author.id === this.message.author.id,
+                const collected = await message.channel.awaitMessages(
+                    ( msg ) => ( msg.content > 0 && msg.content < resultList.length || msg.content === "exit" ) && msg.author.id === message.author.id,
                     { max: 1, time: 30000, errors: ["time"] } );
 
                 let selected = collected.first().content;
@@ -462,7 +474,7 @@ class Play extends Command {
 
                 const trackDuration = !selected.isLive && selected.duration.split( ":" ).reduce( ( acc, time ) => ( 60 * acc ) + +time );
 
-                this.player._queue.push({
+                player._queue.push({
                     id      : selected.id,
                     length  : trackDuration,
                     title   : selected.title,
@@ -482,7 +494,7 @@ class Play extends Command {
                         url     : selected.author.url,
                     },
                     title       : selected.title,
-                    description : this.language.embedDesc( this.message, this.client.utils.formatTime( trackDuration ) ),
+                    description : this.language.embedDesc( message, this.client.utils.formatTime( trackDuration ) ),
                     url         : selected.url,
                     color       : "0x7354f6",
                 }});
@@ -505,12 +517,14 @@ class Play extends Command {
 
     }
 
-    async play( ) {
+    async play( message ) {
 
-        if ( !this.player._queue[0] )
+        const player = message.guild.player;
+
+        if ( !player._queue[0] )
             return super.respond( this.language.emptyPlst );
 
-        const track = this.player._queue[0];
+        const track = player._queue[0];
 
         switch ( track.source ) {
 
@@ -546,10 +560,10 @@ class Play extends Command {
                     } else options.filter = "audioonly";
 
                     // —— Attempts to download a video from the given url. Returns a readable stream.
-                    const stream = await ytdl( this.player._queue[0].url, options );
+                    const stream = await ytdl( player._queue[0].url, options );
 
                     // —— Play an audio ReadableStream.
-                    this.player._dispatcher = this.player._connection.play( stream, {
+                    player._dispatcher = player._connection.play( stream, {
                         type        : "opus",
                         bitrate     : "auto",
                     });
@@ -557,7 +571,7 @@ class Play extends Command {
                 } catch ( error ) {
 
                     super.respond( this.language.notFound );
-                    return this.player._queue.shift();
+                    return player._queue.shift();
 
                 }
 
@@ -568,7 +582,7 @@ class Play extends Command {
 
                 try {
 
-                    const trackData = await scdl.getInfo( this.player._queue[0].url );
+                    const trackData = await scdl.getInfo( player._queue[0].url );
 
                     if ( !trackData )
                         return super.respond( this.language.notFound );
@@ -581,15 +595,15 @@ class Play extends Command {
                         .filter( ( x ) => x.format.mime_type === "audio/ogg; codecs=\"opus\"" );
 
                     // —— Gets the audio from the given URL, returns a ReadableStream.
-                    const stream = await scdl.downloadFormat( this.player._queue[0].url, best.length ? scdl.FORMATS.OPUS : scdl.FORMATS.MP3 );
+                    const stream = await scdl.downloadFormat( player._queue[0].url, best.length ? scdl.FORMATS.OPUS : scdl.FORMATS.MP3 );
 
                     // —— Play an audio ReadableStream.
-                    this.player._dispatcher = this.player._connection.play( stream );
+                    player._dispatcher = player._connection.play( stream );
 
                 } catch ( error ) {
 
                     super.respond( this.language.notFound );
-                    return this.player._queue.shift();
+                    return player._queue.shift();
 
                 }
 
@@ -600,48 +614,50 @@ class Play extends Command {
 
         }
 
-        if ( !this.player._dispatcher )
+        if ( !player._dispatcher )
             return;
 
-        this.player._dispatcher.on( "start", async ( ) => {
+        player._dispatcher.on( "start", async ( ) => {
 
-            this.player._isPlaying = true;
-            await this.embedPlayer( );
-
-        });
-
-        this.player._dispatcher.on( "error", ( error ) => {
-
-            this.player._dispatcher.end();
-            this.message.channel.send( this.language.error )
+            player._isPlaying = true;
+            await this.embedPlayer( message );
 
         });
 
-        this.player._dispatcher.on( "finish", ( ) => {
+        player._dispatcher.on( "error", ( error ) => {
+
+            player._dispatcher.end();
+            message.channel.send( this.language.error )
+
+        });
+
+        player._dispatcher.on( "finish", ( ) => {
             // —— If there are still items to play at the end of the current item, and the repeat mode is not enabled, the item is removed from the queue and goes into the "queue history".
-            if ( this.player._queue.length > 1 ) {
+            if ( player._queue.length > 1 ) {
                 // —— If the repeat mode is not activated, the track that has just been played will be moved to the tracks already played
-                !this.player._loop && this.player._oldQueue.unshift( this.player._queue.shift() );
+                !player._loop && player._oldQueue.unshift( player._queue.shift() );
                 // —— Read the following track
-                this.play();
+                this.play( message );
 
             } else {
 
                 // —— Reset the player
-                this.player.reset();
+                player.reset();
 
                 // —— Leave the voice channel
-                this.message.guild.me.voice.channel
-                && this.message.guild.me.voice.channel.leave();
+                message.guild.me.voice.channel
+                && message.guild.me.voice.channel.leave();
 
             }
 
         });
     }
 
-    async embedPlayer( recreate ) {
+    async embedPlayer( message, recreate ) {
 
-        if ( recreate || !this.player._embed && !this.player._embedMsg ) {
+        const player = message.guild.player;
+
+        if ( recreate || !player._embed && !player._embedMsg ) {
 
             // —— Create interaction buttons
             const emoji = [ "⏮️", "⏹️", "⏯️", "⏭️", "🔁" ]
@@ -651,31 +667,31 @@ class Play extends Command {
             // —— Since the media is playing, the emoji should be the one to pause
             actions.components[2].setEmoji("⏸️");
             actions.components[4]
-                .setEmoji( this.player._loop ? "🔁" : "🔂" )
-                .setStyle( this.player._loop ? "blurple" : "gray" );
+                .setEmoji( player._loop ? "🔁" : "🔂" )
+                .setStyle( player._loop ? "blurple" : "gray" );
 
-            this.player._embed = () => ({
+            player._embed = () => ({
                 author      : {
                     name : this.language.now,
                 },
-                title       : this.player._queue[0].title,
-                url         : this.player._queue[0].url,
-                description : `[${this.player._queue[0].author.name}](${this.player._queue[0].author.url})`,
+                title       : player._queue[0].title,
+                url         : player._queue[0].url,
+                description : `[${player._queue[0].author.name}](${player._queue[0].author.url})`,
                 thumbnail   : {
-                    url : this.player._queue[0].thumb,
+                    url : player._queue[0].thumb,
                 },
                 footer      : {
-                    text : this.player._loop ? this.language.loop : ""
+                    text : player._loop ? this.language.loop : ""
                 }
             });
 
-            this.player._embedMsg = await this.message.channel.send({ embed: this.player._embed() , component: actions });
+            player._embedMsg = await message.channel.send({ embed: player._embed() , component: actions });
 
-            this.player._embedMsg.createButtonCollector(
+            player._embedMsg.createButtonCollector(
                 ( button ) => {
-                    if (this.player._connection
-                        && this.player._connection.channel.members.has( button.clicker.user.id )
-                        && button.clicker.user.id !== this.player._embedMsg.author.id
+                    if (player._connection
+                        && player._connection.channel.members.has( button.clicker.user.id )
+                        && button.clicker.user.id !== player._embedMsg.author.id
                         && emoji.some( ( react ) => react === button.id ))
                         return true;
                 }, { time: 10800000 }
@@ -687,26 +703,26 @@ class Play extends Command {
                 // —— Get the command
                     , command = this.client.commands.get( cname );
                 // —— Set message and local
-                command.setMessage( this.message );
+                command.setMessage( message );
                 // —— Run the command
-                command.run( this.message );
+                command.run( message );
 
                 await button.defer();
 
-            }).on( "end", ( collected ) => {
+            }).on( "end", ( ) => {
 
-                this.player._embedMsg && this.player._embedMsg.delete().catch( ( err ) => err );
-                this.player._embedMsg = null;
-                this.player._embed    = null;
+                player._embedMsg && player._embedMsg.delete().catch( ( err ) => err );
+                player._embedMsg = null;
+                player._embed    = null;
 
             });
 
         } else {
 
             try {
-                await this.player._embedMsg.edit( { embed: this.player._embed(), component: this.player._embedMsg.components[0] });
+                await player._embedMsg.edit( { embed: player._embed(), component: player._embedMsg.components[0] });
             } catch (error) {
-                this.embedPlayer( true );
+                this.embedPlayer( message, true );
             }
 
         }
