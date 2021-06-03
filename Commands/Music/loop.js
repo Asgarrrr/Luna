@@ -34,15 +34,24 @@ class Loop extends Command {
         player._loop = !player._loop;
 
         // —— If the player is present
-        if ( player._embedMsg ) {
+        if ( player._embedMsg && player._embedMsg.components[0] ) {
 
-            // —— Display or not the new state
-            player._embedMsg.embeds[0].footer = {
-                text : player._loop ? this.language.loop : ""
-            };
+            try {
 
-            // —— Modifies the original message
-            player._embedMsg.edit( player._embedMsg.embeds[0] );
+                // —— Change player button
+                const loopBtn = player._embedMsg.components[0].components[4];
+
+                loopBtn.style = player._loop ? 1 : 2;
+                loopBtn.emoji.name = player._loop ? "🔁" : "🔂";
+
+                // —— Modifies the original message
+                await player._embedMsg.edit( { embed: player._embed(), component: player._embedMsg.components[0] } );
+
+            } catch ( error ) {
+
+                super.respond( player._loop ? this.language.enabled : this.language.disabled );
+
+            }
 
         } else super.respond( player._loop ? this.language.enabled : this.language.disabled );
 
