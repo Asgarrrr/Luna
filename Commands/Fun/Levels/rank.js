@@ -63,7 +63,7 @@ class Rank extends Command {
 
         // —— Search or create member
         const user = await this.client.db.Member.findOneAndUpdate({
-            _ID     : message.author.id,
+            _ID     : target.id,
             _guildID: message.guild.id,
         }, {}, {
             setDefaultsOnInsert : true,
@@ -77,7 +77,7 @@ class Rank extends Command {
         // —— Get the top 10 members of the ranking, sorted by experience
         const ranking = await this.client.db.Member.find({
             _guildID: message.guild.id,
-        }).sort({ experience: "-1" }).limit( 10 );
+        }).sort({ experience: "-1" });
 
         const rank = ranking.findIndex( ( user ) => user._ID === target.id ) + 1;
 
@@ -215,10 +215,8 @@ class Rank extends Command {
 
         ctx.font = `regular 31px ${Fonts}`;
 
-        let bio = user.bio;
-
-        if ( bio === "NoBioSet" )
-            bio = this.language.noBio( message.guild.prefix );
+        if ( user.bio === "NoBioSet" )
+            user.bio = this.language.noBio( message.guild.prefix );
 
         // —— Each line is ~32 characters long — Max 40, force split
         let prev  = 0
