@@ -96,7 +96,7 @@ class Skip extends Command {
         } else {
 
             // —— Switches the current track to the list of old tracks, and restarts playback.
-            player.loop && player._oldQueue.unshift( ...player._queue.splice( 0, amount ) );
+            player._loop && player._oldQueue.unshift( ...player._queue.splice( 0, amount ) );
             player._dispatcher.end();
 
         }
