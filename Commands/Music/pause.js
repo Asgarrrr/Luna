@@ -39,6 +39,22 @@ class Pause extends Command {
         // —— Reverses in the player its reading state
         player._isPlaying = !player._isPlaying;
 
+        if ( player._embedMsg && player._embedMsg.components[0] ) {
+
+            try {
+
+                // —— Change player button
+                const pauseBtn = player._embedMsg.components[0].components[2];
+
+                pauseBtn.emoji.name = player._isPlaying ? "⏸️" : "▶️";
+
+                // —— Modifies the original message
+                await player._embedMsg.edit( { component: player._embedMsg.components[0] } );
+
+            } catch ( error ) { }
+
+        }
+
     }
 
 }
