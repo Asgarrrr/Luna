@@ -1,10 +1,10 @@
 // ██████ Integrations █████████████████████████████████████████████████████████
 
 // —— Import base command
-const Command             = require( "../../Structures/Command" )
+const Command              = require( "../../Structures/Command" )
 // ——  A fast and easy API to create a buttons in discord using discord.js
     , { MessageButton,
-        MessageActionRow} = require( "discord-buttons" );
+        MessageActionRow } = require( "discord-buttons" );
 
 // ██████ | ███████████████████████████████████████████████████████████████████
 
@@ -80,8 +80,6 @@ class Queue extends Command {
 
         const buttons = [ "⬆️", "⬇️", "🔍" ].map( ( i ) => new MessageButton().setLabel( "" ).setID( i ).setStyle( "gray" ).setEmoji( i ) )
             , actions = new MessageActionRow().addComponents( buttons );
-
-        console.log(actions);
 
 
         const position = () => {
