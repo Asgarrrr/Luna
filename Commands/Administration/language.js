@@ -29,7 +29,7 @@ class Language extends Command {
 
         if ( language && available.includes( language ) ) {
 
-            return await this.save( language );
+            return await this.save( language, message );
 
         } else {
 
@@ -52,7 +52,7 @@ class Language extends Command {
                 { time: 15000, max: 1 }
             );
 
-            collector.on( "collect", async ( m ) => { await this.save( m.content ); } );
+            collector.on( "collect", async ( m ) => { await this.save( m.content, m ); } );
 
             collector.on( "end", ( ) => awaitReponse.delete( ) );
 
@@ -60,16 +60,16 @@ class Language extends Command {
 
     }
 
-    async save ( language ) {
+    async save( language, message ) {
 
         // —— Save the new language in the database
         await this.client.db.Guild.findOneAndUpdate({
-            _ID : this.message.guild.id
+            _ID : message.guild.id
         }, {
             language,
         }).exec();
 
-        this.message.guild.language = language;
+        message.guild.language = language;
 
         // —— Send a confirmation message
         super.respond( { embed: {
