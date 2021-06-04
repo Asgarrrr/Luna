@@ -31,7 +31,7 @@ const Command               = require( "../../../Structures/Command" )
     fs.existsSync( Arial        ) && Canvas.registerFont( Arial       , { family: "Arial" } );
     fs.existsSync( ArialUnicode ) && Canvas.registerFont( ArialUnicode, { family: "ArielUnicode" } );
 
-    const Fonts = "'DM Sans', STIXGeneral, AppleSymbol, Arial, ArialUnicode"
+    const Fonts = "'DM Sans', STIXGeneral, AppleSymbol, Arial, ArialUnicode";
 
 
 // ██████ | ███████████████████████████████████████████████████████████████████
@@ -49,7 +49,7 @@ class Rank extends Command {
 			category    : "Fun",
 			cooldown    : 5,
 			userPerms   : "SEND_MESSAGES",
-			allowDMs    : false,
+			guildOnly   : true,
 		});
 
 	}
@@ -61,7 +61,7 @@ class Rank extends Command {
         if ( !target )
             return super.respond( this.language.notFound );
 
-        // —— Search or create member
+        // —— Search or create member
         const user = await this.client.db.Member.findOneAndUpdate({
             _ID     : target.id,
             _guildID: message.guild.id,
@@ -74,7 +74,7 @@ class Rank extends Command {
         if ( !user )
             return super.respond( this.language.missInfo );
 
-        // —— Get the top 10 members of the ranking, sorted by experience
+        // —— Get the top 10 members of the ranking, sorted by experience
         const ranking = await this.client.db.Member.find({
             _guildID: message.guild.id,
         }).sort({ experience: "-1" });
@@ -218,7 +218,7 @@ class Rank extends Command {
         if ( user.bio === "NoBioSet" )
             user.bio = this.language.noBio( message.guild.prefix );
 
-        // —— Each line is ~32 characters long — Max 40, force split
+        // —— Each line is ~32 characters long — Max 40, force split
         let prev  = 0
           , curr  = 32
           , clean = [];

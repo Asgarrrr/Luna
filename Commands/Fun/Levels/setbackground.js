@@ -38,7 +38,7 @@ class Setbackground extends Command {
             // —— Only if the user has joined a file
             if ( message.attachments.size ) {
 
-                if ( message.attachments.size && url )  {
+                if ( message.attachments.size && url ) {
                     ey = ex;
                     ex = sy;
                     sy = sx;

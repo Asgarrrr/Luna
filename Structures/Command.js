@@ -17,7 +17,7 @@ class Command {
 		this.category    = options.category    || "General";
 		this.args        = options.args        || false;
 		this.usage       = options.usage       || null;
-        this.example     = options.example     || null;
+        this.example     = options.example     || [];
 		this.cooldown    = options.cooldown    || 1000;
 
 		this.userPerms   = new Permissions( options.userPerms || "SEND_MESSAGES" ).freeze();

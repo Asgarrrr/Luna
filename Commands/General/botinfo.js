@@ -23,6 +23,7 @@ class Botinfos extends Command {
             name        : "botinfo",
             aliases     : ["infobot"],
             description : "Displays generic information about Luna",
+            usage       : "botinfo",
             category    : "General",
             args        : false,
             botPerms    : "SEND_MESSAGES",
@@ -90,13 +91,13 @@ class Botinfos extends Command {
             .setURL( "https://lunadoc.vercel.app/" );
 
 
-        // ——  Button row
+        // —— Button row
         const actions = new MessageActionRow()
             .addComponent( refresh )
             .addComponent( github )
             .addComponent( doc );
 
-        // ——  Send the Luna face attachment, buttons and embed
+        // —— Send the Luna face attachment, buttons and embed
         const msg = await message.channel.send({
             embed    : embed(),
             component: actions,

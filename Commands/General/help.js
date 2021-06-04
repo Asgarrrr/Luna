@@ -37,7 +37,7 @@ class Help extends Command {
             if ( command.startsWith( message.guild.prefix ) )
                 command = command.substring( message.guild.prefix.length );
 
-            // —— 
+            // —— Search the command among those available
             const commandData = message.client.commands.find(
                 ( c ) => c.name === command
                 || c.aliases.includes( command )

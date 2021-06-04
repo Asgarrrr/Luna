@@ -13,7 +13,7 @@ class Level extends Command {
 	constructor(client) {
 		super(client, {
 			name        : "level",
-			description : "Allows to change the amount of experience of a member, of all the members in possession of a role or of everyone. ",
+			description : "Operation on the exeriences of a member",
 			usage       : "level user operation quantity",
 			example     : ["@Asgarrrr + 100", "all = 2, @role / 2"],
 			args        : true,
@@ -39,7 +39,7 @@ class Level extends Command {
                 return super.respond( this.language.noQuantity );
 
             if ( target === "all" ) {
-                members = this.message.guild.members.cache.map( ( member ) => member.user.id );
+                members = message.guild.members.cache.map( ( member ) => member.user.id );
             } else {
 
                 const resolved = await this.client.utils.resolveMention( ( target ), message.guild, 0 );
@@ -48,7 +48,7 @@ class Level extends Command {
                     return super.respond( this.language.notFound );
 
                 if ( resolved instanceof Role )
-                    members = this.message.guild.members.cache.filter( ( member ) => member._roles.includes( resolved.id ) ).map( ( member ) => member.user.id );
+                    members = message.guild.members.cache.filter( ( member ) => member._roles.includes( resolved.id ) ).map( ( member ) => member.user.id );
 
                 if ( resolved instanceof GuildMember )
                     members = resolved.user.id;
@@ -100,8 +100,6 @@ class Level extends Command {
         } catch ( error ) {
 
             super.respond( this.language.error );
-
-            console.log( error );
 
         }
 

@@ -13,8 +13,8 @@ class Avatar extends Command {
     constructor( client ) {
         super( client, {
             name        : "avatar",
-            description : "Returns the profile image of a player. Targeting by mention, username, or ID",
-            usage       : "avatar {@mention || username || ID}",
+            description : "Returns the profile picture of a member.",
+            usage       : "avatar { @mention | ID }",
             example     : ["662331369392832512", "@Luna", "Luna"],
             args        : false,
             category    : "General",
@@ -39,9 +39,9 @@ class Avatar extends Command {
         user = user instanceof GuildMember ? user.user : user;
 
         super.respond({ embed: {
-            description: `${this.language.thisIs} ${message.author.id === user.id ? this.language.userIsAuthor( user ) : this.language.userAvatar( user ) }`,
-            image: {
-                url: user.displayAvatarURL({ dynamic: true, size: 4096 }),
+            description : `${this.language.thisIs} ${message.author.id === user.id ? this.language.userIsAuthor( user ) : this.language.userAvatar( user ) }`,
+            image       : {
+                url     : user.displayAvatarURL({ dynamic: true, size: 4096 }),
             },
         } });
 

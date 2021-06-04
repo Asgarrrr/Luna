@@ -2,7 +2,7 @@
 
 // —— Import base command
 const Command              = require( "../../Structures/Command" )
-// ——  A fast and easy API to create a buttons in discord using discord.js
+// —— A fast and easy API to create a buttons in discord using discord.js
     , { MessageButton,
         MessageActionRow } = require( "discord-buttons" );
 
