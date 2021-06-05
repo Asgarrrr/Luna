@@ -81,6 +81,9 @@ class Help extends Command {
         for (const category in categories ) {
             if ( Object.hasOwnProperty.call( categories, category ) ) {
 
+                if ( category === "Owner" )
+                    continue;
+
                 buttons.push(
                     new MessageButton()
                         .setLabel( category )
