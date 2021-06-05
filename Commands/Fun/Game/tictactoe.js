@@ -39,8 +39,13 @@ class TicTacToe extends Command {
         if ( opponent.id === message.author.id )
             return super.respond( this.language.noFriend );
 
+        if ( opponent.id === this.client.user.id )
+            return super.respond( this.language.noMe() );
+
 
         size = parseInt( size, 10 );
+
+        console.log(size);
 
         if ( size > 5 )
             return super.respond( this.language.maxCell );
@@ -84,9 +89,7 @@ class TicTacToe extends Command {
 
             move++;
 
-
             const winner = this.getWinner( board, buttonBoard );
-            console.log( winner )
 
             if ( winner ) {
 
@@ -106,8 +109,6 @@ class TicTacToe extends Command {
                 } else await game.edit( this.language.turn( _currentPlayer ), { components : buttonBoard });
 
             }
-
-
 
             await b.defer();
 
