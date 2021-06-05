@@ -25,7 +25,11 @@ class Reload extends Command {
 
         try {
 
-            await this.client.loadEvents();
+            this.client.language.clear();
+            await this.client.loadLanguages();
+
+            this.client.commands.clear();
+            this.client.aliases.clear();
             await this.client.loadCommands();
 
             await message.react( "✅" );
