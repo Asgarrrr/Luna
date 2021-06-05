@@ -78,6 +78,12 @@ class TicTacToe extends Command {
                 .setDisabled( )
                 .setLabel( board[ c[0] ][ c[1] ] === -1 ? "✗" : "〇" );
 
+            _currentPlayer = _currentPlayer === _players.first
+                ? _players.second
+                : _players.first;
+
+            move++;
+
 
             const winner = this.getWinner( board, buttonBoard );
             console.log( winner )
@@ -101,11 +107,7 @@ class TicTacToe extends Command {
 
             }
 
-            _currentPlayer = _currentPlayer === _players.first
-                ? _players.second
-                : _players.first;
 
-            move++;
 
             await b.defer();
 
