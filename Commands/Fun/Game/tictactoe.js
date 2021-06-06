@@ -42,10 +42,7 @@ class TicTacToe extends Command {
         if ( opponent.id === this.client.user.id )
             return super.respond( this.language.noMe() );
 
-
         size = parseInt( size, 10 );
-
-        console.log(size);
 
         if ( size > 5 )
             return super.respond( this.language.maxCell );
