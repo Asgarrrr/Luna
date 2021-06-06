@@ -1,3 +1,7 @@
+<small>
+  After a lot of outright theft, I leave this repo, but I will continue my work in private, but Luna obviously continues to evolve, so add her :b 
+</small>
+
 <div align="center">
 
   <img src="https://lunadoc.vercel.app/_next/image?url=%2FLuna.png&w=1200&q=75" width="600px">
