@@ -7,5 +7,7 @@ module.exports = {
     winner      : ( winner ) => `<@${winner}> a gagné la partie`,
     drawn       : "Match nul",
     turn        : ( _currentPlayer ) => `C'est au tour de <@${_currentPlayer}>.`,
+    newGame     : "Nouvelle partie ?",
+    end         : "Le temps de jeu est écoulé"
 
 };
