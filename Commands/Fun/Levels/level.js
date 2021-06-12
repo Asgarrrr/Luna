@@ -14,7 +14,7 @@ class Level extends Command {
 		super(client, {
 			name        : "level",
 			description : "Operation on the exeriences of a member",
-			usage       : "level user operation quantity",
+			usage       : "level [user] [operation] [quantity]",
 			example     : ["@Asgarrrr + 100", "all = 2, @role / 2"],
 			args        : true,
 			category    : "Fun",

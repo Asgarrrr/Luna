@@ -12,8 +12,8 @@ class Ban extends Command {
         super( client, {
             name        : "ban",
             description : "Ban a user",
-            usage       : "ban @mention { Reason } ",
-            example     : ["@Asgarrrr", "Luna"],
+            usage       : "ban [user] {reason}",
+            example     : ["@Asgarrrr", "@Twiistrz Not responding LOL"],
             args        : true,
             category    : "Moderation",
             cooldown    : 1000,

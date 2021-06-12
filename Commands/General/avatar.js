@@ -14,7 +14,7 @@ class Avatar extends Command {
         super( client, {
             name        : "avatar",
             description : "Returns the profile picture of a member.",
-            usage       : "avatar { @mention | ID }",
+            usage       : "avatar {member / member ID }",
             example     : ["662331369392832512", "@Luna", "Luna"],
             args        : false,
             category    : "General",

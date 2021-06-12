@@ -9,11 +9,12 @@ const Command = require( "../../Structures/Command" );
 class Prefix extends Command {
 
 	constructor(client) {
-		super(client, {
+
+		super( client, {
 			name        : "prefix",
-			description : "Change the prefix used by Luna in the guild",
+			description : "Change the prefix used by Luna in the guild.",
 			usage       : "prefix [prefix]",
-			example     : ["_"],
+			example     : ["_", "!"],
 			args        : true,
 			category    : "Administration",
 			cooldown    : 10000,

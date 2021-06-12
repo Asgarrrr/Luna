@@ -12,8 +12,8 @@ class Language extends Command {
 		super( client, {
 			name        : "language",
 			description : "Change the language used by Luna in the guild",
-			usage       : "language [language]",
-			example     : ["FR"],
+			usage       : "language {language}",
+			example     : ["FR", "EN"],
 			args        : false,
 			category    : "Administration",
 			cooldown    : 10000,

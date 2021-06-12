@@ -11,7 +11,7 @@ class Loop extends Command {
 	constructor( client ) {
 		super( client, {
 			name        : "loop",
-			description : "The current track will repeat itself indefinitely ",
+			description : "The current track will repeat itself indefinitely.",
 			usage       : "loop",
 			args        : false,
 			category    : "Music",

@@ -45,8 +45,8 @@ class Rank extends Command {
 		super(client, {
 			name        : "rank",
 			description : "Generates a custom card with progress, rank and biography",
-			usage       : "rank { user }",
-			example     : [ "@asgarrrr" ],
+			usage       : "rank {user}",
+			example     : [ "@Asgarrrr" ],
 			args        : false,
 			category    : "Fun",
 			cooldown    : 5,

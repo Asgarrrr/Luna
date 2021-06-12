@@ -13,9 +13,9 @@ class Power4 extends Command {
    constructor(client) {
        super(client, {
            name        : "power4",
-           description : "Start a Power 4 game",
-           usage       : "power4 ",
-           example     : [ "power4 @Asgarrrr" ],
+           description : "Start a Power 4 game.",
+           usage       : "power4 [user]",
+           example     : [ "@Asgarrrr", "@Twiistrz" ],
            args        : true,
            category    : "Fun",
            cooldown    : 5000,
