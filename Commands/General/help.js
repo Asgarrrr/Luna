@@ -17,7 +17,8 @@ class Help extends Command {
         super( client, {
             name        : "help",
             description : "Displays the list of available commands",
-            usage       : "help { command }",
+            usage       : "help {command}",
+            example     : [ "ping" ],
             category    : "General",
             args        : false,
             botPerms    : "SEND_MESSAGES",
@@ -55,7 +56,7 @@ class Help extends Command {
                     value   : this.language.pSValue( message.guild.prefix, commandData.usage ),
                 }, {
                     name    : this.language.pEName,
-                    value   : this.language.pEValue( message.guild.prefix, commandData.example ),
+                    value   : this.language.pEValue( message.guild.prefix, commandData.name, commandData.example ),
                 }],
             }});
 

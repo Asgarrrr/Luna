@@ -5,17 +5,20 @@ module.exports = {
     nsfw        : "残念ながら、このコマンドは NSFW とマークされたチャネルでのみ実行できます.",
     cooldown    : ( command, message ) => `お待ちください ${( ( command.cmdCooldown.get( `${ message.guild ? message.guild.id : "mp" }-${ message.author.id }` ) - Date.now() ) / 1000 ).toFixed( 1 ) } 秒を再利用する ${command.name} コマンド.`,
     args        : ( message ) => `引数が指定されていません, ${message.author} !`,
+
     helpEmbed   : ( cmd, message ) => { return {
-        title       : `${cmd.name.replace(/\b\w/g, (l) => l.toUpperCase())}`,
-        description : `> *${cmd.description}*`,
+        color       : `0x7354f6`,
+        title       : `\` ${cmd.name.replace(/\b\w/g, (l) => l.toUpperCase())} \` Informations`,
+        description : `> ${cmd.description}`,
         fields      : [{
             name    : "Syntax",
-            value   :`\`\`\`${cmd.usage}\`\`\``,
+            value   :`\`\`\`${ message.guild.prefix }${ cmd.usage }\`\`\`\`[]\` = Required arguments, — \`{}\` = Optional arguments.`,
         }, {
-            name    : "Examples use",
-            value   :`\`\`\`${cmd.example && cmd.example.map( ( x ) => `${message.guild.prefix}${cmd.name} ${x}`).join( "\n" ) || "例はありません"}\`\`\``,
+            name    : "Example",
+            value   :`\`\`\`${ cmd.example && cmd.example.map( ( x ) => `${ message.guild.prefix }${ cmd.name } ${ x }`).join( "\n" ) || "例はありません" }\`\`\``,
         }],
     }; },
+
     "missPerm"  : "このコマンドを実行するための十分な権限がありません。",
     "youMiss"   : "このコマンドを実行するために必要な権限がありません...",
     lvlUp       : ( level, user ) => [

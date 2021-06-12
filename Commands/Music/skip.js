@@ -12,7 +12,8 @@ class Skip extends Command {
 		super( client, {
 			name        : "skip",
 			description : "Skips the media currently playing. Ignores the repetition of the track",
-			usage       : "skip { Number of elements to skip }",
+			usage       : "skip {number of track}",
+            example     : [ "4" ],
 			args        : false,
 			category    : "Music",
 			cooldown    : 1000,

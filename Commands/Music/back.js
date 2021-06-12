@@ -12,7 +12,8 @@ class Back extends Command {
 		super( client, {
 			name        : "back",
 			description : "Goes back to the previous track.",
-			usage       : "back { Number of elements to back }",
+			usage       : "back {number of track}",
+            example     : [ "4" ],
 			args        : false,
 			category    : "Music",
 			cooldown    : 1000,
