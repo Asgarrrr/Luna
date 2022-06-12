@@ -12,8 +12,8 @@ class Addrole extends Command {
 		super( client, {
 			name        : "addrole",
 			description : "Lets you assign a role to a member.",
-			usage       : "addrole { user mention / user ID } { role mention / role ID }",
-			example     : ["@asgarrrr @moderator" ],
+			usage       : "addrole [user / user ID] [role / role ID]",
+			example     : [ "@Asgarrrr @Admin", "@Twiistrz @Moderator" ],
 			args        : true,
 			category    : "Administration",
 			cooldown    : 100,

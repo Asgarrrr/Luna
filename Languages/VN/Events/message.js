@@ -5,17 +5,20 @@ module.exports = {
     nsfw        : "Rất tiếc, lệnh này chỉ có thể chạy trong kênh được đánh dấu NSFW.",
     cooldown    : ( command, message ) => `Vui lòng đợi ${( ( command.cmdCooldown.get( `${ message.guild ? message.guild.id : "mp" }-${ message.author.id }` ) - Date.now() ) / 1000 ).toFixed( 1 ) } second(s) to reuse the ${command.name} command.`,
     args        : ( message ) => `Bạn không cung cấp bất kỳ đối số nào, ${message.author} !`,
+
     helpEmbed   : ( cmd, message ) => { return {
-        title       : `${cmd.name.replace(/\b\w/g, (l) => l.toUpperCase())}`,
-        description : `> *${cmd.description}*`,
+        color       : `0x7354f6`,
+        title       : `\` ${cmd.name.replace(/\b\w/g, (l) => l.toUpperCase())} \` Informations`,
+        description : `> ${cmd.description}`,
         fields      : [{
             name    : "Syntax",
-            value   :`\`\`\`${cmd.usage}\`\`\``,
+            value   :`\`\`\`${ message.guild.prefix }${ cmd.usage }\`\`\`\`[]\` = Required arguments, — \`{}\` = Optional arguments.`,
         }, {
-            name    : "Examples use",
-            value   :`\`\`\`${cmd.example && cmd.example.map( ( x ) => `${message.guild.prefix}${cmd.name} ${x}`).join( "\n" ) || "Không có ví dụ nào được cung cấp"}\`\`\``,
+            name    : "Example",
+            value   :`\`\`\`${ cmd.example && cmd.example.map( ( x ) => `${ message.guild.prefix }${ cmd.name } ${ x }`).join( "\n" ) || "Không có ví dụ nào được cung cấp" }\`\`\``,
         }],
     }; },
+    
     "missPerm"  : "Tôi không có đủ quyền để thực hiện lệnh này.",
     "youMiss"   : "Bạn thiếu các đặc quyền cần thiết để thực hiện lệnh này ...",
     lvlUp       : ( level, user ) => [

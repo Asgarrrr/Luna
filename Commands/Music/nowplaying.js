@@ -11,7 +11,7 @@ class nowplaying extends Command {
 	constructor( client ) {
 		super( client, {
 			name        : "nowplaying",
-			description : "Show information about the current track",
+			description : "Show information about the current track.",
 			usage       : "nowplaying",
 			args        : false,
 			category    : "Music",

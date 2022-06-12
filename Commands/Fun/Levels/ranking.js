@@ -16,10 +16,12 @@ const Command               = require( "../../../Structures/Command" )
     I host Luna doesn't have a default font, for the nicknames with special characters,
     I had to use these ones, depending on the problems I encountered */
 
+    // ERROR: AppleSymbol.ttf seems not a valid font - Twiistrz
+
     const DMSBoldPath  = "./Assets/Fonts/DMSans-Bold.ttf"
         , DMSReguPath  = "./Assets/Fonts/DMSans-Regular.ttf"
         , STIXGeneral  = "./Assets/Fonts/STIXGeneral.ttf"
-        , AppleSymbol  = "./Assets/Fonts/AppleSymbol.ttf"
+        // , AppleSymbol  = "./Assets/Fonts/AppleSymbol.ttf"
         , Arial        = "./Assets/Fonts/Arial.ttf"
         , ArialUnicode = "./Assets/Fonts/ArialUnicode.ttf";
 
@@ -27,7 +29,7 @@ const Command               = require( "../../../Structures/Command" )
     fs.existsSync( DMSBoldPath  ) && Canvas.registerFont( DMSBoldPath , { family: "DM Sans", weight: "bold" } );
     fs.existsSync( DMSReguPath  ) && Canvas.registerFont( DMSReguPath , { family: "DM Sans", weight: "regular" } );
     fs.existsSync( STIXGeneral  ) && Canvas.registerFont( STIXGeneral , { family: "STIXGeneral" } );
-    fs.existsSync( AppleSymbol  ) && Canvas.registerFont( AppleSymbol , { family: "AppleSymbol" } );
+    // fs.existsSync( AppleSymbol  ) && Canvas.registerFont( AppleSymbol , { family: "AppleSymbol" } );
     fs.existsSync( Arial        ) && Canvas.registerFont( Arial       , { family: "Arial" } );
     fs.existsSync( ArialUnicode ) && Canvas.registerFont( ArialUnicode, { family: "ArielUnicode" } );
 
