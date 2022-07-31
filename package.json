@@ -32,7 +32,7 @@
         "chalk": "^4.1.1",
         "cheerio": "*",
         "discord-buttons": "github:AngeloCore/discord-buttons",
-        "discord.js": "^12.5.3",
+        "discord.js": "^14.0.0",
         "erlpack": "github:discord/erlpack",
         "express": "^4.17.1",
         "ffmpeg-static": "^4.3.0",
