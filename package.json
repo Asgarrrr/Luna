@@ -28,7 +28,7 @@
         "body-parser": "^1.19.0",
         "body-parser-xml": "^2.0.3",
         "bufferutil": "^4.0.3",
-        "canvas": "^2.8.0",
+        "canvas": "^3.0.0",
         "chalk": "^4.1.1",
         "cheerio": "*",
         "discord-buttons": "github:AngeloCore/discord-buttons",
