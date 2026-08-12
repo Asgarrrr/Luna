@@ -121,7 +121,7 @@ class message extends Event {
 
         // —— Checks if arguments are required and if they are present
         if ( command.args && !args.length )
-            return message.channel.send( !command.usage || "" ? langue.args : { embed : langue.helpEmbed( command, message ) } );
+            return message.channel.send( command.usage ? { embed : langue.helpEmbed( command, message ) } : (langue.args || "Missing arguments.") );
 
         if ( message.guild ) {
 
